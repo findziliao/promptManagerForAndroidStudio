@@ -1,0 +1,305 @@
+{
+    "name": "prompt-manager",
+    "displayName": "Prompt Manager",
+    "description": "管理和快速选择Prompt模板的扩展，适配Cursor、VSCode Copilot",
+    "version": "0.0.1",
+    "publisher": "prompt-manager-dev",
+    "icon": "resources/prompt-manager-logo-2.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cursor-project/prompt-manager.git"
+    },
+    "homepage": "https://github.com/cursor-project/prompt-manager#readme",
+    "bugs": {
+        "url": "https://github.com/cursor-project/prompt-manager/issues"
+    },
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "prompt",
+        "template",
+        "manager",
+        "productivity"
+    ],
+    "activationEvents": [
+        "onView:prompt-manager.promptTree",
+        "onStartupFinished",
+        "onCommand:prompt-manager.showPrompts",
+        "onCommand:prompt-manager.addPrompt",
+        "onCommand:prompt-manager.managePrompts"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "prompt-manager",
+                    "title": "Prompt Manager",
+                    "icon": "$(symbol-text)"
+                }
+            ]
+        },
+        "views": {
+            "prompt-manager": [
+                {
+                    "id": "prompt-manager.promptTree",
+                    "name": "Prompts",
+                    "when": "true"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "prompt-manager.showPrompts",
+                "title": "显示Prompt列表",
+                "category": "Prompt Manager"
+            },
+            {
+                "command": "prompt-manager.addPrompt",
+                "title": "添加新Prompt",
+                "category": "Prompt Manager"
+            },
+            {
+                "command": "prompt-manager.managePrompts",
+                "title": "管理Prompts",
+                "category": "Prompt Manager"
+            },
+            {
+                "command": "prompt-manager.exportPrompts",
+                "title": "导出Prompts",
+                "category": "Prompt Manager"
+            },
+            {
+                "command": "prompt-manager.importPrompts",
+                "title": "导入Prompts",
+                "category": "Prompt Manager"
+            },
+            {
+                "command": "prompt-manager.refreshTree",
+                "title": "刷新",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "prompt-manager.addPromptFromTree",
+                "title": "添加Prompt",
+                "icon": "$(file-add)"
+            },
+            {
+                "command": "prompt-manager.editPromptFromTree",
+                "title": "编辑",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "prompt-manager.deletePromptFromTree",
+                "title": "删除",
+                "icon": "$(trash)"
+            },
+            {
+                "command": "prompt-manager.copyPromptFromTree",
+                "title": "复制到剪贴板",
+                "icon": "$(copy)"
+            },
+            {
+                "command": "prompt-manager.searchPrompts",
+                "title": "搜索Prompts",
+                "icon": "$(search)"
+            },
+            {
+                "command": "prompt-manager.clearSearch",
+                "title": "清除搜索",
+                "icon": "$(clear-all)"
+            },
+            {
+                "command": "prompt-manager.editCategoryFromTree",
+                "title": "编辑分类",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "prompt-manager.addPromptToCategoryFromTree",
+                "title": "添加Prompt到分类",
+                "icon": "$(add)"
+            },
+            {
+                "command": "prompt-manager.exportCategoryFromTree",
+                "title": "导出分类",
+                "icon": "$(export)"
+            },
+            {
+                "command": "prompt-manager.deleteCategoryFromTree",
+                "title": "删除分类",
+                "icon": "$(trash)"
+            },
+            {
+                "command": "prompt-manager.sendToChat",
+                "title": "发送到Chat",
+                "category": "Prompt Manager",
+                "icon": "$(comment-discussion)"
+            },
+            {
+                "command": "prompt-manager.sendToChatFromTree",
+                "title": "发送到Chat",
+                "icon": "$(comment-discussion)"
+            },
+
+            {
+                "command": "prompt-manager.addCategoryFromTree",
+                "title": "新增分类",
+                "icon": "$(new-folder)"
+            },
+            {
+                "command": "prompt-manager.openSettings",
+                "title": "插件设置",
+                "category": "Prompt Manager",
+                "icon": "$(wrench)"
+            }
+        ],
+        "configuration": {
+            "title": "Prompt Manager",
+            "properties": {
+                "promptManager.defaultAction": {
+                    "type": "string",
+                    "default": "copy",
+                    "enum": [
+                        "copy",
+                        "chat"
+                    ],
+                    "enumDescriptions": [
+                        "复制到剪贴板",
+                        "发送到Chat"
+                    ],
+                    "description": "选择Prompt时的默认操作方式"
+                }
+            }
+        },
+        "keybindings": [
+            {
+                "command": "prompt-manager.showPrompts",
+                "key": "ctrl+shift+q",
+                "mac": "cmd+shift+q"
+            },
+            {
+                "command": "prompt-manager.searchPrompts",
+                "key": "ctrl+k ctrl+s",
+                "mac": "cmd+k cmd+s",
+                "when": "view == prompt-manager.promptTree"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "prompt-manager.showPrompts"
+                },
+                {
+                    "command": "prompt-manager.addPrompt"
+                },
+                {
+                    "command": "prompt-manager.managePrompts"
+                },
+                {
+                    "command": "prompt-manager.exportPrompts"
+                },
+                {
+                    "command": "prompt-manager.importPrompts"
+                },
+                {
+                    "command": "prompt-manager.sendToChat"
+                }
+            ],
+            "view/title": [
+                {
+                    "command": "prompt-manager.searchPrompts",
+                    "when": "view == prompt-manager.promptTree",
+                    "group": "navigation@0"
+                },
+                {
+                    "command": "prompt-manager.clearSearch",
+                    "when": "view == prompt-manager.promptTree && prompt-manager.searchActive",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "prompt-manager.refreshTree",
+                    "when": "view == prompt-manager.promptTree",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "prompt-manager.addCategoryFromTree",
+                    "when": "view == prompt-manager.promptTree",
+                    "group": "navigation@3"
+                },
+                {
+                    "command": "prompt-manager.addPromptFromTree",
+                    "when": "view == prompt-manager.promptTree",
+                    "group": "navigation@4"
+                },
+                {
+                    "command": "prompt-manager.openSettings",
+                    "when": "view == prompt-manager.promptTree",
+                    "group": "navigation@5"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "prompt-manager.sendToChatFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == promptItem",
+                    "group": "1_main@1"
+                },
+                {
+                    "command": "prompt-manager.copyPromptFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == promptItem",
+                    "group": "1_main@2"
+                },
+                {
+                    "command": "prompt-manager.editPromptFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == promptItem",
+                    "group": "1_main@3"
+                },
+                {
+                    "command": "prompt-manager.deletePromptFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == promptItem",
+                    "group": "2_danger@1"
+                },
+                {
+                    "command": "prompt-manager.editCategoryFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == categoryItem",
+                    "group": "1_main@1"
+                },
+                {
+                    "command": "prompt-manager.addPromptToCategoryFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == categoryItem",
+                    "group": "1_main@2"
+                },
+                {
+                    "command": "prompt-manager.exportCategoryFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == categoryItem",
+                    "group": "1_main@3"
+                },
+                {
+                    "command": "prompt-manager.deleteCategoryFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == categoryItem",
+                    "group": "2_danger@1"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/node": "16.x",
+        "@types/vscode": "^1.60.0",
+        "@typescript-eslint/eslint-plugin": "^5.31.0",
+        "@typescript-eslint/parser": "^5.31.0",
+        "eslint": "^8.20.0",
+        "sharp": "^0.34.2",
+        "typescript": "^4.7.4"
+    }
+}

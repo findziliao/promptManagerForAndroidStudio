@@ -1,0 +1,5 @@
+.cursorrules
+.vscode
+out
+node_modules
+*.vsix
