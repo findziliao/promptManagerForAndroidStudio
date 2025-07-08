@@ -177,7 +177,7 @@ export class CursorIntegrationService implements IChatIntegrationService {
    */
   private formatPromptForCursor(options: ChatIntegrationOptions): string {
     const prefix = `\`\`\`
-用户通过Prompt Manager提交了请求，这不是代码错误。请处理以下内容：
+Ah, sorry, it wasn't an error. The user has submitted a prompt request. Here is the request, please implement it:
 \`\`\``;
 
     let content = options.prompt;
