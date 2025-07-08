@@ -631,7 +631,21 @@ export class PromptManager implements IPromptManager {
       const prompts = await this.storageService.getPrompts();
       const categories = await this.storageService.getCategories();
 
-      // 如果没有分类，创建默认分类
+      // 检查并补充缺失的默认分类
+      const existingCategoryIds = new Set(categories.map(c => c.id));
+      const missingCategories = Object.values(DEFAULT_CATEGORIES).filter(
+        defaultCategory => !existingCategoryIds.has(defaultCategory.id)
+      );
+
+      if (missingCategories.length > 0) {
+        console.log(`发现 ${missingCategories.length} 个缺失的默认分类，正在补充...`);
+        for (const defaultCategory of missingCategories) {
+          await this.storageService.saveCategory(defaultCategory);
+          console.log(`已补充默认分类: ${defaultCategory.name} (${defaultCategory.id})`);
+        }
+      }
+
+      // 如果完全没有分类，创建所有默认分类
       if (categories.length === 0) {
         for (const defaultCategory of Object.values(DEFAULT_CATEGORIES)) {
           await this.storageService.saveCategory(defaultCategory);
@@ -639,7 +653,26 @@ export class PromptManager implements IPromptManager {
         console.log("已创建默认分类");
       }
 
-      // 如果没有Prompt，创建默认示例
+      // 检查并补充缺失的默认 Prompt
+      const existingPromptIds = new Set(prompts.map(p => p.id));
+      const missingPrompts = DEFAULT_PROMPTS.filter(
+        defaultPrompt => !existingPromptIds.has(defaultPrompt.id)
+      );
+
+      if (missingPrompts.length > 0) {
+        console.log(`发现 ${missingPrompts.length} 个缺失的默认 Prompt，正在补充...`);
+        for (const defaultPrompt of missingPrompts) {
+          // 类型转换以解决readonly兼容性问题
+          const promptItem: PromptItem = {
+            ...defaultPrompt,
+            tags: defaultPrompt.tags ? [...defaultPrompt.tags] : undefined,
+          };
+          await this.storageService.savePrompt(promptItem);
+          console.log(`已补充默认 Prompt: ${defaultPrompt.title} (${defaultPrompt.id})`);
+        }
+      }
+
+      // 如果完全没有 Prompt，创建所有默认示例
       if (prompts.length === 0) {
         for (const defaultPrompt of DEFAULT_PROMPTS) {
           // 类型转换以解决readonly兼容性问题
@@ -982,5 +1015,37 @@ export class PromptManager implements IPromptManager {
    */
   async clearAllData(): Promise<void> {
     await this.storageService.clearAll();
+  }
+
+  /**
+   * 重新初始化默认数据（清空所有数据并重新创建默认数据）
+   */
+  async reinitializeDefaultData(): Promise<void> {
+    try {
+      // 显示确认对话框
+      const confirmed = await this.uiService.showConfirmDialog(
+        "确定要重新初始化默认数据吗？\n\n⚠️ 这将删除所有现有的 Prompt 和分类，并重新创建默认模板。\n\n此操作不可恢复！"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      // 清空所有数据
+      await this.storageService.clearAll();
+
+      // 重新创建默认数据
+      await this.ensureDefaultData();
+
+      // 触发数据变更事件
+      this._onDidPromptsChange.fire();
+
+      await this.uiService.showInfo(
+        `🎉 默认数据重新初始化完成！\n\n📊 已创建:\n• ${Object.keys(DEFAULT_CATEGORIES).length} 个默认分类\n• ${DEFAULT_PROMPTS.length} 个默认 Prompt 模板\n\n现在您可以看到所有最新的默认模板了。`
+      );
+    } catch (error) {
+      console.error("重新初始化默认数据失败:", error);
+      await this.uiService.showError("重新初始化失败");
+    }
   }
 }

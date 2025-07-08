@@ -366,6 +366,16 @@ function registerCommands(context: vscode.ExtensionContext) {
     }
   });
 
+  // 注册重新初始化默认数据命令
+  const reinitializeDefaultDataCmd = vscode.commands.registerCommand(COMMANDS.REINITIALIZE_DEFAULT_DATA, async () => {
+    try {
+      await promptManager.reinitializeDefaultData();
+    } catch (error) {
+      console.error("重新初始化默认数据失败:", error);
+      vscode.window.showErrorMessage("重新初始化默认数据失败");
+    }
+  });
+
   // 将命令添加到上下文订阅中
   context.subscriptions.push(
     showPromptsCmd,
@@ -390,7 +400,9 @@ function registerCommands(context: vscode.ExtensionContext) {
     sendToChatCmd,
     sendToChatFromTreeCmd,
     // 设置命令
-    openSettingsCmd
+    openSettingsCmd,
+    // 数据管理命令
+    reinitializeDefaultDataCmd
   );
 
   console.log("命令处理器注册完成");
@@ -442,6 +454,11 @@ async function showManagementMenu() {
       description: "删除所有数据（危险操作）",
       action: "clear",
     },
+    {
+      label: "$(refresh) 重新初始化默认数据",
+      description: "清空并重新创建默认 Prompt 和分类",
+      action: "reinitialize",
+    },
   ];
 
   const selected = await vscode.window.showQuickPick(actions, {
@@ -484,6 +501,10 @@ async function showManagementMenu() {
 
     case "clear":
       await clearAllData();
+      break;
+
+    case "reinitialize":
+      await promptManager.reinitializeDefaultData();
       break;
 
     default:

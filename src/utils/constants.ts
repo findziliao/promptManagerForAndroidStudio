@@ -30,6 +30,8 @@ export const COMMANDS = {
   SEND_TO_CHAT_FROM_TREE: "prompt-manager.sendToChatFromTree",
   // 设置相关命令
   OPEN_SETTINGS: "prompt-manager.openSettings",
+  // 数据管理相关命令
+  REINITIALIZE_DEFAULT_DATA: "prompt-manager.reinitializeDefaultData",
 } as const;
 
 /** 存储键常量 */
@@ -53,7 +55,7 @@ export const DEFAULT_CATEGORIES = {
     id: "coding",
     name: "编程",
     description: "编程相关Prompt模板",
-    icon: "symbol-method",
+    icon: "code",
     sortOrder: 1,
     createdAt: new Date(),
   },
@@ -61,8 +63,16 @@ export const DEFAULT_CATEGORIES = {
     id: "writing",
     name: "写作",
     description: "写作相关Prompt模板",
-    icon: "symbol-text",
+    icon: "book",
     sortOrder: 2,
+    createdAt: new Date(),
+  },
+  DEBUG: {
+    id: "debug",
+    name: "调试",
+    description: "调试相关Prompt模板",
+    icon: "bug",
+    sortOrder: 3,
     createdAt: new Date(),
   },
 } as const;
@@ -100,6 +110,28 @@ export const DEFAULT_PROMPTS = [
       "请帮我分析以下问题：\n\n问题描述：[描述问题]\n\n请从以下角度进行分析：\n1. 问题的根本原因\n2. 可能的解决方案\n3. 每个方案的优缺点\n4. 推荐的最佳解决方案\n5. 实施建议和注意事项",
     description: "问题分析的标准框架",
     categoryId: "general",
+    tags: ["分析", "问题", "解决方案"],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    usageCount: 0,
+  },
+  {
+    id: "sample-4",
+    title: "代码优化",
+    content: "请优化以下代码，重点关注：\n1. 代码质量和可读性\n2. 潜在的bug和性能问题\n3. 最佳实践的遵循情况\n4. 安全性考虑\n\n代码：\n```\n[在此处粘贴代码]\n```",
+    description: "用于代码优化的标准模板",
+    categoryId: "coding",
+    tags: ["分析", "问题", "解决方案"],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    usageCount: 0,
+  },
+  {
+    id: "sample-5",
+    categoryId: "debug",
+    title: "调试",
+    content: "请帮我调试以下代码：\n\n代码：\n```\n[在此处粘贴代码]\n```",
+    description: "用于调试的标准模板",
     tags: ["分析", "问题", "解决方案"],
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -187,7 +219,7 @@ export const TREE_ICONS = {
   /** 分类图标 */
   CATEGORY: "folder",
   /** Prompt项目图标 */
-  PROMPT: "symbol-text",
+  PROMPT: "file",
   /** 刷新图标 */
   REFRESH: "refresh",
   /** 添加图标 */

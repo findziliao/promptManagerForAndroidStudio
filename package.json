@@ -55,98 +55,98 @@
         "commands": [
             {
                 "command": "prompt-manager.showPrompts",
-                "title": "显示Prompt列表",
+                "title": "🔍 显示Prompt列表",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.addPrompt",
-                "title": "添加新Prompt",
+                "title": "📄 添加新Prompt",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.managePrompts",
-                "title": "管理Prompts",
+                "title": "🔍 管理Prompts",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.exportPrompts",
-                "title": "导出Prompts",
+                "title": "📤 导出Prompts",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.importPrompts",
-                "title": "导入Prompts",
+                "title": "📥 导入Prompts",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.refreshTree",
-                "title": "刷新",
+                "title": "🔄 刷新",
                 "icon": "$(refresh)"
             },
             {
                 "command": "prompt-manager.addPromptFromTree",
-                "title": "添加Prompt",
+                "title": "📄 添加Prompt",
                 "icon": "$(file-add)"
             },
             {
                 "command": "prompt-manager.editPromptFromTree",
-                "title": "编辑",
+                "title": "✏️ 编辑",
                 "icon": "$(edit)"
             },
             {
                 "command": "prompt-manager.deletePromptFromTree",
-                "title": "删除",
+                "title": "🗑️ 删除",
                 "icon": "$(trash)"
             },
             {
                 "command": "prompt-manager.copyPromptFromTree",
-                "title": "复制到剪贴板",
+                "title": "📋 复制",
                 "icon": "$(copy)"
             },
             {
                 "command": "prompt-manager.searchPrompts",
-                "title": "搜索Prompts",
+                "title": "🔍 搜索Prompts",
                 "icon": "$(search)"
             },
             {
                 "command": "prompt-manager.clearSearch",
-                "title": "清除搜索",
+                "title": "🔍 清除搜索",
                 "icon": "$(clear-all)"
             },
             {
                 "command": "prompt-manager.editCategoryFromTree",
-                "title": "编辑分类",
+                "title": "✏️ 编辑分类",
                 "icon": "$(edit)"
             },
             {
                 "command": "prompt-manager.addPromptToCategoryFromTree",
-                "title": "添加Prompt到分类",
+                "title": "📄 添加Prompt到分类",
                 "icon": "$(add)"
             },
             {
                 "command": "prompt-manager.exportCategoryFromTree",
-                "title": "导出分类",
+                "title": "📤 导出分类",
                 "icon": "$(export)"
             },
             {
                 "command": "prompt-manager.deleteCategoryFromTree",
-                "title": "删除分类",
+                "title": "🗑️ 删除分类",
                 "icon": "$(trash)"
             },
             {
                 "command": "prompt-manager.sendToChat",
-                "title": "发送到Chat",
+                "title": "💬 发送到Chat",
                 "category": "Prompt Manager",
                 "icon": "$(comment-discussion)"
             },
             {
                 "command": "prompt-manager.sendToChatFromTree",
-                "title": "发送到Chat",
+                "title": "💬 发送到Chat",
                 "icon": "$(comment-discussion)"
             },
             {
                 "command": "prompt-manager.addCategoryFromTree",
-                "title": "新增分类",
+                "title": "➕ 新增分类",
                 "icon": "$(new-folder)"
             },
             {
@@ -154,6 +154,12 @@
                 "title": "插件设置",
                 "category": "Prompt Manager",
                 "icon": "$(wrench)"
+            },
+            {
+                "command": "prompt-manager.reinitializeDefaultData",
+                "title": "🔄 重新初始化默认数据",
+                "category": "Prompt Manager",
+                "icon": "$(refresh)"
             }
         ],
         "configuration": {
@@ -167,8 +173,8 @@
                         "chat"
                     ],
                     "enumDescriptions": [
-                        "复制到剪贴板",
-                        "发送到Chat"
+                        "📋 复制",
+                        "💬 发送到Chat"
                     ],
                     "description": "选择Prompt时的默认操作方式"
                 }
@@ -206,6 +212,9 @@
                 },
                 {
                     "command": "prompt-manager.sendToChat"
+                },
+                {
+                    "command": "prompt-manager.reinitializeDefaultData"
                 }
             ],
             "view/title": [
@@ -242,17 +251,17 @@
             ],
             "view/item/context": [
                 {
-                    "command": "prompt-manager.sendToChatFromTree",
+                    "command": "prompt-manager.editPromptFromTree",
                     "when": "view == prompt-manager.promptTree && viewItem == promptItem",
                     "group": "1_main@1"
                 },
                 {
-                    "command": "prompt-manager.copyPromptFromTree",
-                    "when": "view == prompt-manager.promptTree && viewItem == promptItem",
-                    "group": "1_main@2"
+                  "command": "prompt-manager.copyPromptFromTree",
+                  "when": "view == prompt-manager.promptTree && viewItem == promptItem",
+                  "group": "1_main@2"
                 },
                 {
-                    "command": "prompt-manager.editPromptFromTree",
+                    "command": "prompt-manager.sendToChatFromTree",
                     "when": "view == prompt-manager.promptTree && viewItem == promptItem",
                     "group": "1_main@3"
                 },
