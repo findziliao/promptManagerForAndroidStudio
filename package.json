@@ -39,7 +39,7 @@
                 {
                     "id": "prompt-manager",
                     "title": "Prompt Manager",
-                    "icon": "$(symbol-text)"
+                    "icon": "$(folder)"
                 }
             ]
         },
@@ -144,7 +144,6 @@
                 "title": "发送到Chat",
                 "icon": "$(comment-discussion)"
             },
-
             {
                 "command": "prompt-manager.addCategoryFromTree",
                 "title": "新增分类",
@@ -291,14 +290,22 @@
         "watch": "tsc -watch -p ./",
         "pretest": "npm run compile && npm run lint",
         "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+        "test": "node ./out/test/runTest.js",
+        "package": "vsce package",
+        "package-minor": "npm version minor && vsce package",
+        "package-patch": "npm version patch && vsce package",
+        "publish": "vsce publish",
+        "publish-minor": "npm version minor && vsce publish",
+        "publish-patch": "npm version patch && vsce publish"
     },
     "devDependencies": {
         "@types/node": "16.x",
         "@types/vscode": "^1.60.0",
         "@typescript-eslint/eslint-plugin": "^5.31.0",
         "@typescript-eslint/parser": "^5.31.0",
+        "@vscode/vsce": "^3.6.0",
         "eslint": "^8.20.0",
+        "nodemon": "^3.1.10",
         "sharp": "^0.34.2",
         "typescript": "^4.7.4"
     }
