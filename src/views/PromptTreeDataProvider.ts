@@ -278,9 +278,9 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
       iconPath: new vscode.ThemeIcon(icon),
       collapsibleState: vscode.TreeItemCollapsibleState.None,
       command: {
-        command: COMMANDS.COPY_PROMPT_FROM_TREE,
-        title: "复制Prompt",
-        arguments: [prompt],
+        command: COMMANDS.SEND_TO_CHAT_FROM_TREE,
+        title: "发送到Chat",
+        arguments: [{ promptData: prompt }],
       },
       promptData: prompt,
       parentId: parentId,
