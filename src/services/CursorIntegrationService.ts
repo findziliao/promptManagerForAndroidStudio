@@ -87,29 +87,92 @@ export class CursorIntegrationService implements IChatIntegrationService {
     }
 
     try {
-      // 检查是否有必要的命令
-      const isCommandAvailable = await this.isCursorCommandAvailable();
-      if (!isCommandAvailable) {
-        await vscode.window.showWarningMessage(
-          "Cursor Chat命令不可用。请确保您使用的是最新版本的Cursor编辑器。"
-        );
-        return false;
+      const formattedPrompt = this.formatPromptForCursor(options);
+      
+      // 如果有活跃编辑器，使用诊断注入方式（保持原有逻辑）
+      if (vscode.window.activeTextEditor) {
+        // 检查是否有必要的命令
+        const isCommandAvailable = await this.isCursorCommandAvailable();
+        if (!isCommandAvailable) {
+          // 如果诊断注入命令不可用，降级到剪贴板方式
+          return await this.sendToChatViaClipboard(formattedPrompt);
+        }
+
+        await this.injectPromptDiagnosticWithCallback({
+          prompt: formattedPrompt,
+          callback: () => vscode.commands.executeCommand("composer.fixerrormessage") as Promise<any>,
+        });
+      } else {
+        // 没有活跃编辑器时，直接使用剪贴板方式
+        return await this.sendToChatViaClipboard(formattedPrompt);
       }
 
-      const formattedPrompt = this.formatPromptForCursor(options);
-      await this.injectPromptDiagnosticWithCallback({
-        prompt: formattedPrompt,
-        callback: () => vscode.commands.executeCommand("composer.fixerrormessage") as Promise<any>,
-      });
-
-      // 成功提示（可选，用户可能不需要）
-      // await vscode.window.showInformationMessage("Prompt已发送到Cursor Chat", { modal: false });
-      
       return true;
     } catch (error) {
       console.error("发送到Cursor Chat失败:", error);
       await vscode.window.showErrorMessage(
         `发送到Cursor Chat失败: ${error instanceof Error ? error.message : "未知错误"}`
+      );
+      return false;
+    }
+  }
+
+  /**
+   * 通过剪贴板方式发送到Chat
+   * @param prompt 格式化的prompt
+   * @returns 是否发送成功
+   */
+  private async sendToChatViaClipboard(prompt: string): Promise<boolean> {
+    try {
+      // 1. 将prompt复制到剪贴板
+      await vscode.env.clipboard.writeText(prompt);
+
+      // 2. 尝试打开Chat侧边栏
+      const chatCommands = [
+        "workbench.action.chat.open",           // 通用Chat命令
+        "workbench.action.chat.openInSidebar",  // 在侧边栏中打开Chat
+        "workbench.panel.chat.focus",           // 聚焦到Chat面板
+      ];
+
+      let chatOpened = false;
+      for (const command of chatCommands) {
+        try {
+          await vscode.commands.executeCommand(command);
+          chatOpened = true;
+          break;
+        } catch (error) {
+          // 继续尝试下一个命令
+          console.warn(`命令 ${command} 不可用:`, error);
+        }
+      }
+
+      // 3. 如果无法打开Chat，显示友好提示
+      if (!chatOpened) {
+        await vscode.window.showInformationMessage(
+          "Prompt已复制到剪贴板。请手动打开Chat窗口（Ctrl+I 或 Ctrl+L）并粘贴使用。",
+          "确定"
+        );
+      } else {
+        // 4. 短暂延迟后尝试自动粘贴
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        
+        try {
+          // 尝试粘贴到Chat输入框
+          await vscode.commands.executeCommand("editor.action.clipboardPasteAction");
+        } catch (error) {
+          // 如果自动粘贴失败，提示用户手动粘贴
+          await vscode.window.showInformationMessage(
+            "Chat窗口已打开，Prompt已复制到剪贴板。请在Chat输入框中粘贴（Ctrl+V）。",
+            "确定"
+          );
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error("通过剪贴板发送到Chat失败:", error);
+      await vscode.window.showErrorMessage(
+        `发送到Chat失败: ${error instanceof Error ? error.message : "未知错误"}`
       );
       return false;
     }
