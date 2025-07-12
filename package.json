@@ -165,18 +165,25 @@
         "configuration": {
             "title": "Prompt Manager",
             "properties": {
+                "promptManager.editorType": {
+                    "type": "string",
+                    "enum": ["webview", "popup"],
+                    "default": "webview",
+                    "description": "选择编辑器类型",
+                    "enumDescriptions": [
+                        "使用WebView编辑器（推荐）- 提供更好的编辑体验，支持语法高亮和实时预览",
+                        "使用弹窗编辑器 - 传统的VSCode输入框方式"
+                    ]
+                },
                 "promptManager.defaultAction": {
                     "type": "string",
+                    "enum": ["copy", "chat"],
                     "default": "copy",
-                    "enum": [
-                        "copy",
-                        "chat"
-                    ],
+                    "description": "选择Prompt的默认操作",
                     "enumDescriptions": [
-                        "📋 复制",
-                        "💬 发送到Chat"
-                    ],
-                    "description": "选择Prompt时的默认操作方式"
+                        "复制到剪贴板",
+                        "发送到Chat"
+                    ]
                 }
             }
         },

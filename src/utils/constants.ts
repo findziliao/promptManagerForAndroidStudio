@@ -152,6 +152,13 @@ export const UI_CONSTANTS = {
     DESCRIPTION_PLACEHOLDER: "输入描述（可选）",
     TAGS_PLACEHOLDER: "输入标签，用逗号分隔（可选）",
   },
+  EDITOR: {
+    DEFAULT_TYPE: "webview", // 默认使用 WebView 编辑器
+    TYPES: {
+      WEBVIEW: "webview",
+      POPUP: "popup",
+    },
+  },
   MESSAGES: {
     COPY_SUCCESS: "Prompt已复制到剪贴板",
     SAVE_SUCCESS: "Prompt保存成功",

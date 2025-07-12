@@ -80,18 +80,37 @@ export class CursorIntegrationService implements IChatIntegrationService {
   public async sendToCursorChat(options: ChatIntegrationOptions): Promise<boolean> {
     if (!this.isCursorEnvironment()) {
       console.warn("当前不在Cursor环境中，无法发送到Chat窗口");
+      await vscode.window.showWarningMessage(
+        "当前不在Cursor环境中，无法发送到Chat窗口。请在Cursor编辑器中使用此功能。"
+      );
       return false;
     }
 
     try {
+      // 检查是否有必要的命令
+      const isCommandAvailable = await this.isCursorCommandAvailable();
+      if (!isCommandAvailable) {
+        await vscode.window.showWarningMessage(
+          "Cursor Chat命令不可用。请确保您使用的是最新版本的Cursor编辑器。"
+        );
+        return false;
+      }
+
       const formattedPrompt = this.formatPromptForCursor(options);
       await this.injectPromptDiagnosticWithCallback({
         prompt: formattedPrompt,
         callback: () => vscode.commands.executeCommand("composer.fixerrormessage") as Promise<any>,
       });
+
+      // 成功提示（可选，用户可能不需要）
+      // await vscode.window.showInformationMessage("Prompt已发送到Cursor Chat", { modal: false });
+      
       return true;
     } catch (error) {
       console.error("发送到Cursor Chat失败:", error);
+      await vscode.window.showErrorMessage(
+        `发送到Cursor Chat失败: ${error instanceof Error ? error.message : "未知错误"}`
+      );
       return false;
     }
   }
@@ -107,24 +126,39 @@ export class CursorIntegrationService implements IChatIntegrationService {
   }): Promise<void> {
     let editor = vscode.window.activeTextEditor;
 
-    // 如果没有活跃编辑器，尝试打开工作区中的第一个文件
+    // 如果没有活跃编辑器，尝试创建或打开一个文件
     if (!editor) {
       try {
-        const files = await vscode.workspace.findFiles("**/*", "**/node_modules/**");
-
-        if (files.length === 0) {
-          vscode.window.showErrorMessage("工作区中没有找到文件可以打开");
-          return;
+        editor = await this.ensureActiveEditorForPromptInjection();
+        if (!editor) {
+          const action = await vscode.window.showWarningMessage(
+            "需要打开一个文件才能发送Prompt到Chat。请打开任意文件后重试，或者创建一个新文件。", 
+            "创建新文件", 
+            "取消"
+          );
+          
+          if (action === "创建新文件") {
+            try {
+              const newDocument = await vscode.workspace.openTextDocument({
+                content: "// 临时文件，用于Prompt注入\n",
+                language: "javascript"
+              });
+              editor = await vscode.window.showTextDocument(newDocument);
+              // 等待编辑器准备就绪
+              await new Promise((resolve) => setTimeout(resolve, 200));
+            } catch (error) {
+              vscode.window.showErrorMessage("创建临时文件失败，请手动打开一个文件后重试");
+              return;
+            }
+          } else {
+            return;
+          }
         }
-
-        const document = await vscode.workspace.openTextDocument(files[0]);
-        editor = await vscode.window.showTextDocument(document);
       } catch (error) {
-        vscode.window.showErrorMessage("无法打开文件进行prompt注入");
+        console.error("准备编辑器失败:", error);
+        vscode.window.showErrorMessage("无法准备编辑器进行Prompt注入，请确保有可访问的文件");
         return;
       }
-      // 等待150ms确保编辑器准备就绪
-      await new Promise((resolve) => setTimeout(resolve, 150));
     }
 
     const document = editor.document;
@@ -243,6 +277,48 @@ Ah, sorry, it wasn't an error. The user has submitted a prompt request. Here is 
     } catch (error) {
       console.error("确保活跃编辑器失败:", error);
       return null;
+    }
+  }
+
+  /**
+   * 为Prompt注入确保有活跃的编辑器（改进版）
+   * @returns 活跃的编辑器实例或undefined
+   */
+  private async ensureActiveEditorForPromptInjection(): Promise<vscode.TextEditor | undefined> {
+    if (vscode.window.activeTextEditor) {
+      return vscode.window.activeTextEditor;
+    }
+
+    try {
+      // 尝试查找合适的文件，排除更多不需要的文件类型
+      const files = await vscode.workspace.findFiles(
+        "**/*.{js,ts,jsx,tsx,py,java,cpp,c,cs,php,rb,go,rs,swift,kt,dart,vue,html,css,scss,less,json,md,txt}",
+        "**/node_modules/**"
+      );
+
+      if (files.length > 0) {
+        // 优先选择文本类型的文件
+        const preferredFile = files.find(file => {
+          const fileName = file.path.toLowerCase();
+          return fileName.endsWith('.md') || 
+                 fileName.endsWith('.txt') || 
+                 fileName.endsWith('.js') || 
+                 fileName.endsWith('.ts');
+        }) || files[0];
+
+        const document = await vscode.workspace.openTextDocument(preferredFile);
+        const editor = await vscode.window.showTextDocument(document);
+        
+        // 等待编辑器准备就绪
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        return editor;
+      }
+
+      // 如果没有找到合适的文件，返回undefined让调用者处理
+      return undefined;
+    } catch (error) {
+      console.error("为Prompt注入准备编辑器失败:", error);
+      return undefined;
     }
   }
 
