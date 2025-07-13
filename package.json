@@ -34,17 +34,8 @@
     ],
     "main": "./out/extension.js",
     "contributes": {
-        "viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "prompt-manager",
-                    "title": "Prompt Manager",
-                    "icon": "$(folder)"
-                }
-            ]
-        },
         "views": {
-            "prompt-manager": [
+            "explorer": [
                 {
                     "id": "prompt-manager.promptTree",
                     "name": "Prompts",
