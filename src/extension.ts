@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { PromptManager } from "./models/PromptManager";
 import { PromptTreeDataProvider } from "./views/PromptTreeDataProvider";
 import { COMMANDS, TREE_VIEW } from "./utils/constants";
+import { t } from "./services/LocalizationService";
 
 /**
  * 全局PromptManager实例
@@ -42,6 +43,13 @@ export async function activate(context: vscode.ExtensionContext) {
     // 监听数据变更事件
     context.subscriptions.push(promptManager.onDidPromptsChange(() => treeDataProvider.refresh()));
 
+    // 监听配置变化（如果需要的话可以在这里添加其他配置监听）
+    // context.subscriptions.push(
+    //   vscode.workspace.onDidChangeConfiguration((event) => {
+    //     // 处理其他配置变化
+    //   })
+    // );
+
     // 注册命令处理器
     registerCommands(context);
 
@@ -51,7 +59,7 @@ export async function activate(context: vscode.ExtensionContext) {
     await showWelcomeMessage(context);
   } catch (error) {
     console.error("Prompt Manager 扩展激活失败:", error);
-    vscode.window.showErrorMessage("Prompt Manager 初始化失败，请重启VSCode重试");
+    vscode.window.showErrorMessage(t("error.initializationFailed"));
   }
 }
 
@@ -87,7 +95,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await promptManager.showPromptPicker();
     } catch (error) {
       console.error("显示Prompt列表失败:", error);
-      vscode.window.showErrorMessage("显示Prompt列表失败");
+      vscode.window.showErrorMessage(t("error.showPromptsFailed"));
     }
   });
 
@@ -97,7 +105,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await promptManager.addPrompt();
     } catch (error) {
       console.error("添加Prompt失败:", error);
-      vscode.window.showErrorMessage("添加Prompt失败");
+      vscode.window.showErrorMessage(t("error.addPromptFailed"));
     }
   });
 
@@ -107,7 +115,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await showManagementMenu();
     } catch (error) {
       console.error("管理Prompt失败:", error);
-      vscode.window.showErrorMessage("管理Prompt失败");
+      vscode.window.showErrorMessage(t("error.managePromptsFailed"));
     }
   });
 
@@ -117,7 +125,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await promptManager.exportToFile();
     } catch (error) {
       console.error("导出Prompt失败:", error);
-      vscode.window.showErrorMessage("导出Prompt失败");
+      vscode.window.showErrorMessage(t("error.exportFailed"));
     }
   });
 
@@ -127,7 +135,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await promptManager.importFromFile();
     } catch (error) {
       console.error("导入Prompt失败:", error);
-      vscode.window.showErrorMessage("导入Prompt失败");
+      vscode.window.showErrorMessage(t("error.importFailed"));
     }
   });
 
@@ -137,7 +145,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       treeDataProvider.refresh();
     } catch (error) {
       console.error("刷新TreeView失败:", error);
-      vscode.window.showErrorMessage("刷新TreeView失败");
+      vscode.window.showErrorMessage(t("error.refreshTreeFailed"));
     }
   });
 
@@ -146,7 +154,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await promptManager.addPrompt();
     } catch (error) {
       console.error("从TreeView添加Prompt失败:", error);
-      vscode.window.showErrorMessage("添加Prompt失败");
+      vscode.window.showErrorMessage(t("error.addPromptFailed"));
     }
   });
 
@@ -157,7 +165,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       }
     } catch (error) {
       console.error("从TreeView编辑Prompt失败:", error);
-      vscode.window.showErrorMessage("编辑Prompt失败");
+      vscode.window.showErrorMessage(t("error.editPromptFailed"));
     }
   });
 
@@ -170,7 +178,7 @@ function registerCommands(context: vscode.ExtensionContext) {
         }
       } catch (error) {
         console.error("从TreeView删除Prompt失败:", error);
-        vscode.window.showErrorMessage("删除Prompt失败");
+        vscode.window.showErrorMessage(t("error.deletePromptFailed"));
       }
     }
   );
@@ -182,7 +190,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       }
     } catch (error) {
       console.error("从TreeView复制Prompt失败:", error);
-      vscode.window.showErrorMessage("复制Prompt失败");
+      vscode.window.showErrorMessage(t("error.copyPromptFailed"));
     }
   });
 
@@ -190,9 +198,9 @@ function registerCommands(context: vscode.ExtensionContext) {
   const searchPromptsCmd = vscode.commands.registerCommand(COMMANDS.SEARCH_PROMPTS, async () => {
     try {
       const keyword = await vscode.window.showInputBox({
-        title: "🔍 搜索Prompt",
-        placeHolder: "输入关键词进行搜索",
-        prompt: "搜索Prompt标题、内容、描述、标签或分类名称）",
+        title: t("ui.search.title"),
+        placeHolder: t("ui.input.searchPlaceholder"),
+        prompt: t("ui.input.searchPrompt"),
         value: treeDataProvider.getSearchFilter() || "",
         validateInput: (value) => {
           // 实时显示搜索结果提示
@@ -212,14 +220,14 @@ function registerCommands(context: vscode.ExtensionContext) {
 
         // 显示搜索结果提示
         if (keyword && keyword.trim()) {
-          vscode.window.showInformationMessage(`🔍 正在搜索 "${keyword.trim()}"...`);
+          vscode.window.showInformationMessage(t("ui.search.searching", keyword.trim()));
         } else {
-          vscode.window.showInformationMessage("🔍 已清除搜索过滤器");
+          vscode.window.showInformationMessage(t("ui.search.cleared"));
         }
       }
     } catch (error) {
       console.error("搜索Prompt失败:", error);
-      vscode.window.showErrorMessage("搜索Prompt失败");
+      vscode.window.showErrorMessage(t("error.searchPromptsFailed"));
     }
   });
 
@@ -232,10 +240,10 @@ function registerCommands(context: vscode.ExtensionContext) {
       await vscode.commands.executeCommand("setContext", "prompt-manager.searchActive", false);
 
       // 显示清除成功提示
-      vscode.window.showInformationMessage("🔍 已清除搜索过滤器，显示所有Prompt");
+      vscode.window.showInformationMessage(t("ui.search.showAll"));
     } catch (error) {
       console.error("清除搜索失败:", error);
-      vscode.window.showErrorMessage("清除搜索失败");
+      vscode.window.showErrorMessage(t("error.clearSearchFailed"));
     }
   });
 
@@ -251,7 +259,7 @@ function registerCommands(context: vscode.ExtensionContext) {
         }
       } catch (error) {
         console.error("从TreeView编辑分类失败:", error);
-        vscode.window.showErrorMessage("编辑分类失败");
+        vscode.window.showErrorMessage(t("error.editPromptFailed"));
       }
     }
   );
@@ -266,7 +274,7 @@ function registerCommands(context: vscode.ExtensionContext) {
         }
       } catch (error) {
         console.error("从TreeView添加Prompt到分类失败:", error);
-        vscode.window.showErrorMessage("添加Prompt失败");
+        vscode.window.showErrorMessage(t("error.addPromptFailed"));
       }
     }
   );
@@ -280,7 +288,7 @@ function registerCommands(context: vscode.ExtensionContext) {
         }
       } catch (error) {
         console.error("从TreeView导出分类失败:", error);
-        vscode.window.showErrorMessage("导出分类失败");
+        vscode.window.showErrorMessage(t("error.exportFailed"));
       }
     }
   );
@@ -295,7 +303,7 @@ function registerCommands(context: vscode.ExtensionContext) {
         }
       } catch (error) {
         console.error("从TreeView删除分类失败:", error);
-        vscode.window.showErrorMessage("删除分类失败");
+        vscode.window.showErrorMessage(t("error.deletePromptFailed"));
       }
     }
   );
@@ -306,7 +314,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       // 显示Prompt选择器，然后发送到Chat
       const prompts = await promptManager.getStorageService().getPrompts();
       if (prompts.length === 0) {
-        vscode.window.showInformationMessage("暂无Prompt可用，请先添加一些Prompt");
+        vscode.window.showInformationMessage(t("error.noPrompts"));
         return;
       }
 
@@ -318,7 +326,7 @@ function registerCommands(context: vscode.ExtensionContext) {
           promptItem: p,
         })),
         {
-          placeHolder: "选择要发送到Chat的Prompt...",
+          placeHolder: t("ui.picker.selectPrompt"),
           matchOnDescription: true,
           matchOnDetail: true,
         }
@@ -329,7 +337,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       }
     } catch (error) {
       console.error("发送到Chat失败:", error);
-      vscode.window.showErrorMessage("发送到Chat失败");
+      vscode.window.showErrorMessage(t("error.chatSendFailed"));
     }
   });
 
@@ -340,7 +348,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       }
     } catch (error) {
       console.error("从TreeView发送到Chat失败:", error);
-      vscode.window.showErrorMessage("发送到Chat失败");
+      vscode.window.showErrorMessage(t("error.chatSendFailed"));
     }
   });
 
@@ -351,7 +359,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       // addNewCategory中的addCategory已经有事件触发机制，移除手动刷新
     } catch (error) {
       console.error("从TreeView添加分类失败:", error);
-      vscode.window.showErrorMessage("添加分类失败");
+      vscode.window.showErrorMessage(t("error.addPromptFailed"));
     }
   });
 
@@ -362,7 +370,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await vscode.commands.executeCommand("workbench.action.openSettings", "@ext:prompt-manager-dev.prompt-manager");
     } catch (error) {
       console.error("打开设置失败:", error);
-      vscode.window.showErrorMessage("打开设置失败");
+      vscode.window.showErrorMessage(t("error.generic"));
     }
   });
 
@@ -372,7 +380,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       await promptManager.reinitializeDefaultData();
     } catch (error) {
       console.error("重新初始化默认数据失败:", error);
-      vscode.window.showErrorMessage("重新初始化默认数据失败");
+      vscode.window.showErrorMessage(t("error.reinitializeDataFailed"));
     }
   });
 
@@ -414,56 +422,56 @@ function registerCommands(context: vscode.ExtensionContext) {
 async function showManagementMenu() {
   const actions = [
     {
-      label: "$(symbol-text) 浏览所有Prompt",
-      description: "查看和管理所有Prompt",
+      label: "$(symbol-text) " + t("management.browse"),
+      description: t("management.browseDesc"),
       action: "browse",
     },
     {
-      label: "$(plus) 添加新Prompt",
-      description: "创建新的Prompt模板",
+      label: "$(plus) " + t("management.add"),
+      description: t("management.addDesc"),
       action: "add",
     },
     {
-      label: "$(edit) 编辑/删除Prompt",
-      description: "修改或删除现有的Prompt",
+      label: "$(edit) " + t("management.manage"),
+      description: t("management.manageDesc"),
       action: "manage",
     },
 
     {
-      label: "$(folder) 管理分类",
-      description: "创建和管理Prompt分类",
+      label: "$(folder) " + t("management.categories"),
+      description: t("management.categoriesDesc"),
       action: "categories",
     },
     {
-      label: "$(export) 导出数据",
-      description: "导出所有Prompt和分类",
+      label: "$(export) " + t("management.export"),
+      description: t("management.exportDesc"),
       action: "export",
     },
     {
-      label: "$(import) 导入数据",
-      description: "从文件导入Prompt",
+      label: "$(import) " + t("management.import"),
+      description: t("management.importDesc"),
       action: "import",
     },
     {
-      label: "$(graph) 查看统计",
-      description: "查看使用统计信息",
+      label: "$(graph) " + t("management.stats"),
+      description: t("management.statsDesc"),
       action: "stats",
     },
     {
-      label: "$(trash) 清空数据",
-      description: "删除所有数据（危险操作）",
+      label: "$(trash) " + t("management.clear"),
+      description: t("management.clearDesc"),
       action: "clear",
     },
     {
-      label: "$(refresh) 重新初始化默认数据",
-      description: "清空并重新创建默认 Prompt 和分类",
+      label: "$(refresh) " + t("management.reinitialize"),
+      description: t("management.reinitializeDesc"),
       action: "reinitialize",
     },
   ];
 
   const selected = await vscode.window.showQuickPick(actions, {
-    title: "Prompt Manager - 管理",
-    placeHolder: "选择要执行的操作...",
+    title: "Prompt Manager - " + t("management.browse"),
+    placeHolder: t("ui.picker.selectOperation"),
   });
 
   if (!selected) {
@@ -508,7 +516,7 @@ async function showManagementMenu() {
       break;
 
     default:
-      vscode.window.showInformationMessage("功能正在开发中...");
+      vscode.window.showInformationMessage(t("message.operationCancelled"));
   }
 }
 
@@ -520,7 +528,7 @@ async function showPromptManagement() {
     const prompts = await promptManager.getStorageService().getPrompts();
 
     if (prompts.length === 0) {
-      vscode.window.showInformationMessage("暂无Prompt可管理，请先添加一些Prompt");
+      vscode.window.showInformationMessage(t("error.noPrompts"));
       return;
     }
 
@@ -598,7 +606,7 @@ async function showPromptManagement() {
     }
   } catch (error) {
     console.error("Prompt管理失败:", error);
-    vscode.window.showErrorMessage("Prompt管理失败");
+    vscode.window.showErrorMessage(t("error.managePromptsFailed"));
   }
 }
 

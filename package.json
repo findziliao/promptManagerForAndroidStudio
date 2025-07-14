@@ -14,8 +14,9 @@
         "url": "https://github.com/cursor-project/prompt-manager/issues"
     },
     "engines": {
-        "vscode": "^1.60.0"
+        "vscode": "^1.73.0"
     },
+    "l10n": "./l10n",
     "categories": [
         "Other"
     ],
@@ -38,7 +39,7 @@
             "activitybar": [
                 {
                     "id": "prompt-manager",
-                    "title": "Prompt Manager",
+                    "title": "%viewsContainers.activitybar.prompt-manager.title%",
                     "icon": "$(folder)"
                 }
             ]
@@ -47,7 +48,7 @@
             "prompt-manager": [
                 {
                     "id": "prompt-manager.promptTree",
-                    "name": "Prompts",
+                    "name": "%views.prompt-manager.promptTree.name%",
                     "when": "true"
                 }
             ]
@@ -55,115 +56,115 @@
         "commands": [
             {
                 "command": "prompt-manager.showPrompts",
-                "title": "🔍 显示Prompt列表",
+                "title": "%commands.prompt-manager.showPrompts.title%",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.addPrompt",
-                "title": "📄 添加新Prompt",
+                "title": "%commands.prompt-manager.addPrompt.title%",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.managePrompts",
-                "title": "🔍 管理Prompts",
+                "title": "%commands.prompt-manager.managePrompts.title%",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.exportPrompts",
-                "title": "📤 导出Prompts",
+                "title": "%commands.prompt-manager.exportPrompts.title%",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.importPrompts",
-                "title": "📥 导入Prompts",
+                "title": "%commands.prompt-manager.importPrompts.title%",
                 "category": "Prompt Manager"
             },
             {
                 "command": "prompt-manager.refreshTree",
-                "title": "🔄 刷新",
+                "title": "%commands.prompt-manager.refreshTree.title%",
                 "icon": "$(refresh)"
             },
             {
                 "command": "prompt-manager.addPromptFromTree",
-                "title": "📄 添加Prompt",
+                "title": "%commands.prompt-manager.addPromptFromTree.title%",
                 "icon": "$(file-add)"
             },
             {
                 "command": "prompt-manager.editPromptFromTree",
-                "title": "✏️ 编辑",
+                "title": "%commands.prompt-manager.editPromptFromTree.title%",
                 "icon": "$(edit)"
             },
             {
                 "command": "prompt-manager.deletePromptFromTree",
-                "title": "🗑️ 删除",
+                "title": "%commands.prompt-manager.deletePromptFromTree.title%",
                 "icon": "$(trash)"
             },
             {
                 "command": "prompt-manager.copyPromptFromTree",
-                "title": "📋 复制",
+                "title": "%commands.prompt-manager.copyPromptFromTree.title%",
                 "icon": "$(copy)"
             },
             {
                 "command": "prompt-manager.searchPrompts",
-                "title": "🔍 搜索Prompts",
+                "title": "%commands.prompt-manager.searchPrompts.title%",
                 "icon": "$(search)"
             },
             {
                 "command": "prompt-manager.clearSearch",
-                "title": "🔍 清除搜索",
+                "title": "%commands.prompt-manager.clearSearch.title%",
                 "icon": "$(clear-all)"
             },
             {
                 "command": "prompt-manager.editCategoryFromTree",
-                "title": "✏️ 编辑分类",
+                "title": "%commands.prompt-manager.editCategoryFromTree.title%",
                 "icon": "$(edit)"
             },
             {
                 "command": "prompt-manager.addPromptToCategoryFromTree",
-                "title": "📄 添加Prompt到分类",
+                "title": "%commands.prompt-manager.addPromptToCategoryFromTree.title%",
                 "icon": "$(add)"
             },
             {
                 "command": "prompt-manager.exportCategoryFromTree",
-                "title": "📤 导出分类",
+                "title": "%commands.prompt-manager.exportCategoryFromTree.title%",
                 "icon": "$(export)"
             },
             {
                 "command": "prompt-manager.deleteCategoryFromTree",
-                "title": "🗑️ 删除分类",
+                "title": "%commands.prompt-manager.deleteCategoryFromTree.title%",
                 "icon": "$(trash)"
             },
             {
                 "command": "prompt-manager.sendToChat",
-                "title": "💬 发送到Chat",
+                "title": "%commands.prompt-manager.sendToChat.title%",
                 "category": "Prompt Manager",
                 "icon": "$(comment-discussion)"
             },
             {
                 "command": "prompt-manager.sendToChatFromTree",
-                "title": "💬 发送到Chat",
+                "title": "%commands.prompt-manager.sendToChatFromTree.title%",
                 "icon": "$(comment-discussion)"
             },
             {
                 "command": "prompt-manager.addCategoryFromTree",
-                "title": "➕ 新增分类",
+                "title": "%commands.prompt-manager.addCategoryFromTree.title%",
                 "icon": "$(new-folder)"
             },
             {
                 "command": "prompt-manager.openSettings",
-                "title": "插件设置",
+                "title": "%commands.prompt-manager.openSettings.title%",
                 "category": "Prompt Manager",
                 "icon": "$(wrench)"
             },
             {
                 "command": "prompt-manager.reinitializeDefaultData",
-                "title": "🔄 重新初始化默认数据",
+                "title": "%commands.prompt-manager.reinitializeDefaultData.title%",
                 "category": "Prompt Manager",
                 "icon": "$(refresh)"
             }
         ],
         "configuration": {
-            "title": "Prompt Manager",
+            "title": "%configuration.title%",
             "properties": {
                 "promptManager.defaultAction": {
                     "type": "string",
@@ -173,10 +174,10 @@
                         "chat"
                     ],
                     "enumDescriptions": [
-                        "📋 复制",
-                        "💬 发送到Chat"
+                        "%configuration.properties.promptManager.defaultAction.enumDescriptions.copy%",
+                        "%configuration.properties.promptManager.defaultAction.enumDescriptions.chat%"
                     ],
-                    "description": "选择Prompt时的默认操作方式"
+                    "description": "%configuration.properties.promptManager.defaultAction.description%"
                 }
             }
         },
@@ -256,9 +257,9 @@
                     "group": "1_main@1"
                 },
                 {
-                  "command": "prompt-manager.copyPromptFromTree",
-                  "when": "view == prompt-manager.promptTree && viewItem == promptItem",
-                  "group": "1_main@2"
+                    "command": "prompt-manager.copyPromptFromTree",
+                    "when": "view == prompt-manager.promptTree && viewItem == promptItem",
+                    "group": "1_main@2"
                 },
                 {
                     "command": "prompt-manager.sendToChatFromTree",
@@ -317,5 +318,6 @@
         "nodemon": "^3.1.10",
         "sharp": "^0.34.2",
         "typescript": "^4.7.4"
-    }
+    },
+    "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
 }

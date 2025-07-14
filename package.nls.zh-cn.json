@@ -1,0 +1,37 @@
+{
+    "displayName": "Prompt Manager",
+    "description": "管理和快速选择Prompt模板的扩展，适配Cursor、VSCode Copilot",
+
+    "viewsContainers.activitybar.prompt-manager.title": "Prompt Manager",
+    "views.prompt-manager.promptTree.name": "Prompts",
+
+    "commands.prompt-manager.showPrompts.title": "🔍 显示Prompt列表",
+    "commands.prompt-manager.addPrompt.title": "📄 添加新Prompt",
+    "commands.prompt-manager.managePrompts.title": "🔍 管理Prompts",
+    "commands.prompt-manager.exportPrompts.title": "📤 导出Prompts",
+    "commands.prompt-manager.importPrompts.title": "📥 导入Prompts",
+    "commands.prompt-manager.refreshTree.title": "🔄 刷新",
+    "commands.prompt-manager.addPromptFromTree.title": "📄 添加Prompt",
+    "commands.prompt-manager.editPromptFromTree.title": "✏️ 编辑",
+    "commands.prompt-manager.deletePromptFromTree.title": "🗑️ 删除",
+    "commands.prompt-manager.copyPromptFromTree.title": "📋 复制",
+    "commands.prompt-manager.searchPrompts.title": "🔍 搜索Prompts",
+    "commands.prompt-manager.clearSearch.title": "🔍 清除搜索",
+    "commands.prompt-manager.editCategoryFromTree.title": "✏️ 编辑分类",
+    "commands.prompt-manager.addPromptToCategoryFromTree.title": "📄 添加Prompt到分类",
+    "commands.prompt-manager.exportCategoryFromTree.title": "📤 导出分类",
+    "commands.prompt-manager.deleteCategoryFromTree.title": "🗑️ 删除分类",
+    "commands.prompt-manager.sendToChat.title": "💬 发送到Chat",
+    "commands.prompt-manager.sendToChatFromTree.title": "💬 发送到Chat",
+    "commands.prompt-manager.addCategoryFromTree.title": "➕ 新增分类",
+    "commands.prompt-manager.openSettings.title": "插件设置",
+    "commands.prompt-manager.reinitializeDefaultData.title": "🔄 重新初始化默认数据",
+
+    "configuration.title": "Prompt Manager",
+    "configuration.properties.promptManager.defaultAction.description": "选择Prompt时的默认操作方式",
+    "configuration.properties.promptManager.defaultAction.enumDescriptions.copy": "📋 复制",
+    "configuration.properties.promptManager.defaultAction.enumDescriptions.chat": "💬 发送到Chat",
+    "configuration.properties.promptManager.language.description": "插件语言 / Plugin language",
+    "configuration.properties.promptManager.language.enumDescriptions.en": "English",
+    "configuration.properties.promptManager.language.enumDescriptions.zh-cn": "中文"
+}

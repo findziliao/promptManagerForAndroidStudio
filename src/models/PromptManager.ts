@@ -17,6 +17,7 @@ import { CursorIntegrationService } from "../services/CursorIntegrationService";
 import { ChatIntegrationFactory } from "../services/ChatIntegrationFactory";
 import { ChatIntegrationOptions, ChatIntegrationStatus, EditorEnvironmentType } from "../types";
 import { DEFAULT_CATEGORIES, DEFAULT_PROMPTS } from "../utils/constants";
+import { t } from "../services/LocalizationService";
 
 /**
  * Prompt管理器 - 核心业务逻辑
@@ -73,7 +74,7 @@ export class PromptManager implements IPromptManager {
       console.log("PromptManager 初始化完成");
     } catch (error) {
       console.error("PromptManager 初始化失败:", error);
-      await this.uiService.showError("插件初始化失败，请重启VSCode重试");
+      await this.uiService.showError(t("error.initializationFailed"));
       throw error;
     }
   }
@@ -88,7 +89,7 @@ export class PromptManager implements IPromptManager {
       const prompts = await this.storageService.getPrompts();
 
       if (prompts.length === 0) {
-        await this.uiService.showInfo("暂无Prompt可用，请先添加一些Prompt");
+        await this.uiService.showInfo(t("error.noPrompts"));
         return;
       }
 
@@ -102,7 +103,7 @@ export class PromptManager implements IPromptManager {
       }
     } catch (error) {
       console.error("显示Prompt选择器失败:", error);
-      await this.uiService.showError("显示Prompt列表失败");
+      await this.uiService.showError(t("error.showPromptsFailed"));
     }
   }
 
@@ -116,11 +117,11 @@ export class PromptManager implements IPromptManager {
       if (newPrompt) {
         await this.storageService.savePrompt(newPrompt);
         this._onDidPromptsChange.fire();
-        await this.uiService.showInfo(`Prompt "${newPrompt.title}" 添加成功`);
+        await this.uiService.showInfo(t("message.promptAdded", newPrompt.title));
       }
     } catch (error) {
       console.error("添加Prompt失败:", error);
-      await this.uiService.showError("添加Prompt失败");
+      await this.uiService.showError(t("error.addPromptFailed"));
     }
   }
 
@@ -133,7 +134,7 @@ export class PromptManager implements IPromptManager {
       const prompt = await this.storageService.getPrompt(promptId);
 
       if (!prompt) {
-        await this.uiService.showError("Prompt不存在");
+        await this.uiService.showError(t("message.promptNotFound"));
         return;
       }
 
@@ -142,11 +143,11 @@ export class PromptManager implements IPromptManager {
       if (editedPrompt) {
         await this.storageService.savePrompt(editedPrompt);
         this._onDidPromptsChange.fire();
-        await this.uiService.showInfo(`Prompt "${editedPrompt.title}" 更新成功`);
+        await this.uiService.showInfo(t("message.promptUpdated", editedPrompt.title));
       }
     } catch (error) {
       console.error("编辑Prompt失败:", error);
-      await this.uiService.showError("编辑Prompt失败");
+      await this.uiService.showError(t("error.editPromptFailed"));
     }
   }
 
@@ -159,22 +160,20 @@ export class PromptManager implements IPromptManager {
       const prompt = await this.storageService.getPrompt(promptId);
 
       if (!prompt) {
-        await this.uiService.showError("Prompt不存在");
+        await this.uiService.showError(t("message.promptNotFound"));
         return;
       }
 
-      const confirmed = await this.uiService.showConfirmDialog(
-        `确定要删除Prompt "${prompt.title}" 吗？此操作不可恢复。`
-      );
+      const confirmed = await this.uiService.showConfirmDialog(t("message.confirmDelete", prompt.title));
 
       if (confirmed) {
         await this.storageService.deletePrompt(promptId);
         this._onDidPromptsChange.fire();
-        await this.uiService.showInfo(`Prompt "${prompt.title}" 删除成功`);
+        await this.uiService.showInfo(t("message.promptDeleted", prompt.title));
       }
     } catch (error) {
       console.error("删除Prompt失败:", error);
-      await this.uiService.showError("删除Prompt失败");
+      await this.uiService.showError(t("error.deletePromptFailed"));
     }
   }
 
@@ -187,7 +186,7 @@ export class PromptManager implements IPromptManager {
       const prompt = await this.storageService.getPrompt(promptId);
 
       if (!prompt) {
-        await this.uiService.showError("Prompt不存在");
+        await this.uiService.showError(t("message.promptNotFound"));
         return;
       }
 
@@ -197,7 +196,7 @@ export class PromptManager implements IPromptManager {
       // 增加使用次数
       await this.incrementUsageCount(promptId);
 
-      await this.uiService.showInfo(`Prompt "${prompt.title}" 已复制到剪贴板`);
+      await this.uiService.showInfo(t("message.promptCopied", prompt.title));
     } catch (error) {
       console.error("复制Prompt失败:", error);
       await this.uiService.showError("复制失败");
@@ -632,9 +631,9 @@ export class PromptManager implements IPromptManager {
       const categories = await this.storageService.getCategories();
 
       // 检查并补充缺失的默认分类
-      const existingCategoryIds = new Set(categories.map(c => c.id));
+      const existingCategoryIds = new Set(categories.map((c) => c.id));
       const missingCategories = Object.values(DEFAULT_CATEGORIES).filter(
-        defaultCategory => !existingCategoryIds.has(defaultCategory.id)
+        (defaultCategory) => !existingCategoryIds.has(defaultCategory.id)
       );
 
       if (missingCategories.length > 0) {
@@ -654,10 +653,8 @@ export class PromptManager implements IPromptManager {
       }
 
       // 检查并补充缺失的默认 Prompt
-      const existingPromptIds = new Set(prompts.map(p => p.id));
-      const missingPrompts = DEFAULT_PROMPTS.filter(
-        defaultPrompt => !existingPromptIds.has(defaultPrompt.id)
-      );
+      const existingPromptIds = new Set(prompts.map((p) => p.id));
+      const missingPrompts = DEFAULT_PROMPTS.filter((defaultPrompt) => !existingPromptIds.has(defaultPrompt.id));
 
       if (missingPrompts.length > 0) {
         console.log(`发现 ${missingPrompts.length} 个缺失的默认 Prompt，正在补充...`);
@@ -1041,7 +1038,9 @@ export class PromptManager implements IPromptManager {
       this._onDidPromptsChange.fire();
 
       await this.uiService.showInfo(
-        `🎉 默认数据重新初始化完成！\n\n📊 已创建:\n• ${Object.keys(DEFAULT_CATEGORIES).length} 个默认分类\n• ${DEFAULT_PROMPTS.length} 个默认 Prompt 模板\n\n现在您可以看到所有最新的默认模板了。`
+        `🎉 默认数据重新初始化完成！\n\n📊 已创建:\n• ${Object.keys(DEFAULT_CATEGORIES).length} 个默认分类\n• ${
+          DEFAULT_PROMPTS.length
+        } 个默认 Prompt 模板\n\n现在您可以看到所有最新的默认模板了。`
       );
     } catch (error) {
       console.error("重新初始化默认数据失败:", error);

@@ -118,7 +118,8 @@ export const DEFAULT_PROMPTS = [
   {
     id: "sample-4",
     title: "代码优化",
-    content: "请优化以下代码，重点关注：\n1. 代码质量和可读性\n2. 潜在的bug和性能问题\n3. 最佳实践的遵循情况\n4. 安全性考虑\n\n代码：\n```\n[在此处粘贴代码]\n```",
+    content:
+      "请优化以下代码，重点关注：\n1. 代码质量和可读性\n2. 潜在的bug和性能问题\n3. 最佳实践的遵循情况\n4. 安全性考虑\n\n代码：\n```\n[在此处粘贴代码]\n```",
     description: "用于代码优化的标准模板",
     categoryId: "coding",
     tags: ["分析", "问题", "解决方案"],
@@ -179,12 +180,23 @@ export const UI_CONSTANTS = {
 export const FILE_CONSTANTS = {
   EXPORT_EXTENSION: ".json",
   EXPORT_FILTER: {
-    JSON文件: ["json"],
+    JSON文件: ["json"], // 这个会在使用时动态本地化
   },
   DEFAULT_EXPORT_NAME: "prompt-manager-export",
   SUPPORTED_VERSIONS: ["1.0.0"],
   CURRENT_VERSION: "1.0.0",
 } as const;
+
+/**
+ * 获取本地化的文件过滤器
+ * @param t 本地化函数
+ * @returns 本地化的文件过滤器
+ */
+export function getLocalizedFileFilter(t: (key: string) => string) {
+  return {
+    [t("file.jsonFiles")]: ["json"],
+  };
+}
 
 /** 性能相关常量 */
 export const PERFORMANCE_CONSTANTS = {
@@ -237,3 +249,80 @@ export const TREE_SPECIAL_CATEGORIES = {
   /** 未分类ID */
   UNCATEGORIZED: "__uncategorized__",
 } as const;
+
+/**
+ * 获取本地化的默认分类
+ * @param t 本地化函数
+ * @returns 本地化的默认分类
+ */
+export function getLocalizedDefaultCategories(t: (key: string) => string) {
+  return {
+    GENERAL: {
+      id: "general",
+      name: t("category.general"),
+      description: t("category.general"),
+      icon: "symbol-misc",
+      sortOrder: 0,
+      createdAt: new Date(),
+    },
+    CODING: {
+      id: "coding",
+      name: t("category.coding"),
+      description: t("category.coding"),
+      icon: "code",
+      sortOrder: 1,
+      createdAt: new Date(),
+    },
+    WRITING: {
+      id: "writing",
+      name: t("category.writing"),
+      description: t("category.writing"),
+      icon: "book",
+      sortOrder: 2,
+      createdAt: new Date(),
+    },
+  };
+}
+
+/**
+ * 获取本地化的默认提示
+ * @param t 本地化函数
+ * @returns 本地化的默认提示
+ */
+export function getLocalizedDefaultPrompts(t: (key: string) => string) {
+  return [
+    {
+      id: "sample-1",
+      title: t("defaultPrompt.codeReview"),
+      content: t("defaultPrompt.codeReviewContent"),
+      description: t("defaultPrompt.codeReviewDesc"),
+      categoryId: "coding",
+      tags: ["代码", "审查", "质量"],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      usageCount: 0,
+    },
+    {
+      id: "sample-2",
+      title: t("defaultPrompt.techDoc"),
+      content: t("defaultPrompt.techDocContent"),
+      description: t("defaultPrompt.techDocDesc"),
+      categoryId: "writing",
+      tags: ["文档", "技术", "写作"],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      usageCount: 0,
+    },
+    {
+      id: "sample-3",
+      title: t("defaultPrompt.problemAnalysis"),
+      content: t("defaultPrompt.problemAnalysisContent"),
+      description: t("defaultPrompt.problemAnalysisDesc"),
+      categoryId: "general",
+      tags: ["分析", "问题", "解决方案"],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      usageCount: 0,
+    },
+  ];
+}

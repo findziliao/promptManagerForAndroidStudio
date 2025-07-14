@@ -1,0 +1,37 @@
+{
+    "displayName": "Prompt Manager",
+    "description": "Extension for managing and quickly selecting Prompt templates, compatible with Cursor and VSCode Copilot",
+
+    "viewsContainers.activitybar.prompt-manager.title": "Prompt Manager",
+    "views.prompt-manager.promptTree.name": "Prompts",
+
+    "commands.prompt-manager.showPrompts.title": "🔍 Show Prompt List",
+    "commands.prompt-manager.addPrompt.title": "📄 Add New Prompt",
+    "commands.prompt-manager.managePrompts.title": "🔍 Manage Prompts",
+    "commands.prompt-manager.exportPrompts.title": "📤 Export Prompts",
+    "commands.prompt-manager.importPrompts.title": "📥 Import Prompts",
+    "commands.prompt-manager.refreshTree.title": "🔄 Refresh",
+    "commands.prompt-manager.addPromptFromTree.title": "📄 Add Prompt",
+    "commands.prompt-manager.editPromptFromTree.title": "✏️ Edit",
+    "commands.prompt-manager.deletePromptFromTree.title": "🗑️ Delete",
+    "commands.prompt-manager.copyPromptFromTree.title": "📋 Copy",
+    "commands.prompt-manager.searchPrompts.title": "🔍 Search Prompts",
+    "commands.prompt-manager.clearSearch.title": "🔍 Clear Search",
+    "commands.prompt-manager.editCategoryFromTree.title": "✏️ Edit Category",
+    "commands.prompt-manager.addPromptToCategoryFromTree.title": "📄 Add Prompt to Category",
+    "commands.prompt-manager.exportCategoryFromTree.title": "📤 Export Category",
+    "commands.prompt-manager.deleteCategoryFromTree.title": "🗑️ Delete Category",
+    "commands.prompt-manager.sendToChat.title": "💬 Send to Chat",
+    "commands.prompt-manager.sendToChatFromTree.title": "💬 Send to Chat",
+    "commands.prompt-manager.addCategoryFromTree.title": "➕ Add Category",
+    "commands.prompt-manager.openSettings.title": "Plugin Settings",
+    "commands.prompt-manager.reinitializeDefaultData.title": "🔄 Reinitialize Default Data",
+
+    "configuration.title": "Prompt Manager",
+    "configuration.properties.promptManager.defaultAction.description": "Default action when selecting prompt",
+    "configuration.properties.promptManager.defaultAction.enumDescriptions.copy": "📋 Copy",
+    "configuration.properties.promptManager.defaultAction.enumDescriptions.chat": "💬 Send to Chat",
+    "configuration.properties.promptManager.language.description": "Plugin language / 插件语言",
+    "configuration.properties.promptManager.language.enumDescriptions.en": "English",
+    "configuration.properties.promptManager.language.enumDescriptions.zh-cn": "中文"
+}

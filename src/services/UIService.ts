@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { IUIService, PromptItem, PromptCategory, QuickPickPromptItem } from "../types";
-import { UI_CONSTANTS, FILE_CONSTANTS, PERFORMANCE_CONSTANTS } from "../utils/constants";
+import { UI_CONSTANTS, FILE_CONSTANTS, PERFORMANCE_CONSTANTS, getLocalizedFileFilter } from "../utils/constants";
+import { t } from "./LocalizationService";
 
 /**
  * 用户界面服务实现
@@ -30,7 +31,7 @@ export class UIService implements IUIService {
    */
   async showPromptPicker(prompts: PromptItem[]): Promise<PromptItem | undefined> {
     if (!prompts || prompts.length === 0) {
-      await this.showInfo("没有可用的Prompt");
+      await this.showInfo(t("error.noPrompts"));
       return undefined;
     }
 
@@ -49,12 +50,12 @@ export class UIService implements IUIService {
       // 读取配置中的默认操作
       const config = vscode.workspace.getConfiguration("promptManager");
       const defaultAction = config.get<string>("defaultAction", "copy");
-      const actionText = defaultAction === "chat" ? "发送到Chat" : "复制";
+      const actionText = defaultAction === "chat" ? t("config.defaultAction.chat") : t("config.defaultAction.copy");
 
       // 创建QuickPick实例
       const quickPick = vscode.window.createQuickPick<QuickPickPromptItem>();
-      quickPick.title = "Prompt Manager - 选择Prompt";
-      quickPick.placeholder = `搜索Prompt... (Enter=${actionText}, ⚙️按钮=操作菜单)`;
+      quickPick.title = "Prompt Manager - " + t("ui.picker.selectPrompt");
+      quickPick.placeholder = t("ui.quickPick.selectPrompt", actionText);
       quickPick.items = quickPickItems;
       quickPick.matchOnDescription = true;
       quickPick.matchOnDetail = true;
@@ -87,11 +88,11 @@ export class UIService implements IUIService {
         quickPick.buttons = [
           {
             iconPath: new vscode.ThemeIcon("gear"),
-            tooltip: "显示选中Prompt的操作菜单 (编辑、删除等)",
+            tooltip: t("ui.quickPick.actionMenu"),
           },
           {
             iconPath: new vscode.ThemeIcon("question"),
-            tooltip: "显示使用帮助",
+            tooltip: t("ui.quickPick.help"),
           },
         ];
 
@@ -118,18 +119,16 @@ export class UIService implements IUIService {
                       const edited = await this.showPromptEditor(selected.promptItem);
                       if (edited) {
                         await promptManager.updatePrompt(edited);
-                        await this.showInfo(`Prompt "${edited.title}" 更新成功`);
+                        await this.showInfo(t("message.saveSuccess"));
                       }
                       resolve(edited);
                       break;
 
                     case "delete":
-                      const confirmed = await this.showConfirmDialog(
-                        `确定要删除Prompt "${selected.promptItem.title}" 吗？`
-                      );
+                      const confirmed = await this.showConfirmDialog(t("confirm.deletePrompt"));
                       if (confirmed) {
                         await promptManager.deletePrompt(selected.promptItem.id);
-                        await this.showInfo(`Prompt "${selected.promptItem.title}" 已删除`);
+                        await this.showInfo(t("message.deleteSuccess"));
                       }
                       resolve(undefined);
                       break;
@@ -141,13 +140,11 @@ export class UIService implements IUIService {
                 }
               }, 100);
             } else {
-              await this.showInfo("请先选择一个Prompt再点击操作按钮");
+              await this.showInfo(t("error.promptNotFound"));
             }
           } else if (buttonIndex === 1) {
             // 问号按钮 - 显示帮助
-            await this.showInfo(
-              `💡 使用提示：\n\n📝 快速操作：\n- Enter键：${actionText}选中的Prompt\n- 点击⚙️按钮：显示选中Prompt的操作菜单\n\n🛠️ 编辑删除Prompt：\n- 使用主菜单中的"编辑/删除Prompt"选项\n- 提供完整的管理界面，支持编辑、删除等\n\n⚡ 操作菜单功能：\n- 复制到剪贴板\n- 编辑Prompt内容\n- 删除Prompt\n\n🔍 搜索技巧：\n- 支持标题、描述、标签的模糊搜索\n\n⚙️ 配置提示：\n- 可在插件设置中修改默认操作（复制/发送到Chat）`
-            );
+            await this.showInfo(t("ui.quickPick.helpText", actionText));
           }
         });
 
@@ -155,7 +152,7 @@ export class UIService implements IUIService {
       });
     } catch (error) {
       console.error("显示Prompt选择器失败:", error);
-      await this.showError("显示Prompt列表失败");
+      await this.showError(t("error.showPromptsFailed"));
       return undefined;
     }
   }
@@ -168,20 +165,20 @@ export class UIService implements IUIService {
   async showPromptEditor(prompt?: PromptItem): Promise<PromptItem | undefined> {
     try {
       const isEditing = !!prompt;
-      const title = isEditing ? `编辑Prompt: ${prompt.title}` : "创建新Prompt";
+      const title = isEditing ? t("ui.editor.editPrompt", prompt.title) : t("ui.editor.createPrompt");
 
       // 步骤1: 输入标题
       const promptTitle = await vscode.window.showInputBox({
         title: title,
-        prompt: "请输入Prompt标题",
-        placeHolder: UI_CONSTANTS.INPUT_BOX.TITLE_PLACEHOLDER,
+        prompt: t("ui.editor.promptTitle"),
+        placeHolder: t("ui.input.titlePlaceholder"),
         value: prompt?.title || "",
         validateInput: (value) => {
           if (!value || value.trim() === "") {
-            return "Prompt标题不能为空";
+            return t("error.titleRequired");
           }
           if (value.length > 100) {
-            return "Prompt标题不能超过100个字符";
+            return t("error.titleTooLong");
           }
           return null;
         },
@@ -194,12 +191,12 @@ export class UIService implements IUIService {
       // 步骤2: 输入内容
       const promptContent = await vscode.window.showInputBox({
         title: title,
-        prompt: "请输入Prompt内容",
-        placeHolder: UI_CONSTANTS.INPUT_BOX.CONTENT_PLACEHOLDER,
+        prompt: t("ui.editor.promptContent"),
+        placeHolder: t("ui.input.contentPlaceholder"),
         value: prompt?.content || "",
         validateInput: (value) => {
           if (!value || value.trim() === "") {
-            return "Prompt内容不能为空";
+            return t("error.contentRequired");
           }
           return null;
         },
@@ -212,16 +209,16 @@ export class UIService implements IUIService {
       // 步骤3: 输入描述（可选）
       const promptDescription = await vscode.window.showInputBox({
         title: title,
-        prompt: "请输入Prompt描述（可选）",
-        placeHolder: UI_CONSTANTS.INPUT_BOX.DESCRIPTION_PLACEHOLDER,
+        prompt: t("ui.editor.promptDescription"),
+        placeHolder: t("ui.input.descriptionPlaceholder"),
         value: prompt?.description || "",
       });
 
       // 步骤4: 输入标签（可选）
       const tagsInput = await vscode.window.showInputBox({
         title: title,
-        prompt: "请输入标签，用逗号分隔（可选）",
-        placeHolder: UI_CONSTANTS.INPUT_BOX.TAGS_PLACEHOLDER,
+        prompt: t("ui.editor.promptTags"),
+        placeHolder: t("ui.input.tagsPlaceholder"),
         value: prompt?.tags?.join(", ") || "",
       });
 
@@ -254,19 +251,19 @@ export class UIService implements IUIService {
 
         const selectedCategory = await vscode.window.showQuickPick(categoryOptions, {
           title: title,
-          placeHolder: "选择分类（可选）...",
+          placeHolder: t("ui.editor.selectCategory"),
         });
 
         if (selectedCategory) {
           if (selectedCategory.categoryId === "CREATE_NEW") {
             // 创建新分类的快捷流程
             const newCategoryName = await vscode.window.showInputBox({
-              title: "创建新分类",
-              prompt: "请输入新分类名称",
-              placeHolder: "输入分类名称",
+              title: t("ui.editor.createCategory"),
+              prompt: t("ui.editor.categoryName"),
+              placeHolder: t("ui.input.categoryPlaceholder"),
               validateInput: (value) => {
                 if (!value || value.trim() === "") {
-                  return "分类名称不能为空";
+                  return t("error.categoryNameRequired");
                 }
                 return null;
               },
@@ -274,9 +271,9 @@ export class UIService implements IUIService {
 
             if (newCategoryName) {
               const newCategoryDesc = await vscode.window.showInputBox({
-                title: "创建新分类",
-                prompt: "请输入分类描述（可选）",
-                placeHolder: "输入分类描述",
+                title: t("ui.editor.createCategory"),
+                prompt: t("ui.editor.categoryDescription"),
+                placeHolder: t("ui.input.descriptionPlaceholder"),
               });
 
               // 创建新分类
@@ -313,7 +310,7 @@ export class UIService implements IUIService {
       return result;
     } catch (error) {
       console.error("显示Prompt编辑器失败:", error);
-      await this.showError("显示编辑界面失败");
+      await this.showError(t("error.editPromptFailed"));
       return undefined;
     }
   }
@@ -325,7 +322,7 @@ export class UIService implements IUIService {
    */
   async showCategoryPicker(categories: PromptCategory[]): Promise<PromptCategory | undefined> {
     if (!categories || categories.length === 0) {
-      await this.showInfo("没有可用的分类");
+      await this.showInfo(t("error.noCategories"));
       return undefined;
     }
 
@@ -338,8 +335,8 @@ export class UIService implements IUIService {
       }));
 
       const selected = await vscode.window.showQuickPick(items, {
-        title: "Prompt Manager - 选择分类",
-        placeHolder: "搜索并选择分类...",
+        title: "Prompt Manager - " + t("ui.picker.selectCategory"),
+        placeHolder: t("ui.picker.selectCategory"),
         matchOnDescription: true,
         matchOnDetail: true,
       });
@@ -347,7 +344,7 @@ export class UIService implements IUIService {
       return (selected as any)?.category;
     } catch (error) {
       console.error("显示分类选择器失败:", error);
-      await this.showError("显示分类列表失败");
+      await this.showError(t("error.noCategories"));
       return undefined;
     }
   }
@@ -359,8 +356,10 @@ export class UIService implements IUIService {
    */
   async showConfirmDialog(message: string): Promise<boolean> {
     try {
-      const selection = await vscode.window.showWarningMessage(message, { modal: true }, "确定", "取消");
-      return selection === "确定";
+      const confirmButton = t("confirm.ok");
+      const cancelButton = t("confirm.cancel");
+      const selection = await vscode.window.showWarningMessage(message, { modal: true }, confirmButton, cancelButton);
+      return selection === confirmButton;
     } catch (error) {
       console.error("显示确认对话框失败:", error);
       return false;
@@ -402,14 +401,14 @@ export class UIService implements IUIService {
         defaultUri: defaultName
           ? vscode.Uri.file(defaultName + FILE_CONSTANTS.EXPORT_EXTENSION)
           : vscode.Uri.file(FILE_CONSTANTS.DEFAULT_EXPORT_NAME + FILE_CONSTANTS.EXPORT_EXTENSION),
-        filters: { JSON文件: ["json"] },
-        saveLabel: "导出",
+        filters: getLocalizedFileFilter(t),
+        saveLabel: t("management.export"),
       });
 
       return uri?.fsPath;
     } catch (error) {
       console.error("显示保存对话框失败:", error);
-      await this.showError("显示保存对话框失败");
+      await this.showError(t("error.saveFailed"));
       return undefined;
     }
   }
@@ -424,14 +423,14 @@ export class UIService implements IUIService {
         canSelectFiles: true,
         canSelectFolders: false,
         canSelectMany: false,
-        filters: { JSON文件: ["json"] },
-        openLabel: "导入",
+        filters: getLocalizedFileFilter(t),
+        openLabel: t("management.import"),
       });
 
       return uris && uris.length > 0 ? uris[0].fsPath : undefined;
     } catch (error) {
       console.error("显示打开对话框失败:", error);
-      await this.showError("显示打开对话框失败");
+      await this.showError(t("error.loadFailed"));
       return undefined;
     }
   }
@@ -443,7 +442,7 @@ export class UIService implements IUIService {
    */
   async showMultiPromptPicker(prompts: PromptItem[]): Promise<PromptItem[] | undefined> {
     if (!prompts || prompts.length === 0) {
-      await this.showInfo("没有可用的Prompt");
+      await this.showInfo(t("error.noPrompts"));
       return undefined;
     }
 
@@ -459,8 +458,8 @@ export class UIService implements IUIService {
         }));
 
       const quickPick = vscode.window.createQuickPick<QuickPickPromptItem>();
-      quickPick.title = "Prompt Manager - 选择多个Prompt";
-      quickPick.placeholder = "搜索并选择Prompt（可多选）...";
+      quickPick.title = "Prompt Manager - " + t("ui.picker.selectPrompt");
+      quickPick.placeholder = t("ui.quickPick.placeholder");
       quickPick.items = quickPickItems;
       quickPick.canSelectMany = true;
       quickPick.matchOnDescription = true;
@@ -482,7 +481,7 @@ export class UIService implements IUIService {
       });
     } catch (error) {
       console.error("显示多选Prompt列表失败:", error);
-      await this.showError("显示Prompt列表失败");
+      await this.showError(t("error.showPromptsFailed"));
       return undefined;
     }
   }
@@ -496,21 +495,21 @@ export class UIService implements IUIService {
     try {
       const actions = [
         {
-          label: "$(edit) 编辑",
-          description: "编辑Prompt内容",
+          label: "$(edit) " + t("action.edit"),
+          description: t("action.edit"),
           action: "edit",
         },
 
         {
-          label: "$(trash) 删除",
-          description: "删除这个Prompt",
+          label: "$(trash) " + t("action.delete"),
+          description: t("action.delete"),
           action: "delete",
         },
       ];
 
       const selected = await vscode.window.showQuickPick(actions, {
-        title: `操作: ${promptItem.title}`,
-        placeHolder: "选择要执行的操作...",
+        title: `${t("ui.picker.selectAction")}: ${promptItem.title}`,
+        placeHolder: t("ui.picker.selectAction"),
       });
 
       return selected?.action;
@@ -528,20 +527,20 @@ export class UIService implements IUIService {
   async showCategoryEditor(category?: PromptCategory): Promise<PromptCategory | undefined> {
     try {
       const isEditing = !!category;
-      const title = isEditing ? `编辑分类: ${category.name}` : "创建新分类";
+      const title = isEditing ? t("ui.editor.editCategory", category.name) : t("ui.editor.createCategory");
 
       // 步骤1: 输入分类名称
       const categoryName = await vscode.window.showInputBox({
         title: title,
-        prompt: "请输入分类名称",
-        placeHolder: "输入分类名称",
+        prompt: t("ui.editor.categoryName"),
+        placeHolder: t("ui.input.categoryPlaceholder"),
         value: category?.name || "",
         validateInput: (value) => {
           if (!value || value.trim() === "") {
-            return "分类名称不能为空";
+            return t("error.categoryNameRequired");
           }
           if (value.length > 50) {
-            return "分类名称不能超过50个字符";
+            return t("error.categoryNameTooLong");
           }
           return null;
         },
@@ -554,8 +553,8 @@ export class UIService implements IUIService {
       // 步骤2: 输入分类描述
       const categoryDescription = await vscode.window.showInputBox({
         title: title,
-        prompt: "请输入分类描述（可选）",
-        placeHolder: "输入分类描述",
+        prompt: t("ui.editor.categoryDescription"),
+        placeHolder: t("ui.input.descriptionPlaceholder"),
         value: category?.description || "",
       });
 
@@ -598,7 +597,7 @@ export class UIService implements IUIService {
 
       const selectedIcon = await vscode.window.showQuickPick(iconOptions, {
         title: title,
-        placeHolder: "选择分类图标",
+        placeHolder: t("ui.editor.selectIcon"),
       });
 
       const icon = selectedIcon?.icon || category?.icon || "folder";
@@ -616,7 +615,7 @@ export class UIService implements IUIService {
       return result;
     } catch (error) {
       console.error("显示分类编辑器失败:", error);
-      await this.showError("显示分类编辑界面失败");
+      await this.showError(t("error.editPromptFailed"));
       return undefined;
     }
   }
@@ -630,36 +629,36 @@ export class UIService implements IUIService {
     try {
       const actions = [
         {
-          label: "$(edit) 编辑分类信息",
-          description: "修改分类名称、描述和图标",
+          label: "$(edit) " + t("action.editCategory"),
+          description: t("action.editCategory"),
           action: "edit",
         },
         {
-          label: "$(symbol-text) 重命名分类",
-          description: "快速重命名分类",
+          label: "$(symbol-text) " + t("action.editCategory"),
+          description: t("action.editCategory"),
           action: "rename",
         },
         {
-          label: "$(export) 导出分类",
-          description: "导出该分类下的所有Prompt",
+          label: "$(export) " + t("action.exportCategory"),
+          description: t("action.exportCategory"),
           action: "export",
         },
         {
-          label: "$(trash) 删除分类",
-          description: "删除分类（其下的Prompt将变为未分类）",
+          label: "$(trash) " + t("action.deleteCategory"),
+          description: t("action.deleteCategory"),
           action: "delete",
         },
       ];
 
       const selected = await vscode.window.showQuickPick(actions, {
-        title: `分类操作: ${category.name}`,
-        placeHolder: "选择要执行的操作...",
+        title: `${t("ui.picker.selectAction")}: ${category.name}`,
+        placeHolder: t("ui.picker.selectAction"),
       });
 
       return selected?.action;
     } catch (error) {
       console.error("显示分类操作菜单失败:", error);
-      await this.showError("显示操作菜单失败");
+      await this.showError(t("error.generic"));
       return undefined;
     }
   }
@@ -675,7 +674,7 @@ export class UIService implements IUIService {
     if (prompt.categoryId) {
       parts.push(`📁 ${prompt.categoryId}`);
     } else {
-      parts.push(`📁 无分类`);
+      parts.push(`📁 ${t("category.uncategorized")}`);
     }
 
     if (prompt.tags && prompt.tags.length > 0) {
