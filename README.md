@@ -1,188 +1,190 @@
+**English** | [中文](README.zh-CN.md)
+
 # Prompt Manager
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/cursor-project/prompt-manager/main/resources/prompt-manager-logo-2.png" alt="Prompt Manager Logo" width="120" height="120">
   
-  **高效管理和快速使用AI Prompt模板的Cursor/VSCode扩展**
+  **Efficient management and quick access to AI Prompt templates for Cursor/VSCode**
   
   [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/cursor-project/prompt-manager)
   [![VSCode](https://img.shields.io/badge/VSCode-1.60.0+-green.svg)](https://code.visualstudio.com/)
   [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://mit-license.org/)
 </div>
 
-## 📋 目录
+## 📋 Table of Contents
 
-- [功能特色](#-功能特色)
-- [快速开始](#-快速开始)
-- [核心功能](#-核心功能)
-- [界面介绍](#-界面介绍)
-- [使用指南](#-使用指南)
-- [快捷键](#-快捷键)
-- [配置选项](#-配置选项)
-- [导入导出](#-导入导出)
-- [编辑器集成](#-编辑器集成)
-- [技术架构](#-技术架构)
-- [常见问题](#-常见问题)
-- [支持与反馈](#-支持与反馈)
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Core Features](#-core-features)
+- [User Interface](#-user-interface)
+- [Usage Guide](#-usage-guide)
+- [Keyboard Shortcuts](#-keyboard-shortcuts)
+- [Configuration](#-configuration)
+- [Import/Export](#-importexport)
+- [Editor Integration](#-editor-integration)
+- [Technical Architecture](#-technical-architecture)
+- [FAQ](#-faq)
+- [Support & Feedback](#-support--feedback)
 
-## ✨ 功能特色
+## ✨ Features
 
-### 🎯 核心亮点
-- **📝 完整的Prompt生命周期管理** - 创建、编辑、删除、分类组织
-- **🔍 智能搜索** - 支持标题、内容、标签、分类的全文搜索
-- **📁 分层分类系统** - 灵活的分类管理，支持无限层级
-- **💾 数据导入导出** - JSON格式，支持备份和跨设备同步
-- **🔗 多编辑器集成** - 完美适配Cursor、VSCode等主流编辑器
-- **💬 Chat集成** - 一键发送Prompt到聊天界面
-- **📊 使用统计** - 自动跟踪使用频率，智能排序推荐
-- **⚡ 性能优化** - 防抖搜索、懒加载，流畅体验
+### 🎯 Core Highlights
+- **📝 Complete Prompt Lifecycle Management** - Create, edit, delete, and organize with categories
+- **🔍 Smart Search** - Full-text search across titles, content, tags, and categories
+- **📁 Hierarchical Category System** - Flexible category management with unlimited levels
+- **💾 Data Import/Export** - JSON format supporting backup and cross-device sync
+- **🔗 Multi-Editor Integration** - Perfect compatibility with Cursor, VSCode and other mainstream editors
+- **💬 Chat Integration** - One-click send prompts to chat interface
+- **📊 Usage Statistics** - Automatic usage tracking with intelligent sorting recommendations
+- **⚡ Performance Optimization** - Debounced search, lazy loading, smooth experience
 
-### 🚀 技术优势
-- **TypeScript全栈** - 完整类型系统，开发体验佳
-- **事件驱动架构** - 响应式UI更新，实时同步
-- **单例模式设计** - 资源高效利用，状态管理清晰
-- **工厂模式集成** - 支持多种编辑器环境自动适配
-- **异步操作优化** - 非阻塞UI，操作流畅
+### 🚀 Technical Advantages
+- **Full TypeScript Stack** - Complete type system with excellent development experience
+- **Event-Driven Architecture** - Reactive UI updates with real-time synchronization
+- **Singleton Pattern Design** - Efficient resource utilization and clear state management
+- **Factory Pattern Integration** - Automatic adaptation to multiple editor environments
+- **Async Operation Optimization** - Non-blocking UI with smooth operations
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 安装
+### Installation
 
-1. **从VSCode扩展商店安装**
+1. **Install from VSCode Marketplace**
    ```
-   在VSCode中按 Ctrl+Shift+X 打开扩展面板
-   搜索 "Prompt Manager"
-   点击安装
+   Press Ctrl+Shift+X in VSCode to open Extensions panel
+   Search for "Prompt Manager"
+   Click Install
    ```
 
-2. **本地安装**
+2. **Local Installation**
    ```bash
-   # 下载.vsix文件后
+   # After downloading the .vsix file
    code --install-extension prompt-manager-0.0.1.vsix
    ```
 
-### 首次使用
+### First Use
 
-1. **激活插件** - 安装后会自动激活，在Activity Bar中看到Prompt Manager图标
-2. **浏览默认模板** - 插件预置了代码审查、技术文档、问题分析等常用模板
-3. **添加自定义Prompt** - 点击➕按钮或使用快捷键 `Ctrl+Shift+Q`
-4. **开始使用** - 选择Prompt，自动复制到剪贴板或双击发送到Chat
+1. **Activate Extension** - Automatically activated after installation, find Prompt Manager icon in Activity Bar
+2. **Browse Default Templates** - Extension comes with pre-built templates for code review, technical documentation, problem analysis, etc.
+3. **Add Custom Prompts** - Click the ➕ button or use shortcut `Ctrl+Shift+Q`
+4. **Start Using** - Select a prompt, automatically copied to clipboard or double-click to send to Chat
 
-## 🛠 核心功能
+## 🛠 Core Features
 
-### Prompt管理
-- **创建Prompt** - 支持标题、内容、描述、标签、分类
-- **编辑Prompt** - 随时修改，自动保存修改时间
-- **删除Prompt** - 支持单个删除和批量清理
-- **使用统计** - 自动记录使用次数，按热度排序
+### Prompt Management
+- **Create Prompts** - Support for title, content, description, tags, and categories
+- **Edit Prompts** - Modify anytime with automatic save of modification time
+- **Delete Prompts** - Support for individual deletion and batch cleanup
+- **Usage Statistics** - Automatic usage count tracking with popularity-based sorting
 
-### 分类系统
-- **默认分类** - 通用、编程、写作三大基础分类
-- **自定义分类** - 创建个性化分类体系
-- **分类操作** - 支持编辑、删除、导出整个分类
-- **未分类管理** - 自动收集未分类的Prompt
+### Category System
+- **Default Categories** - Three basic categories: General, Programming, Writing
+- **Custom Categories** - Create personalized category structures
+- **Category Operations** - Support for editing, deleting, and exporting entire categories
+- **Uncategorized Management** - Automatically collect uncategorized prompts
 
-### 搜索与过滤
-- **实时搜索** - 输入即搜，支持中英文
-- **多字段搜索** - 标题、内容、描述、标签、分类名称
-- **搜索高亮** - 清晰显示匹配结果
-- **搜索历史** - 记住常用搜索词
+### Search & Filtering
+- **Real-time Search** - Search as you type, supports both Chinese and English
+- **Multi-field Search** - Search across titles, content, descriptions, tags, and category names
+- **Search Highlighting** - Clear display of matching results
+- **Search History** - Remember commonly used search terms
 
-## 🎨 界面介绍
+## 🎨 User Interface
 
-### Activity Bar视图
-- **Prompt树状列表** - 按分类层次展示所有Prompt
-- **右键菜单** - 快速访问编辑、删除、复制等操作
-- **搜索框** - 实时过滤显示结果
-- **工具按钮** - 添加、刷新、设置等常用功能
+### Activity Bar View
+- **Prompt Tree List** - Display all prompts organized by category hierarchy
+- **Context Menu** - Quick access to edit, delete, copy and other operations
+- **Search Box** - Real-time filtering of displayed results
+- **Toolbar Buttons** - Common functions like add, refresh, settings
 
-### 快速选择器
-- **智能排序** - 基于使用频率和更新时间
-- **预览信息** - 显示Prompt内容预览
-- **分类标识** - 清晰显示所属分类
-- **操作提示** - 显示可用的操作方式
+### Quick Picker
+- **Smart Sorting** - Based on usage frequency and update time
+- **Preview Information** - Display prompt content preview
+- **Category Indicators** - Clear display of category membership
+- **Operation Hints** - Show available operation methods
 
-## 📖 使用指南
+## 📖 Usage Guide
 
-### 基础操作
+### Basic Operations
 
-#### 1. 创建Prompt
+#### 1. Creating Prompts
 ```
-方式1: Activity Bar → 点击 ➕ 按钮
-方式2: 命令面板 → "Prompt Manager: 添加新Prompt"
-方式3: 快捷键 Ctrl+Shift+Q → 选择"添加新Prompt"
-```
-
-#### 2. 使用Prompt
-```
-方式1: Activity Bar → 双击Prompt项目
-方式2: 快捷键 Ctrl+Shift+Q → 选择Prompt
-方式3: 右键菜单 → "复制到剪贴板" 或 "发送到Chat"
+Method 1: Activity Bar → Click ➕ button
+Method 2: Command Palette → "Prompt Manager: Add New Prompt"
+Method 3: Shortcut Ctrl+Shift+Q → Select "Add New Prompt"
 ```
 
-#### 3. 管理分类
+#### 2. Using Prompts
 ```
-创建分类: Activity Bar空白处右键 → "新增分类"
-编辑分类: 分类右键 → "编辑分类"
-删除分类: 分类右键 → "删除分类"
-```
-
-### 高级功能
-
-#### 智能搜索
-```
-// 搜索语法示例
-代码          # 搜索包含"代码"的所有内容
-react hooks   # 搜索React Hooks相关
-@编程         # 搜索编程分类下的内容
-#bug         # 搜索包含bug标签的Prompt
+Method 1: Activity Bar → Double-click prompt item
+Method 2: Shortcut Ctrl+Shift+Q → Select prompt
+Method 3: Right-click menu → "Copy to Clipboard" or "Send to Chat"
 ```
 
-#### 批量操作
+#### 3. Managing Categories
 ```
-导出全部: 命令面板 → "Prompt Manager: 导出Prompts"
-导出分类: 分类右键 → "导出分类"
-导入数据: 命令面板 → "Prompt Manager: 导入Prompts"
+Create Category: Right-click empty area in Activity Bar → "Add Category"
+Edit Category: Right-click category → "Edit Category"
+Delete Category: Right-click category → "Delete Category"
 ```
 
-## ⌨️ 快捷键
+### Advanced Features
 
-| 快捷键 | 功能 | 说明 |
-|--------|------|------|
-| `Ctrl+Shift+Q` | 显示Prompt列表 | 快速选择器 |
-| `Ctrl+K Ctrl+S` | 搜索Prompts | 在TreeView中搜索 |
-| `F2` | 编辑选中项 | 在TreeView中重命名 |
-| `Delete` | 删除选中项 | 在TreeView中删除 |
-| `Ctrl+C` | 复制Prompt | 在TreeView中复制 |
+#### Smart Search
+```
+// Search syntax examples
+code          # Search all content containing "code"
+react hooks   # Search React Hooks related content
+@programming  # Search content in programming category
+#bug         # Search prompts containing bug tag
+```
 
-> 💡 提示：可在设置中自定义快捷键
+#### Batch Operations
+```
+Export All: Command Palette → "Prompt Manager: Export Prompts"
+Export Category: Right-click category → "Export Category"
+Import Data: Command Palette → "Prompt Manager: Import Prompts"
+```
 
-## ⚙️ 配置选项
+## ⌨️ Keyboard Shortcuts
 
-### 默认操作方式
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| `Ctrl+Shift+Q` | Show Prompt List | Quick picker |
+| `Ctrl+K Ctrl+S` | Search Prompts | Search in TreeView |
+| `F2` | Edit Selected Item | Rename in TreeView |
+| `Delete` | Delete Selected Item | Delete in TreeView |
+| `Ctrl+C` | Copy Prompt | Copy in TreeView |
+
+> 💡 Tip: Keyboard shortcuts can be customized in settings
+
+## ⚙️ Configuration
+
+### Default Action Mode
 ```json
 {
-  "promptManager.defaultAction": "copy" // 或 "chat"
+  "promptManager.defaultAction": "copy" // or "chat"
 }
 ```
-- `copy` - 选择Prompt时复制到剪贴板
-- `chat` - 选择Prompt时发送到Chat界面
+- `copy` - Copy to clipboard when selecting a prompt
+- `chat` - Send to chat interface when selecting a prompt
 
-### 自定义配置文件位置
+### Custom Configuration File Location
 ```
 Windows: %APPDATA%\Code\User\settings.json
 macOS: ~/Library/Application Support/Code/User/settings.json
 Linux: ~/.config/Code/User/settings.json
 ```
 
-## 💾 导入导出
+## 💾 Import/Export
 
-### 支持格式
-- **JSON格式** - 标准的数据交换格式
-- **版本兼容** - 支持向后兼容的版本升级
-- **完整性校验** - 导入时自动验证数据格式
+### Supported Formats
+- **JSON Format** - Standard data exchange format
+- **Version Compatibility** - Supports backward-compatible version upgrades
+- **Integrity Verification** - Automatic data format validation during import
 
-### 导出数据结构
+### Export Data Structure
 ```json
 {
   "version": "1.0.0",
@@ -190,11 +192,11 @@ Linux: ~/.config/Code/User/settings.json
   "prompts": [
     {
       "id": "unique-id",
-      "title": "Prompt标题",
-      "content": "Prompt内容",
-      "description": "描述信息",
-      "categoryId": "分类ID",
-      "tags": ["标签1", "标签2"],
+      "title": "Prompt Title",
+      "content": "Prompt Content",
+      "description": "Description Information",
+      "categoryId": "Category ID",
+      "tags": ["Tag1", "Tag2"],
       "createdAt": "2024-01-01T00:00:00.000Z",
       "updatedAt": "2024-01-01T00:00:00.000Z",
       "usageCount": 0
@@ -203,9 +205,9 @@ Linux: ~/.config/Code/User/settings.json
   "categories": [
     {
       "id": "category-id",
-      "name": "分类名称",
-      "description": "分类描述",
-      "icon": "图标名称",
+      "name": "Category Name",
+      "description": "Category Description",
+      "icon": "Icon Name",
       "sortOrder": 0,
       "createdAt": "2024-01-01T00:00:00.000Z"
     }
@@ -218,97 +220,97 @@ Linux: ~/.config/Code/User/settings.json
 }
 ```
 
-### 导入注意事项
-- **冲突处理** - 相同ID的Prompt会被覆盖
-- **分类创建** - 不存在的分类会自动创建
-- **数据验证** - 无效数据会被过滤但不影响导入
+### Import Notes
+- **Conflict Handling** - Prompts with the same ID will be overwritten
+- **Category Creation** - Non-existent categories will be automatically created
+- **Data Validation** - Invalid data will be filtered but won't affect import
 
-## 🔗 编辑器集成
+## 🔗 Editor Integration
 
-### Cursor集成
-- **环境检测** - 自动识别Cursor环境
-- **Chat命令** - 直接发送到Cursor Chat
-- **快捷操作** - 支持右键菜单发送
+### Cursor Integration
+- **Environment Detection** - Automatically recognize Cursor environment
+- **Chat Commands** - Send directly to Cursor Chat
+- **Quick Operations** - Support right-click menu sending
 
-### VSCode集成
-- **原生支持** - 完美适配VSCode环境
-- **命令面板** - 所有功能均可通过命令面板访问
-- **设置同步** - 支持VSCode设置同步
+### VSCode Integration
+- **Native Support** - Perfect compatibility with VSCode environment
+- **Command Palette** - All features accessible through command palette
+- **Settings Sync** - Support VSCode settings synchronization
 
-### 通用特性
-- **剪贴板集成** - 一键复制Prompt内容
-- **编辑器插入** - 直接插入到当前编辑器位置
-- **智能识别** - 根据环境自动选择最佳集成方式
+### Universal Features
+- **Clipboard Integration** - One-click copy prompt content
+- **Editor Insertion** - Direct insertion at current editor position
+- **Smart Recognition** - Automatically select optimal integration method based on environment
 
-## 🏗 技术架构
+## 🏗 Technical Architecture
 
-### 核心设计模式
-- **单例模式** - PromptManager、各种Service实例
-- **工厂模式** - ChatIntegrationFactory自动选择集成服务
-- **策略模式** - PromptActionStrategies处理不同操作
-- **事件驱动** - 响应式UI更新机制
+### Core Design Patterns
+- **Singleton Pattern** - PromptManager and various Service instances
+- **Factory Pattern** - ChatIntegrationFactory automatically selects integration services
+- **Strategy Pattern** - PromptActionStrategies handle different operations
+- **Event-Driven** - Reactive UI update mechanism
 
-### 服务层架构
+### Service Layer Architecture
 ```
-PromptManager (核心业务逻辑)
-├── StorageService (数据持久化)
-├── UIService (用户界面)
-├── ClipboardService (剪贴板操作)
-├── ImportExportService (导入导出)
-├── ChatIntegrationFactory (Chat集成)
+PromptManager (Core Business Logic)
+├── StorageService (Data Persistence)
+├── UIService (User Interface)
+├── ClipboardService (Clipboard Operations)
+├── ImportExportService (Import/Export)
+├── ChatIntegrationFactory (Chat Integration)
 │   ├── CursorIntegrationService
 │   └── VSCodeIntegrationService
-└── EditorEnvironmentDetector (环境检测)
+└── EditorEnvironmentDetector (Environment Detection)
 ```
 
-### 数据流
+### Data Flow
 ```
-UI操作 → PromptManager → Service层 → 存储层
-                      ↓
-               事件通知 → UI更新
+UI Operations → PromptManager → Service Layer → Storage Layer
+                             ↓
+                   Event Notifications → UI Updates
 ```
 
-## ❓ 常见问题
+## ❓ FAQ
 
-### Q: 插件占用多少存储空间？
-A: 插件本身约2MB，Prompt数据存储在VSCode的globalState中，通常几KB到几MB不等。
+### Q: How much storage space does the extension use?
+A: The extension itself is about 2MB, with prompt data stored in VSCode's globalState, typically ranging from a few KB to several MB.
 
-### Q: 数据安全吗？会丢失吗？
-A: 数据存储在VSCode的官方存储机制中，与VSCode设置同级别安全。建议定期导出备份。
+### Q: Is the data secure? Will it be lost?
+A: Data is stored in VSCode's official storage mechanism, with the same security level as VSCode settings. Regular export backups are recommended.
 
-### Q: 支持团队共享吗？
-A: 可通过导出/导入功能实现团队共享，未来版本会考虑云同步功能。
+### Q: Does it support team sharing?
+A: Team sharing can be achieved through export/import functionality. Cloud sync features may be considered in future versions.
 
-### Q: 为什么Chat集成不工作？
-A: 请检查：1) 是否在支持的编辑器中 2) 编辑器版本是否兼容 3) 是否有活动的编辑器窗口
+### Q: Why isn't Chat integration working?
+A: Please check: 1) Whether you're in a supported editor 2) Editor version compatibility 3) Whether there's an active editor window
 
-### Q: 可以修改默认的示例Prompt吗？
-A: 可以，所有Prompt（包括示例）都可以自由编辑或删除。
+### Q: Can I modify the default example prompts?
+A: Yes, all prompts (including examples) can be freely edited or deleted.
 
-### Q: 支持Markdown格式吗？
-A: Prompt内容支持任何纯文本格式，包括Markdown、代码等。
+### Q: Does it support Markdown format?
+A: Prompt content supports any plain text format, including Markdown, code, etc.
 
-## 🆘 支持与反馈
+## 🆘 Support & Feedback
 
-### 问题反馈
-- **GitHub Issues** - [提交问题](https://github.com/cursor-project/prompt-manager/issues)
-- **功能建议** - [功能请求](https://github.com/cursor-project/prompt-manager/issues/new?template=feature_request.md)
+### Issue Reporting
+- **GitHub Issues** - [Submit Issues](https://github.com/cursor-project/prompt-manager/issues)
+- **Feature Requests** - [Feature Requests](https://github.com/cursor-project/prompt-manager/issues/new?template=feature_request.md)
 
-### 贡献指南
-- **代码贡献** - 欢迎提交Pull Request
-- **文档改进** - 帮助完善文档和示例
-- **Bug报告** - 详细的错误重现步骤
+### Contributing
+- **Code Contributions** - Pull requests are welcome
+- **Documentation Improvements** - Help improve documentation and examples
+- **Bug Reports** - Detailed error reproduction steps
 
-### 版本历史
-- **v0.0.1** - 初始版本，包含核心功能
+### Version History
+- **v0.0.1** - Initial version with core features
 
-### 致谢
-感谢所有用户的反馈和建议，让这个插件变得更好！
+### Acknowledgments
+Thanks to all users for their feedback and suggestions that make this extension better!
 
 ---
 
 <div align="center">
   <strong>Made with ❤️ for productivity</strong>
   <br>
-  <sub>如果这个插件对你有帮助，请考虑给个⭐️</sub>
+  <sub>If this extension helps you, please consider giving it a ⭐️</sub>
 </div>

@@ -1,7 +1,7 @@
 {
     "name": "prompt-manager",
     "displayName": "Prompt Manager",
-    "description": "管理和快速选择Prompt模板的扩展，适配Cursor、VSCode Copilot",
+    "description": "Extension for managing and quickly selecting Prompt templates, compatible with Cursor and VSCode Copilot",
     "version": "0.0.1",
     "publisher": "prompt-manager-dev",
     "icon": "resources/prompt-manager-logo-2.png",
