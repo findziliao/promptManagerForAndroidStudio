@@ -67,10 +67,8 @@ export class VSCodeIntegrationService implements IChatIntegrationService {
       // 检查常见的VSCode Chat相关命令
       const commands = await vscode.commands.getCommands();
       const chatCommands = [
-        "workbench.action.chat.open",
         "github.copilot.interactiveEditor.explain",
         "github.copilot.sendChatToTerminal",
-        "workbench.action.chat.openInSidebar",
       ];
 
       return chatCommands.some((cmd) => commands.includes(cmd));
@@ -134,8 +132,14 @@ export class VSCodeIntegrationService implements IChatIntegrationService {
       // 先将prompt复制到剪贴板
       await vscode.env.clipboard.writeText(prompt);
 
-      // 尝试打开Copilot Chat
-      await vscode.commands.executeCommand("workbench.action.chat.open");
+      // 尝试使用github.copilot相关命令
+      try {
+        await vscode.commands.executeCommand("github.copilot.interactiveEditor.explain");
+      } catch (error) {
+        // 如果copilot命令不可用，直接返回false
+        console.warn("Copilot命令不可用:", error);
+        return false;
+      }
 
       // 短暂延迟后尝试粘贴
       await new Promise((resolve) => setTimeout(resolve, 300));
@@ -159,13 +163,9 @@ export class VSCodeIntegrationService implements IChatIntegrationService {
     try {
       await vscode.env.clipboard.writeText(prompt);
 
-      // 尝试打开Chat侧边栏
-      await vscode.commands.executeCommand("workbench.action.chat.openInSidebar");
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      await vscode.commands.executeCommand("editor.action.clipboardPasteAction");
-
-      return true;
+      // 由于通用chat命令不可用，直接返回false让程序使用剪贴板方式
+      console.warn("通用Chat命令在当前环境中不可用");
+      return false;
     } catch (error) {
       console.warn("通用Chat命令方式失败:", error);
       return false;

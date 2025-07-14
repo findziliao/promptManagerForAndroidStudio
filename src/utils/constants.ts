@@ -153,6 +153,13 @@ export const UI_CONSTANTS = {
     DESCRIPTION_PLACEHOLDER: "输入描述（可选）",
     TAGS_PLACEHOLDER: "输入标签，用逗号分隔（可选）",
   },
+  EDITOR: {
+    DEFAULT_TYPE: "webview", // 默认使用 WebView 编辑器
+    TYPES: {
+      WEBVIEW: "webview",
+      POPUP: "popup",
+    },
+  },
   MESSAGES: {
     COPY_SUCCESS: "Prompt已复制到剪贴板",
     SAVE_SUCCESS: "Prompt保存成功",
@@ -210,8 +217,8 @@ export const PERFORMANCE_CONSTANTS = {
 
 /** TreeView相关常量 */
 export const TREE_VIEW = {
-  /** 视图容器ID */
-  CONTAINER_ID: "prompt-manager",
+  /** 视图容器ID (现在在 explorer 中) */
+  CONTAINER_ID: "explorer",
   /** TreeView视图ID */
   VIEW_ID: "prompt-manager.promptTree",
   /** 视图名称 */

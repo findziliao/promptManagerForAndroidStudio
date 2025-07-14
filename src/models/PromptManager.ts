@@ -112,7 +112,7 @@ export class PromptManager implements IPromptManager {
    */
   async addPrompt(): Promise<void> {
     try {
-      const newPrompt = await this.uiService.showPromptEditor();
+      const newPrompt = await this.uiService.showPromptEditor(undefined, undefined, this.context || undefined);
 
       if (newPrompt) {
         await this.storageService.savePrompt(newPrompt);
@@ -138,7 +138,7 @@ export class PromptManager implements IPromptManager {
         return;
       }
 
-      const editedPrompt = await this.uiService.showPromptEditor(prompt);
+      const editedPrompt = await this.uiService.showPromptEditor(prompt, undefined, this.context || undefined);
 
       if (editedPrompt) {
         await this.storageService.savePrompt(editedPrompt);

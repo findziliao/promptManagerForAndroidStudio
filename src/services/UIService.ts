@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { IUIService, PromptItem, PromptCategory, QuickPickPromptItem } from "../types";
 import { UI_CONSTANTS, FILE_CONSTANTS, PERFORMANCE_CONSTANTS, getLocalizedFileFilter } from "../utils/constants";
 import { t } from "./LocalizationService";
+import { WebViewEditorService } from "./WebViewEditorService";
 
 /**
  * 用户界面服务实现
@@ -160,9 +161,64 @@ export class UIService implements IUIService {
   /**
    * 显示Prompt编辑界面
    * @param prompt 要编辑的Prompt，如果为空则创建新的
+   * @param editorType 编辑器类型，默认为webview
+   * @param context 扩展上下文（用于WebView编辑器）
    * @returns 编辑后的Prompt，如果取消则返回undefined
    */
-  async showPromptEditor(prompt?: PromptItem): Promise<PromptItem | undefined> {
+  async showPromptEditor(
+    prompt?: PromptItem,
+    editorType?: "webview" | "popup",
+    context?: vscode.ExtensionContext
+  ): Promise<PromptItem | undefined> {
+    try {
+      // 确定使用哪种编辑器
+      let useWebView = false;
+
+      if (editorType !== undefined) {
+        // 如果明确指定了编辑器类型
+        useWebView = editorType === "webview";
+      } else {
+        // 从配置中读取用户偏好
+        const config = vscode.workspace.getConfiguration("promptManager");
+        const configuredType = config.get<string>("editorType", UI_CONSTANTS.EDITOR.DEFAULT_TYPE);
+        useWebView = configuredType === "webview";
+      }
+
+      if (useWebView) {
+        return await this.showWebViewEditor(prompt, context);
+      } else {
+        return await this.showPopupEditor(prompt);
+      }
+    } catch (error) {
+      console.error("显示Prompt编辑器失败:", error);
+      await this.showError("显示编辑界面失败");
+      return undefined;
+    }
+  }
+
+  /**
+   * 显示WebView编辑器
+   * @param prompt 要编辑的Prompt，如果为空则创建新的
+   * @param context 扩展上下文
+   * @returns 编辑后的Prompt，如果取消则返回undefined
+   */
+  async showWebViewEditor(prompt?: PromptItem, context?: vscode.ExtensionContext): Promise<PromptItem | undefined> {
+    try {
+      const webViewEditorService = WebViewEditorService.getInstance();
+      return await webViewEditorService.showEditor(prompt, context);
+    } catch (error) {
+      console.error("显示WebView编辑器失败:", error);
+      await this.showError("WebView编辑器启动失败，将使用弹窗编辑器");
+      return await this.showPopupEditor(prompt);
+    }
+  }
+
+  /**
+   * 显示弹窗编辑器（原有实现）
+   * @param prompt 要编辑的Prompt，如果为空则创建新的
+   * @returns 编辑后的Prompt，如果取消则返回undefined
+   */
+  async showPopupEditor(prompt?: PromptItem): Promise<PromptItem | undefined> {
     try {
       const isEditing = !!prompt;
       const title = isEditing ? t("ui.editor.editPrompt", prompt.title) : t("ui.editor.createPrompt");

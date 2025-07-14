@@ -153,7 +153,11 @@ export interface IUIService {
   showPromptPicker(prompts: PromptItem[]): Promise<PromptItem | undefined>;
 
   /** 显示Prompt编辑界面 */
-  showPromptEditor(prompt?: PromptItem): Promise<PromptItem | undefined>;
+  showPromptEditor(
+    prompt?: PromptItem,
+    editorType?: "webview" | "popup",
+    context?: vscode.ExtensionContext
+  ): Promise<PromptItem | undefined>;
 
   /** 显示分类选择列表 */
   showCategoryPicker(categories: PromptCategory[]): Promise<PromptCategory | undefined>;

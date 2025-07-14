@@ -45,7 +45,7 @@
             ]
         },
         "views": {
-            "prompt-manager": [
+            "explorer": [
                 {
                     "id": "prompt-manager.promptTree",
                     "name": "%views.prompt-manager.promptTree.name%",
@@ -166,13 +166,20 @@
         "configuration": {
             "title": "%configuration.title%",
             "properties": {
+                "promptManager.editorType": {
+                    "type": "string",
+                    "enum": ["webview", "popup"],
+                    "default": "webview",
+                    "description": "选择编辑器类型",
+                    "enumDescriptions": [
+                        "使用WebView编辑器（推荐）- 提供更好的编辑体验，支持语法高亮和实时预览",
+                        "使用弹窗编辑器 - 传统的VSCode输入框方式"
+                    ]
+                },
                 "promptManager.defaultAction": {
                     "type": "string",
+                    "enum": ["copy", "chat"],
                     "default": "copy",
-                    "enum": [
-                        "copy",
-                        "chat"
-                    ],
                     "enumDescriptions": [
                         "%configuration.properties.promptManager.defaultAction.enumDescriptions.copy%",
                         "%configuration.properties.promptManager.defaultAction.enumDescriptions.chat%"
