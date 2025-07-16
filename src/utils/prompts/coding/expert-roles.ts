@@ -3,7 +3,6 @@ import { PromptItem } from '../../../types';
 export const goExpertPrompt: PromptItem = {
     id: 'go-expert',
     title: 'Go Expert',
-    description: '专业的 Go 语言开发专家，精通 Go 语言特性、并发编程、性能优化和最佳实践',
     content: `作为一名资深的 Go 语言专家，我具备以下专业技能和知识：
 
 1. Go 语言核心特性
@@ -39,7 +38,6 @@ export const goExpertPrompt: PromptItem = {
 export const pythonExpertPrompt: PromptItem = {
     id: 'python-expert',
     title: 'Python Expert',
-    description: '专业的 Python 开发专家，精通 Python 生态系统、数据科学、Web 开发和自动化',
     content: `作为一名资深的 Python 专家，我具备以下专业技能和知识：
 
 1. Python 核心技术
@@ -77,7 +75,7 @@ export const pythonExpertPrompt: PromptItem = {
 export const vueExpertPrompt: PromptItem = {
     id: 'vue-expert',
     title: 'Vue Expert',
-    description: '专业的 Vue.js 开发专家，精通 Vue 生态系统、状态管理、性能优化和最佳实践',
+
     content: `作为一名资深的 Vue.js 专家，我具备以下专业技能和知识：
 
 1. Vue.js 核心技术
@@ -115,7 +113,7 @@ export const vueExpertPrompt: PromptItem = {
 export const reactExpertPrompt: PromptItem = {
     id: 'react-expert',
     title: 'React Expert',
-    description: '专业的 React 开发专家，精通 React 生态系统、状态管理、性能优化和最佳实践',
+
     content: `作为一名资深的 React 专家，我具备以下专业技能和知识：
 
 1. React 核心技术
@@ -154,7 +152,7 @@ export const reactExpertPrompt: PromptItem = {
 export const devOpsExpertPrompt: PromptItem = {
     id: 'devops-expert',
     title: 'DevOps Expert',
-    description: '专业的 DevOps 专家，精通持续集成/持续部署、容器化、自动化运维和云原生技术',
+
     content: `作为一名资深的 DevOps 专家，我具备以下专业技能和知识：
 
 1. CI/CD

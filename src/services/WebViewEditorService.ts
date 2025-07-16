@@ -134,7 +134,6 @@ export class WebViewEditorService {
         id: data.id || this.generateId(),
         title: data.title.trim(),
         content: data.content.trim(),
-        description: data.description?.trim() || undefined,
         categoryId: data.categoryId || undefined,
         tags: data.tags && data.tags.length > 0 ? data.tags.filter((tag: string) => tag.trim() !== "") : undefined,
         createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
@@ -438,21 +437,14 @@ export class WebViewEditorService {
             <textarea id="content" class="form-input form-textarea" placeholder="输入 Prompt 内容" required></textarea>
         </div>
 
-        <div class="two-column">
-            <div class="form-group">
-                <label class="form-label" for="description">描述</label>
-                <textarea id="description" class="form-input" placeholder="输入 Prompt 描述（可选）" rows="3"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="category">分类</label>
-                <select id="category" class="form-select">
-                    <option value="">无分类</option>
-                </select>
-                <div class="category-actions">
-                    <button class="btn btn-secondary btn-small" onclick="createCategory()">创建新分类</button>
-                    <button class="btn btn-secondary btn-small" onclick="refreshCategories()">刷新分类</button>
-                </div>
+        <div class="form-group">
+            <label class="form-label" for="category">分类</label>
+            <select id="category" class="form-select">
+                <option value="">无分类</option>
+            </select>
+            <div class="category-actions">
+                <button class="btn btn-secondary btn-small" onclick="createCategory()">创建新分类</button>
+                <button class="btn btn-secondary btn-small" onclick="refreshCategories()">刷新分类</button>
             </div>
         </div>
 
@@ -505,7 +497,6 @@ export class WebViewEditorService {
             if (promptData) {
                 document.getElementById('title').value = promptData.title || '';
                 document.getElementById('content').value = promptData.content || '';
-                document.getElementById('description').value = promptData.description || '';
                 
                 if (promptData.tags) {
                     currentTags = [...promptData.tags];
@@ -579,7 +570,6 @@ export class WebViewEditorService {
         function save() {
             const title = document.getElementById('title').value.trim();
             const content = document.getElementById('content').value.trim();
-            const description = document.getElementById('description').value.trim();
             const categoryId = document.getElementById('category').value;
             
             if (!title || !content) {
@@ -591,7 +581,6 @@ export class WebViewEditorService {
                 id: promptData ? promptData.id : null,
                 title: title,
                 content: content,
-                description: description || undefined,
                 categoryId: categoryId || undefined,
                 tags: currentTags.length > 0 ? currentTags : undefined,
                 createdAt: promptData ? promptData.createdAt : null,

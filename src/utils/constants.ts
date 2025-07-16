@@ -81,7 +81,7 @@ export const UI_CONSTANTS = {
   INPUT_BOX: {
     TITLE_PLACEHOLDER: "输入Prompt标题",
     CONTENT_PLACEHOLDER: "输入Prompt内容",
-    DESCRIPTION_PLACEHOLDER: "输入描述（可选）",
+
     TAGS_PLACEHOLDER: "输入标签，用逗号分隔（可选）",
   },
   EDITOR: {
@@ -264,7 +264,6 @@ export function getLocalizedDefaultPrompts(t: (key: string) => string) {
     ...prompt,
     title: t(`prompt.${prompt.id}.title`) || prompt.title,
     content: t(`prompt.${prompt.id}.content`) || prompt.content,
-    description: t(`prompt.${prompt.id}.description`) || prompt.description,
     tags: prompt.tags?.map((tag: string) => t(`tag.${tag}`) || tag) || [],
   }));
 

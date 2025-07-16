@@ -292,7 +292,6 @@ export class ImportExportService implements IImportExportService {
         id: prompt.id || this.generateId(),
         title: String(prompt.title || "").trim(),
         content: String(prompt.content || "").trim(),
-        description: prompt.description ? String(prompt.description).trim() : undefined,
         categoryId: prompt.categoryId ? String(prompt.categoryId) : undefined,
         tags: Array.isArray(prompt.tags)
           ? prompt.tags.map((tag: any) => String(tag).trim()).filter((tag: string) => tag.length > 0)

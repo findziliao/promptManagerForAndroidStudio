@@ -321,7 +321,7 @@ function registerCommands(context: vscode.ExtensionContext) {
       const selectedPrompt = await vscode.window.showQuickPick(
         prompts.map((p) => ({
           label: p.title,
-          description: p.description || "",
+          description: "",
           detail: p.content.length > 100 ? p.content.substring(0, 100) + "..." : p.content,
           promptItem: p,
         })),
@@ -535,7 +535,7 @@ async function showPromptManagement() {
     // 准备Prompt选择项
     const promptItems = prompts.map((prompt) => ({
       label: `$(symbol-text) ${prompt.title}`,
-      description: prompt.description || "",
+      description: "",
       detail: `分类: ${prompt.categoryId || "无"} | 使用次数: ${prompt.usageCount || 0}`,
       prompt: prompt,
     }));
@@ -778,8 +778,8 @@ async function showStatistics() {
       stats.recentlyUsed.slice(0, 5).forEach((prompt, index) => {
         statisticsItems.push({
           label: `${index + 1}. ${prompt.title}`,
-          description: prompt.description || "",
-          detail: `使用次数: ${prompt.usageCount || 0} | 更新时间: ${prompt.updatedAt.toLocaleDateString()}`,
+          description: "",
+          detail: `使用次数: ${prompt.usageCount || 0} | 更新时间: ${prompt.updatedAt ? prompt.updatedAt.toLocaleDateString() : "未知"}`,
         });
       });
     }

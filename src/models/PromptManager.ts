@@ -236,10 +236,6 @@ export class PromptManager implements IPromptManager {
         else if (options?.includeContent !== false && prompt.content.toLowerCase().includes(searchTerm)) {
           isMatch = true;
         }
-        // 搜索描述
-        else if (options?.includeDescription !== false && prompt.description?.toLowerCase().includes(searchTerm)) {
-          isMatch = true;
-        }
         // 搜索标签
         else if (options?.includeTags !== false && prompt.tags?.some((tag) => tag.toLowerCase().includes(searchTerm))) {
           isMatch = true;

@@ -42,7 +42,7 @@ export class UIService implements IUIService {
         .slice(0, PERFORMANCE_CONSTANTS.MAX_QUICK_PICK_ITEMS)
         .map((prompt) => ({
           label: `$(symbol-text) ${prompt.title}`,
-          description: prompt.description || "",
+          description: "",
           detail: this.formatPromptDetail(prompt),
           promptItem: prompt,
           picked: false,
@@ -262,15 +262,7 @@ export class UIService implements IUIService {
         return undefined;
       }
 
-      // 步骤3: 输入描述（可选）
-      const promptDescription = await vscode.window.showInputBox({
-        title: title,
-        prompt: t("ui.editor.promptDescription"),
-        placeHolder: t("ui.input.descriptionPlaceholder"),
-        value: prompt?.description || "",
-      });
-
-      // 步骤4: 输入标签（可选）
+      // 步骤3: 输入标签（可选）
       const tagsInput = await vscode.window.showInputBox({
         title: title,
         prompt: t("ui.editor.promptTags"),
@@ -355,7 +347,6 @@ export class UIService implements IUIService {
         id: prompt?.id || this.generateId(),
         title: promptTitle.trim(),
         content: promptContent.trim(),
-        description: promptDescription?.trim() || undefined,
         categoryId: selectedCategoryId,
         tags: tags.length > 0 ? tags : undefined,
         createdAt: prompt?.createdAt || new Date(),
@@ -505,7 +496,7 @@ export class UIService implements IUIService {
         .slice(0, PERFORMANCE_CONSTANTS.MAX_QUICK_PICK_ITEMS)
         .map((prompt) => ({
           label: `$(symbol-text) ${prompt.title}`,
-          description: prompt.description || "",
+          description: "",
           detail: this.formatPromptDetail(prompt),
           promptItem: prompt,
           picked: false,

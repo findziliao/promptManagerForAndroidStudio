@@ -30,9 +30,6 @@ export interface PromptItem {
   /** Prompt内容 */
   content: string;
 
-  /** 描述信息 */
-  description?: string;
-
   /** 分类ID */
   categoryId?: string;
 
@@ -314,9 +311,6 @@ export interface TreePromptItem {
   /** 显示标签 */
   label: string;
 
-  /** 描述信息 */
-  description?: string;
-
   /** 上下文值，用于确定菜单项可见性 */
   contextValue: "promptItem" | "categoryItem";
 
@@ -346,6 +340,8 @@ export interface TreePromptItem {
  * TreeView分类项目接口
  */
 export interface TreeCategoryItem extends TreePromptItem {
+  /** 描述信息（分类专用） */
+  description?: string;
   contextValue: "categoryItem";
   categoryData: PromptCategory;
   children?: TreePromptItem[];

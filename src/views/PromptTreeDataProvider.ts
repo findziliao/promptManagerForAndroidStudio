@@ -40,7 +40,6 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
     const treeItem = new vscode.TreeItem(element.label, element.collapsibleState);
 
     treeItem.id = element.id;
-    treeItem.description = element.description;
     treeItem.contextValue = element.contextValue;
     treeItem.iconPath = element.iconPath;
     treeItem.command = element.command;
@@ -272,7 +271,6 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
     return {
       id: prompt.id,
       label: label,
-      description: prompt.description,
       contextValue: TREE_CONTEXT_VALUES.PROMPT_ITEM,
       iconPath: new vscode.ThemeIcon(icon),
       collapsibleState: vscode.TreeItemCollapsibleState.None,
@@ -297,7 +295,6 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
       const lines = [
         `**${prompt.title}**`,
         "",
-        `描述: ${prompt.description || "无"}`,
         `分类: ${prompt.categoryId || "未分类"}`,
         `标签: ${prompt.tags?.join(", ") || "无"}`,
         `使用次数: ${prompt.usageCount || 0}`,
@@ -309,7 +306,7 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
       return `${category.name}\n${category.description || ""}\n\n点击展开查看Prompt`;
     }
 
-    return element.description || element.label;
+    return element.label;
   }
 
   /**
@@ -383,10 +380,6 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
         if (prompt.title.toLowerCase().includes(searchTerm)) {
           isMatch = true;
         }
-        // 搜索描述
-        else if (prompt.description?.toLowerCase().includes(searchTerm)) {
-          isMatch = true;
-        }
         // 搜索标签
         else if (prompt.tags?.some((tag) => tag.toLowerCase().includes(searchTerm))) {
           isMatch = true;
@@ -438,8 +431,6 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
         const categoryName = category ? category.name : "未分类";
 
         const item = this.createPromptItem(prompt);
-        // 在描述中显示分类信息
-        item.description = `${categoryName} | ${item.description || ""}`;
 
         searchResults.push(item);
       }
