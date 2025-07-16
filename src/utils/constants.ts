@@ -69,57 +69,10 @@ export const DEFAULT_CATEGORIES = {
   },
 } as const;
 
+import { defaultPrompts } from './prompts';
+
 /** 默认示例Prompt */
-export const DEFAULT_PROMPTS = [
-  {
-    id: "sample-1",
-    title: "代码审查",
-    content:
-      "请审查以下代码，重点关注：\n1. 代码质量和可读性\n2. 潜在的bug和性能问题\n3. 最佳实践的遵循情况\n4. 安全性考虑\n\n代码：\n```\n[在此处粘贴代码]\n```",
-    description: "用于代码审查的标准",
-    categoryId: "coding",
-    tags: ["代码", "审查", "质量"],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    usageCount: 0,
-  },
-  {
-    id: "sample-2",
-    title: "技术文档写作",
-    content:
-      "请帮我写一份关于 [主题] 的技术文档，包括：\n1. 概述和目标\n2. 技术架构说明\n3. 实现细节\n4. 使用示例\n5. 注意事项和最佳实践\n\n请确保文档清晰易懂，适合技术人员阅读。",
-    description: "技术文档写作",
-    categoryId: "writing",
-    tags: ["文档", "技术", "写作"],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    usageCount: 0,
-  },
-  {
-    id: "sample-3",
-    title: "问题分析",
-    content:
-      "请帮我分析以下问题：\n\n问题描述：[描述问题]\n\n请从以下角度进行分析：\n1. 问题的根本原因\n2. 可能的解决方案\n3. 每个方案的优缺点\n4. 推荐的最佳解决方案\n5. 实施建议和注意事项",
-    description: "问题分析的标准",
-    categoryId: "general",
-    tags: ["分析", "问题", "解决方案"],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    usageCount: 0,
-  },
-  {
-    id: "sample-4",
-    title: "代码优化",
-    content:
-      "请优化以下代码，重点关注：\n1. 代码质量和可读性\n2. 潜在的bug和性能问题\n3. 最佳实践的遵循情况\n4. 安全性考虑\n\n代码：\n```\n[在此处粘贴代码]\n```",
-    description: "用于代码优化的标准",
-    categoryId: "coding",
-    tags: ["分析", "问题", "解决方案"],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    usageCount: 0,
-  }
-] as const;
+export const DEFAULT_PROMPTS = defaultPrompts;
 
 /** UI 相关常量 */
 export const UI_CONSTANTS = {
