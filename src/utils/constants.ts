@@ -69,7 +69,7 @@ export const DEFAULT_CATEGORIES = {
   },
 } as const;
 
-import { defaultPrompts } from './prompts';
+import { defaultPrompts, defaultCategories } from './prompts';
 
 /** 默认示例Prompt */
 export const DEFAULT_PROMPTS = defaultPrompts;
@@ -197,32 +197,57 @@ export const TREE_SPECIAL_CATEGORIES = {
  * @returns 本地化的默认分类
  */
 export function getLocalizedDefaultCategories(t: (key: string) => string) {
-  return {
-    GENERAL: {
-      id: "general",
-      name: t("category.general"),
-      description: t("category.general"),
-      icon: "symbol-misc",
-      sortOrder: 0,
-      createdAt: new Date(),
-    },
-    CODING: {
-      id: "coding",
-      name: t("category.coding"),
-      description: t("category.coding"),
-      icon: "code",
-      sortOrder: 1,
-      createdAt: new Date(),
-    },
-    WRITING: {
-      id: "writing",
-      name: t("category.writing"),
-      description: t("category.writing"),
-      icon: "book",
-      sortOrder: 2,
-      createdAt: new Date(),
-    },
-  };
+  // 获取自动加载的分类
+  const autoLoadedCategoriesMap: Record<string, any> = {};
+  
+  // 将自动加载的分类转换为本地化版本
+  defaultCategories.forEach(category => {
+    autoLoadedCategoriesMap[category.id.toUpperCase()] = {
+      ...category,
+      name: t(`category.${category.id}`) || category.name,
+      description: t(`category.${category.id}`) || category.description,
+    };
+  });
+
+  // 如果没有自动加载的分类，则使用默认的硬编码分类作为后备
+  if (defaultCategories.length === 0) {
+    return {
+      GENERAL: {
+        id: "general",
+        name: t("category.general"),
+        description: t("category.general"),
+        icon: "symbol-misc",
+        sortOrder: 0,
+        createdAt: new Date(),
+      },
+      CODING: {
+        id: "coding",
+        name: t("category.coding"),
+        description: t("category.coding"),
+        icon: "code",
+        sortOrder: 1,
+        createdAt: new Date(),
+      },
+      WRITING: {
+        id: "writing",
+        name: t("category.writing"),
+        description: t("category.writing"),
+        icon: "book",
+        sortOrder: 2,
+        createdAt: new Date(),
+      },
+    };
+  }
+
+  return autoLoadedCategoriesMap;
+}
+
+/**
+ * 获取自动加载的分类数组
+ * @returns PromptCategory 数组
+ */
+export function getAutoLoadedCategories() {
+  return defaultCategories;
 }
 
 /**
@@ -231,39 +256,24 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
  * @returns 本地化的默认提示
  */
 export function getLocalizedDefaultPrompts(t: (key: string) => string) {
-  return [
-    {
-      id: "sample-1",
-      title: t("defaultPrompt.codeReview"),
-      content: t("defaultPrompt.codeReviewContent"),
-      description: t("defaultPrompt.codeReviewDesc"),
-      categoryId: "coding",
-      tags: ["代码", "审查", "质量"],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      usageCount: 0,
-    },
-    {
-      id: "sample-2",
-      title: t("defaultPrompt.techDoc"),
-      content: t("defaultPrompt.techDocContent"),
-      description: t("defaultPrompt.techDocDesc"),
-      categoryId: "writing",
-      tags: ["文档", "技术", "写作"],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      usageCount: 0,
-    },
-    {
-      id: "sample-3",
-      title: t("defaultPrompt.problemAnalysis"),
-      content: t("defaultPrompt.problemAnalysisContent"),
-      description: t("defaultPrompt.problemAnalysisDesc"),
-      categoryId: "general",
-      tags: ["分析", "问题", "解决方案"],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      usageCount: 0,
-    },
-  ];
+  // 获取自动加载的 prompts 并去重（基于 id）
+  const uniquePrompts = new Map();
+  
+  defaultPrompts.forEach(prompt => {
+    if (!uniquePrompts.has(prompt.id)) {
+      uniquePrompts.set(prompt.id, prompt);
+    }
+  });
+
+  // 将去重后的 prompts 转换为本地化版本
+  const localizedPrompts = Array.from(uniquePrompts.values()).map(prompt => ({
+    ...prompt,
+    title: t(`prompt.${prompt.id}.title`) || prompt.title,
+    content: t(`prompt.${prompt.id}.content`) || prompt.content,
+    description: t(`prompt.${prompt.id}.description`) || prompt.description,
+    tags: prompt.tags?.map((tag: string) => t(`tag.${tag}`) || tag) || [],
+  }));
+
+  // 返回本地化后的 prompts
+  return localizedPrompts;
 }

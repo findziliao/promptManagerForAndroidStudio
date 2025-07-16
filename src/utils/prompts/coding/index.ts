@@ -7,6 +7,7 @@ import {
   reactExpertPrompt,
   devOpsExpertPrompt
 } from './expert-roles';
+import { codeDebugPrompt } from './code-debug';
 
 export {
   codeReviewPrompt,
@@ -15,7 +16,8 @@ export {
   pythonExpertPrompt,
   vueExpertPrompt,
   reactExpertPrompt,
-  devOpsExpertPrompt
+  devOpsExpertPrompt,
+  codeDebugPrompt
 };
 
 export const codingPrompts = [
@@ -25,5 +27,6 @@ export const codingPrompts = [
   pythonExpertPrompt,
   vueExpertPrompt,
   reactExpertPrompt,
-  devOpsExpertPrompt
+  devOpsExpertPrompt,
+  codeDebugPrompt
 ] as const; 

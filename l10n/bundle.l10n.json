@@ -191,5 +191,31 @@
 
     "defaultPrompt.problemAnalysis": "Problem Analysis",
     "defaultPrompt.problemAnalysisContent": "Please help me analyze the following problem:\n\nProblem Description: [Describe the problem]\n\nPlease analyze from these perspectives:\n1. Root cause of the problem\n2. Possible solutions\n3. Pros and cons of each solution\n4. Recommended best solution\n5. Implementation suggestions and considerations",
-    "defaultPrompt.problemAnalysisDesc": "Standard framework for problem analysis"
+    "defaultPrompt.problemAnalysisDesc": "Standard framework for problem analysis",
+
+    "prompt.code-review.title": "Code Review",
+    "prompt.code-review.content": "Please review the following code, focusing on:\n1. Code quality and readability\n2. Potential bugs and performance issues\n3. Best practices adherence\n4. Security considerations\n\nCode:\n```\n[Paste code here]\n```",
+    "prompt.code-review.description": "Standard template for code review",
+
+    "prompt.tech-doc.title": "Technical Documentation",
+    "prompt.tech-doc.content": "Please help me write technical documentation about [topic], including:\n1. Overview and objectives\n2. Technical architecture description\n3. Implementation details\n4. Usage examples\n5. Notes and best practices\n\nPlease ensure the documentation is clear and suitable for technical personnel.",
+    "prompt.tech-doc.description": "Technical documentation writing template",
+
+      "prompt.problem-analysis.title": "Problem Analysis",
+  "prompt.problem-analysis.content": "Please help me analyze the following problem:\n\nProblem Description: [Describe the problem]\n\nPlease analyze from these perspectives:\n1. Root cause of the problem\n2. Possible solutions\n3. Pros and cons of each solution\n4. Recommended best solution\n5. Implementation suggestions and considerations",
+  "prompt.problem-analysis.description": "Standard framework for problem analysis",
+
+  "prompt.code-debug-1.title": "Code Debugging Assistant",
+  "prompt.code-debug-1.content": "I am your code debugging assistant, and I will help you systematically analyze and solve code problems.\n\n## 📋 Problem Description\nPlease describe the problem you encountered in detail:\n- **Problem Symptoms**: [Detailed description of error symptoms]\n- **Expected Behavior**: [Explain how the code should work]\n- **Environment Info**: [Programming language, version, runtime environment, etc.]\n- **Error Messages**: [Complete error stack information]\n\n## 🔍 Code Analysis\nPlease provide the relevant code:\n```\n[Paste problematic code here]\n```\n\n## 🛠️ Debugging Strategy\n\nI will help you debug following these steps:\n\n### 1. Initial Analysis\n- Analyze error messages and stack traces\n- Identify possible root causes\n- Check code logic and syntax\n\n### 2. Systematic Investigation\n- **Input Validation**: Check input parameters and data types\n- **Boundary Conditions**: Verify edge cases and exception handling\n- **Dependencies**: Check external dependencies and module imports\n- **Environment Configuration**: Confirm runtime environment and configuration files\n\n### 3. Debugging Techniques\n- **Logging**: Add logging at key points\n- **Breakpoint Debugging**: Set breakpoints to observe variable states\n- **Unit Testing**: Write test cases to verify functionality\n- **Divide and Conquer**: Break complex problems into smaller parts\n\n### 4. Problem Localization\n- Determine the specific location where the problem occurs\n- Analyze the conditions that trigger the problem\n- Assess the impact scope of the problem\n\n### 5. Solutions\n- Provide multiple possible solutions\n- Explain the pros and cons of each approach\n- Recommend best practices and preventive measures\n\n## 🎯 Please provide the above information, and I will give you detailed debugging guidance and solutions!",
+  "prompt.code-debug-1.description": "Systematic code debugging guidance with complete problem analysis and solution process",
+
+    "tag.code": "Code",
+    "tag.review": "Review",
+    "tag.quality": "Quality",
+    "tag.documentation": "Documentation",
+    "tag.technical": "Technical",
+    "tag.writing": "Writing",
+    "tag.analysis": "Analysis",
+    "tag.problem": "Problem",
+    "tag.solution": "Solution"
 }
