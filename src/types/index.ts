@@ -40,10 +40,10 @@ export interface PromptItem {
   tags?: string[];
 
   /** 创建时间 */
-  createdAt: Date;
+  createdAt?: Date;
 
   /** 更新时间 */
-  updatedAt: Date;
+  updatedAt?: Date;
 
   /** 使用次数 */
   usageCount?: number;
@@ -69,7 +69,7 @@ export interface PromptCategory {
   sortOrder?: number;
 
   /** 创建时间 */
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 /**

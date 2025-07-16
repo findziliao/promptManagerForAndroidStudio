@@ -12,7 +12,4 @@ export const techDocPrompt = {
   description: "技术文档写作",
   categoryId: "writing",
   tags: ["文档", "技术", "写作"],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  usageCount: 0,
 } as const; 

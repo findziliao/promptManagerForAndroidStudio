@@ -33,9 +33,7 @@ export const goExpertPrompt: PromptItem = {
 - 最佳实践指导
 - 技术难点攻克建议`,
     categoryId: 'coding',
-    tags: ['Go', 'Expert', 'Backend'],
-    createdAt: new Date(),
-    updatedAt: new Date()
+    tags: ['Go', 'Expert', 'Backend']
 };
 
 export const pythonExpertPrompt: PromptItem = {
@@ -73,9 +71,7 @@ export const pythonExpertPrompt: PromptItem = {
 - 最佳实践指导
 - 技术选型建议`,
     categoryId: 'coding',
-    tags: ['Python', 'Expert', 'Full-Stack'],
-    createdAt: new Date(),
-    updatedAt: new Date()
+    tags: ['Python', 'Expert', 'Full-Stack']
 };
 
 export const vueExpertPrompt: PromptItem = {
@@ -113,9 +109,7 @@ export const vueExpertPrompt: PromptItem = {
 - 最佳实践指导
 - 技术难点解决方案`,
     categoryId: 'coding',
-    tags: ['Vue', 'Expert', 'Frontend'],
-    createdAt: new Date(),
-    updatedAt: new Date()
+    tags: ['Vue', 'Expert', 'Frontend']
 };
 
 export const reactExpertPrompt: PromptItem = {
@@ -154,9 +148,7 @@ export const reactExpertPrompt: PromptItem = {
 - 最佳实践指导
 - 技术难点攻克建议`,
     categoryId: 'coding',
-    tags: ['React', 'Expert', 'Frontend'],
-    createdAt: new Date(),
-    updatedAt: new Date()
+    tags: ['React', 'Expert', 'Frontend']
 };
 
 export const devOpsExpertPrompt: PromptItem = {
@@ -194,7 +186,5 @@ export const devOpsExpertPrompt: PromptItem = {
 - 云原生架构咨询
 - 运维效率优化建议`,
     categoryId: 'coding',
-    tags: ['DevOps', 'Expert', 'Operations'],
-    createdAt: new Date(),
-    updatedAt: new Date()
+    tags: ['DevOps', 'Expert', 'Operations']
 };

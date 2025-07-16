@@ -49,7 +49,6 @@ export const DEFAULT_CATEGORIES = {
     description: "通用Prompt",
     icon: "symbol-misc",
     sortOrder: 0,
-    createdAt: new Date(),
   },
   CODING: {
     id: "coding",
@@ -57,7 +56,6 @@ export const DEFAULT_CATEGORIES = {
     description: "编程相关Prompt",
     icon: "code",
     sortOrder: 1,
-    createdAt: new Date(),
   },
   WRITING: {
     id: "writing",
@@ -65,7 +63,6 @@ export const DEFAULT_CATEGORIES = {
     description: "写作相关Prompt",
     icon: "book",
     sortOrder: 2,
-    createdAt: new Date(),
   },
 } as const;
 
@@ -218,7 +215,6 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         description: t("category.general"),
         icon: "symbol-misc",
         sortOrder: 0,
-        createdAt: new Date(),
       },
       CODING: {
         id: "coding",
@@ -226,7 +222,6 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         description: t("category.coding"),
         icon: "code",
         sortOrder: 1,
-        createdAt: new Date(),
       },
       WRITING: {
         id: "writing",
@@ -234,7 +229,6 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         description: t("category.writing"),
         icon: "book",
         sortOrder: 2,
-        createdAt: new Date(),
       },
     };
   }

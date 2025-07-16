@@ -66,8 +66,8 @@ export class StorageService implements IStorageService {
       // 确保日期对象正确反序列化
       return stored.map((prompt) => ({
         ...prompt,
-        createdAt: new Date(prompt.createdAt),
-        updatedAt: new Date(prompt.updatedAt),
+        createdAt: prompt.createdAt ? new Date(prompt.createdAt) : undefined,
+        updatedAt: prompt.updatedAt ? new Date(prompt.updatedAt) : undefined,
       }));
     } catch (error) {
       console.error("获取Prompts失败:", error);
@@ -100,15 +100,11 @@ export class StorageService implements IStorageService {
         // 更新现有Prompt
         prompts[existingIndex] = {
           ...prompt,
-          updatedAt: new Date(),
         };
       } else {
         // 添加新Prompt
         prompts.push({
           ...prompt,
-          createdAt: prompt.createdAt || new Date(),
-          updatedAt: new Date(),
-          usageCount: prompt.usageCount || 0,
         });
       }
 
@@ -150,7 +146,7 @@ export class StorageService implements IStorageService {
       // 确保日期对象正确反序列化
       return stored.map((category) => ({
         ...category,
-        createdAt: new Date(category.createdAt),
+        createdAt: category.createdAt ? new Date(category.createdAt) : undefined,
       }));
     } catch (error) {
       console.error("获取分类失败:", error);
@@ -201,7 +197,7 @@ export class StorageService implements IStorageService {
       // 同时清除相关Prompt的分类引用
       const prompts = await this.getPrompts();
       const updatedPrompts = prompts.map((prompt) =>
-        prompt.categoryId === id ? { ...prompt, categoryId: undefined, updatedAt: new Date() } : prompt
+        prompt.categoryId === id ? { ...prompt, categoryId: undefined } : prompt
       );
 
       await Promise.all([
@@ -270,14 +266,10 @@ export class StorageService implements IStorageService {
         if (existingIndex >= 0) {
           mergedPrompts[existingIndex] = {
             ...prompt,
-            updatedAt: new Date(),
           };
         } else {
           mergedPrompts.push({
             ...prompt,
-            createdAt: prompt.createdAt || new Date(),
-            updatedAt: new Date(),
-            usageCount: prompt.usageCount || 0,
           });
         }
       }
@@ -398,7 +390,7 @@ export class StorageService implements IStorageService {
           if (usageA !== usageB) {
             return usageB - usageA;
           }
-          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+          return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
         })
         .slice(0, 10);
 

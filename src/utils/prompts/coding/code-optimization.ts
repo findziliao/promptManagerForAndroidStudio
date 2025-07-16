@@ -14,7 +14,4 @@ export const codeOptimizationPrompt = {
   description: "用于代码优化的标准",
   categoryId: "coding",
   tags: ["分析", "问题", "解决方案"],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  usageCount: 0,
 } as const; 

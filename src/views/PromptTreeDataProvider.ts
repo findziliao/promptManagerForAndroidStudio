@@ -235,7 +235,6 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
         description: "未分类的Prompt",
         icon: TREE_ICONS.CATEGORY,
         sortOrder: 999,
-        createdAt: new Date(),
       },
     };
   }

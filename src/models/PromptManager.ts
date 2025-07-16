@@ -339,7 +339,6 @@ export class PromptManager implements IPromptManager {
       const newCategory: PromptCategory = {
         ...category,
         id: this.generateId(),
-        createdAt: new Date(),
       };
 
       await this.storageService.saveCategory(newCategory);
@@ -475,7 +474,6 @@ export class PromptManager implements IPromptManager {
         await this.storageService.updatePrompt({
           ...prompt,
           categoryId: undefined,
-          updatedAt: new Date(),
         });
       }
 
@@ -717,7 +715,6 @@ export class PromptManager implements IPromptManager {
         const updatedPrompt = {
           ...prompt,
           usageCount: (prompt.usageCount || 0) + 1,
-          updatedAt: new Date(),
         };
 
         await this.storageService.updatePrompt(updatedPrompt);
@@ -738,7 +735,7 @@ export class PromptManager implements IPromptManager {
       if (usageA !== usageB) return usageB - usageA;
 
       // 按更新时间排序
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
     });
   }
 
@@ -793,9 +790,6 @@ export class PromptManager implements IPromptManager {
     const newPrompt: PromptItem = {
       ...prompt,
       id: this.generateId(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      usageCount: 0,
     };
 
     await this.storageService.savePrompt(newPrompt);

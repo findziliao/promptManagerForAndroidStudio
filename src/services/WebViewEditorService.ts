@@ -138,7 +138,6 @@ export class WebViewEditorService {
         categoryId: data.categoryId || undefined,
         tags: data.tags && data.tags.length > 0 ? data.tags.filter((tag: string) => tag.trim() !== "") : undefined,
         createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
-        updatedAt: new Date(),
         usageCount: data.usageCount || 0,
       };
 
@@ -169,7 +168,6 @@ export class WebViewEditorService {
         description: data.description?.trim() || undefined,
         icon: data.icon || "folder",
         sortOrder: 0,
-        createdAt: new Date(),
       };
 
       const { PromptManager } = await import("../models/PromptManager");

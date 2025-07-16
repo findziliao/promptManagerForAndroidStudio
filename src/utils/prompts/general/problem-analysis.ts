@@ -14,7 +14,4 @@ export const problemAnalysisPrompt = {
   description: "问题分析的标准",
   categoryId: "general",
   tags: ["分析", "问题", "解决方案"],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  usageCount: 0,
 } as const; 

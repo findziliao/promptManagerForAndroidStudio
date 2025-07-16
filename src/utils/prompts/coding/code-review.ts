@@ -14,7 +14,4 @@ export const codeReviewPrompt = {
   description: "用于代码审查的标准",
   categoryId: "coding",
   tags: ["代码", "审查", "质量"],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  usageCount: 0,
 } as const; 

@@ -51,8 +51,5 @@ export const codeDebugPrompt = {
   description: "系统性的代码调试指导，包含完整的问题分析和解决流程",
   categoryId: "coding",
   tags: ["调试", "排错", "问题分析", "故障排除"],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  usageCount: 0,
 } as const;
 

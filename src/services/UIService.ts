@@ -359,8 +359,6 @@ export class UIService implements IUIService {
         categoryId: selectedCategoryId,
         tags: tags.length > 0 ? tags : undefined,
         createdAt: prompt?.createdAt || new Date(),
-        updatedAt: new Date(),
-        usageCount: prompt?.usageCount || 0,
       };
 
       return result;
@@ -386,7 +384,7 @@ export class UIService implements IUIService {
       const items = categories.map((category) => ({
         label: `$(symbol-folder) ${category.name}`,
         description: category.description || "",
-        detail: `创建于 ${category.createdAt.toLocaleDateString()}`,
+        detail: `创建于 ${category.createdAt?.toLocaleDateString() || "未知"}`,
         category: category,
       }));
 
@@ -741,7 +739,7 @@ export class UIService implements IUIService {
       parts.push(`🚀 ${prompt.usageCount}次`);
     }
 
-    parts.push(`🕒 ${prompt.updatedAt.toLocaleDateString()}`);
+    parts.push(`🕒 ${prompt.updatedAt?.toLocaleDateString() || "未知"}`);
 
     return parts.join(" | ");
   }

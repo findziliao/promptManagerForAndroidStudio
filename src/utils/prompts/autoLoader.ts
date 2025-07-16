@@ -86,7 +86,6 @@ export function scanCategories(dir: string): PromptCategory[] {
             description: `${item} 相关Prompt`,
             icon: getCategoryIcon(item),
             sortOrder: getSortOrder(item),
-            createdAt: new Date(),
           };
           
           categories.push(category);
