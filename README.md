@@ -10,6 +10,20 @@
   [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/cursor-project/prompt-manager)
   [![VSCode](https://img.shields.io/badge/VSCode-1.60.0+-green.svg)](https://code.visualstudio.com/)
   [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://mit-license.org/)
+
+  ## Authors
+  <div style="display: flex; justify-content: center; gap: 20px;">
+    <a href="https://github.com/yuki-node" style="text-decoration: none;">
+      <img src="resources/Yuki.png" width="100" height="100" style="border-radius: 50%;" alt="Yuki">
+      <br>
+      <strong>Yuki</strong>
+    </a>
+    <a href="https://github.com/blackwingss" style="text-decoration: none;">
+      <img src="resources/Jinhui.JPG" width="100" height="100" style="border-radius: 50%;" alt="Jinhui">
+      <br>
+      <strong>Jinhui</strong>
+    </a>
+  </div>
 </div>
 
 ## 📋 Table of Contents
