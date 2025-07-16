@@ -535,8 +535,7 @@ async function showPromptManagement() {
     // 准备Prompt选择项
     const promptItems = prompts.map((prompt) => ({
       label: `$(symbol-text) ${prompt.title}`,
-      description: "",
-      detail: `分类: ${prompt.categoryId || "无"} | 使用次数: ${prompt.usageCount || 0}`,
+      detail: `分类: ${prompt.categoryId || "无"}`,
       prompt: prompt,
     }));
 
@@ -738,7 +737,7 @@ async function showStatistics() {
       {
         label: "📊 总体统计",
         description: "",
-        detail: `Prompt总数: ${stats.totalPrompts} | 分类总数: ${stats.totalCategories} | 总使用次数: ${stats.totalUsage}`,
+        detail: `Prompt总数: ${stats.totalPrompts} | 分类总数: ${stats.totalCategories}`,
         kind: vscode.QuickPickItemKind.Separator,
       },
       {
@@ -751,38 +750,7 @@ async function showStatistics() {
         description: `${stats.totalCategories} 个`,
         detail: "已创建的分类数量",
       },
-
-      {
-        label: "🚀 总使用次数",
-        description: `${stats.totalUsage} 次`,
-        detail: "所有Prompt的累计使用次数",
-      },
     ];
-
-    // 添加最近使用的Prompt
-    if (stats.recentlyUsed && stats.recentlyUsed.length > 0) {
-      statisticsItems.push({
-        label: "",
-        description: "",
-        detail: "",
-        kind: vscode.QuickPickItemKind.Separator,
-      });
-
-      statisticsItems.push({
-        label: "🕒 最近使用的Prompt",
-        description: "",
-        detail: "",
-        kind: vscode.QuickPickItemKind.Separator,
-      });
-
-      stats.recentlyUsed.slice(0, 5).forEach((prompt, index) => {
-        statisticsItems.push({
-          label: `${index + 1}. ${prompt.title}`,
-          description: "",
-          detail: `使用次数: ${prompt.usageCount || 0} | 更新时间: ${prompt.updatedAt ? prompt.updatedAt.toLocaleDateString() : "未知"}`,
-        });
-      });
-    }
 
     // 添加热门分类
     if (stats.topCategories && stats.topCategories.length > 0) {
@@ -815,20 +783,6 @@ async function showStatistics() {
       matchOnDescription: true,
       matchOnDetail: true,
     });
-
-    // 可以根据选择的项目执行相应操作
-    if (selected) {
-      if (selected.label.includes("最近使用") && !selected.label.includes("🕒")) {
-        // 如果选择了最近使用的某个Prompt，可以直接复制
-        const promptTitle = selected.label.replace(/^\d+\.\s*/, "");
-        const prompts = await promptManager.getStorageService().getPrompts();
-        const selectedPrompt = prompts.find((p) => p.title === promptTitle);
-
-        if (selectedPrompt) {
-          await promptManager.copyPromptToClipboard(selectedPrompt.id);
-        }
-      }
-    }
   } catch (error) {
     console.error("获取统计信息失败:", error);
     vscode.window.showErrorMessage("获取统计信息失败");

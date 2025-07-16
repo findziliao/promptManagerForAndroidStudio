@@ -293,11 +293,9 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
     if (element.contextValue === TREE_CONTEXT_VALUES.PROMPT_ITEM && element.promptData) {
       const prompt = element.promptData;
       const lines = [
-        `**${prompt.title}**`,
         "",
         `分类: ${prompt.categoryId || "未分类"}`,
         `标签: ${prompt.tags?.join(", ") || "无"}`,
-        `使用次数: ${prompt.usageCount || 0}`,
         "",
       ];
       return lines.join("\n");
@@ -420,8 +418,8 @@ export class PromptTreeDataProvider implements IPromptTreeDataProvider {
         if (aInTitle !== bInTitle) {
           return aInTitle ? -1 : 1;
         }
-        // 使用次数排序
-        return (b.usageCount || 0) - (a.usageCount || 0);
+        // 按字母顺序排序
+        return a.title.localeCompare(b.title);
       });
 
       // 转换为TreeItem，显示分类信息

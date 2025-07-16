@@ -93,10 +93,7 @@ export class PromptManager implements IPromptManager {
         return;
       }
 
-      // 按使用次数和更新时间排序
-      const sortedPrompts = this.sortPrompts(prompts);
-
-      const selectedPrompt = await this.uiService.showPromptPicker(sortedPrompts);
+      const selectedPrompt = await this.uiService.showPromptPicker(prompts);
 
       if (selectedPrompt) {
         await this.handlePromptSelection(selectedPrompt);
@@ -193,9 +190,6 @@ export class PromptManager implements IPromptManager {
       // 复制到剪贴板
       await this.clipboardService.copyPrompt(prompt.title, prompt.content, true);
 
-      // 增加使用次数
-      await this.incrementUsageCount(promptId);
-
       await this.uiService.showInfo(t("message.promptCopied", prompt.title));
     } catch (error) {
       console.error("复制Prompt失败:", error);
@@ -218,7 +212,7 @@ export class PromptManager implements IPromptManager {
       ]);
 
       if (!keyword || keyword.trim() === "") {
-        return this.sortPrompts(allPrompts);
+        return allPrompts;
       }
 
       const searchTerm = keyword.toLowerCase().trim();
@@ -267,7 +261,7 @@ export class PromptManager implements IPromptManager {
         }
       }
 
-      return this.sortPrompts(matchedPrompts);
+      return matchedPrompts;
     } catch (error) {
       console.error("搜索Prompt失败:", error);
       return [];
@@ -310,7 +304,7 @@ export class PromptManager implements IPromptManager {
     try {
       const allPrompts = await this.storageService.getPrompts();
       const filtered = allPrompts.filter((prompt) => prompt.categoryId === categoryId);
-      return this.sortPrompts(filtered);
+      return filtered;
     } catch (error) {
       console.error("获取分类Prompt失败:", error);
       return [];
@@ -607,8 +601,6 @@ export class PromptManager implements IPromptManager {
       return {
         totalPrompts: 0,
         totalCategories: 0,
-        totalUsage: 0,
-        recentlyUsed: [],
         topCategories: [],
       };
     }
@@ -701,41 +693,6 @@ export class PromptManager implements IPromptManager {
   }
 
   /**
-   * 增加使用次数
-   */
-  private async incrementUsageCount(promptId: string): Promise<void> {
-    try {
-      const prompt = await this.storageService.getPrompt(promptId);
-
-      if (prompt) {
-        const updatedPrompt = {
-          ...prompt,
-          usageCount: (prompt.usageCount || 0) + 1,
-        };
-
-        await this.storageService.updatePrompt(updatedPrompt);
-      }
-    } catch (error) {
-      console.error("更新使用次数失败:", error);
-    }
-  }
-
-  /**
-   * 排序Prompt列表
-   */
-  private sortPrompts(prompts: PromptItem[]): PromptItem[] {
-    return prompts.sort((a, b) => {
-      // 按使用次数排序
-      const usageA = a.usageCount || 0;
-      const usageB = b.usageCount || 0;
-      if (usageA !== usageB) return usageB - usageA;
-
-      // 按更新时间排序
-      return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
-    });
-  }
-
-  /**
    * 执行数据导入
    */
   private async performImport(importData: ExportData): Promise<void> {
@@ -782,7 +739,7 @@ export class PromptManager implements IPromptManager {
   /**
    * 创建新Prompt（接口方法）
    */
-  async createPrompt(prompt: Omit<PromptItem, "id" | "createdAt" | "updatedAt">): Promise<PromptItem> {
+  async createPrompt(prompt: Omit<PromptItem, "id">): Promise<PromptItem> {
     const newPrompt: PromptItem = {
       ...prompt,
       id: this.generateId(),
@@ -803,13 +760,6 @@ export class PromptManager implements IPromptManager {
       console.error("更新Prompt失败:", error);
       await this.uiService.showError("更新Prompt失败");
     }
-  }
-
-  /**
-   * 增加使用计数（接口方法）
-   */
-  async incrementUsage(id: string): Promise<void> {
-    await this.incrementUsageCount(id);
   }
 
   /**
@@ -853,7 +803,6 @@ export class PromptManager implements IPromptManager {
       const success = await currentService.sendToChat(chatOptions);
 
       if (success) {
-        await this.incrementUsageCount(promptId);
         await this.uiService.showInfo(`Prompt "${prompt.title}" 已发送到Chat窗口`);
         return true;
       } else {

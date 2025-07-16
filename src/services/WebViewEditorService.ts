@@ -136,8 +136,6 @@ export class WebViewEditorService {
         content: data.content.trim(),
         categoryId: data.categoryId || undefined,
         tags: data.tags && data.tags.length > 0 ? data.tags.filter((tag: string) => tag.trim() !== "") : undefined,
-        createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
-        usageCount: data.usageCount || 0,
       };
 
       return prompt;
@@ -583,7 +581,7 @@ export class WebViewEditorService {
                 content: content,
                 categoryId: categoryId || undefined,
                 tags: currentTags.length > 0 ? currentTags : undefined,
-                createdAt: promptData ? promptData.createdAt : null,
+                // createdAt: promptData ? promptData.createdAt : null,
                 usageCount: promptData ? promptData.usageCount : 0
             };
             

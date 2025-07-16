@@ -66,8 +66,6 @@ export class StorageService implements IStorageService {
       // 确保日期对象正确反序列化
       return stored.map((prompt) => ({
         ...prompt,
-        createdAt: prompt.createdAt ? new Date(prompt.createdAt) : undefined,
-        updatedAt: prompt.updatedAt ? new Date(prompt.updatedAt) : undefined,
       }));
     } catch (error) {
       console.error("获取Prompts失败:", error);
@@ -333,7 +331,6 @@ export class StorageService implements IStorageService {
   async getStorageStats(): Promise<{
     promptCount: number;
     categoryCount: number;
-    totalUsage: number;
   }> {
     try {
       const prompts = await this.getPrompts();
@@ -342,34 +339,17 @@ export class StorageService implements IStorageService {
       return {
         promptCount: prompts.length,
         categoryCount: categories.length,
-        totalUsage: prompts.reduce((sum, p) => sum + (p.usageCount || 0), 0),
       };
     } catch (error) {
       console.error("获取存储统计失败:", error);
       return {
         promptCount: 0,
         categoryCount: 0,
-        totalUsage: 0,
       };
     }
   }
 
-  /**
-   * 增加Prompt使用次数
-   */
-  async incrementPromptUsage(id: string): Promise<void> {
-    try {
-      const prompt = await this.getPrompt(id);
-      if (prompt) {
-        prompt.usageCount = (prompt.usageCount || 0) + 1;
-        prompt.updatedAt = new Date();
-        await this.savePrompt(prompt);
-      }
-    } catch (error) {
-      console.error("增加使用次数失败:", error);
-      // 不抛出错误，避免影响主要功能
-    }
-  }
+
 
   /**
    * 获取详细统计信息（为PromptManager兼容）
@@ -379,31 +359,16 @@ export class StorageService implements IStorageService {
       const prompts = await this.getPrompts();
       const categories = await this.getCategories();
 
-      const totalUsage = prompts.reduce((sum, prompt) => sum + (prompt.usageCount || 0), 0);
-
-      // 最近使用的Prompt（按使用次数和更新时间排序）
-      const recentlyUsed = prompts
-        .filter((p) => (p.usageCount || 0) > 0)
-        .sort((a, b) => {
-          const usageA = a.usageCount || 0;
-          const usageB = b.usageCount || 0;
-          if (usageA !== usageB) {
-            return usageB - usageA;
-          }
-          return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
-        })
-        .slice(0, 10);
-
-      // 热门分类
-      const categoryUsage = new Map<string, number>();
+      // 热门分类（按Prompt数量排序）
+      const categoryCount = new Map<string, number>();
       prompts.forEach((prompt) => {
         if (prompt.categoryId) {
-          const current = categoryUsage.get(prompt.categoryId) || 0;
-          categoryUsage.set(prompt.categoryId, current + (prompt.usageCount || 0));
+          const current = categoryCount.get(prompt.categoryId) || 0;
+          categoryCount.set(prompt.categoryId, current + 1);
         }
       });
 
-      const topCategories = Array.from(categoryUsage.entries())
+      const topCategories = Array.from(categoryCount.entries())
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5)
         .map(([categoryId]) => categoryId);
@@ -411,8 +376,6 @@ export class StorageService implements IStorageService {
       return {
         totalPrompts: prompts.length,
         totalCategories: categories.length,
-        totalUsage,
-        recentlyUsed,
         topCategories,
       };
     } catch (error) {
@@ -420,8 +383,6 @@ export class StorageService implements IStorageService {
       return {
         totalPrompts: 0,
         totalCategories: 0,
-        totalUsage: 0,
-        recentlyUsed: [],
         topCategories: [],
       };
     }

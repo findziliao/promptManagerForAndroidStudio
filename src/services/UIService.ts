@@ -349,7 +349,6 @@ export class UIService implements IUIService {
         content: promptContent.trim(),
         categoryId: selectedCategoryId,
         tags: tags.length > 0 ? tags : undefined,
-        createdAt: prompt?.createdAt || new Date(),
       };
 
       return result;
@@ -726,11 +725,7 @@ export class UIService implements IUIService {
       parts.push(`🏷️ ${prompt.tags.join(", ")}`);
     }
 
-    if (prompt.usageCount && prompt.usageCount > 0) {
-      parts.push(`🚀 ${prompt.usageCount}次`);
-    }
-
-    parts.push(`🕒 ${prompt.updatedAt?.toLocaleDateString() || "未知"}`);
+    // parts.push(`🕒 ${prompt.createdAt?.toLocaleDateString() || "未知"}`);
 
     return parts.join(" | ");
   }

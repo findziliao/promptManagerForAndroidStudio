@@ -35,15 +35,6 @@ export interface PromptItem {
 
   /** 标签列表 */
   tags?: string[];
-
-  /** 创建时间 */
-  createdAt?: Date;
-
-  /** 更新时间 */
-  updatedAt?: Date;
-
-  /** 使用次数 */
-  usageCount?: number;
 }
 
 /**
@@ -217,16 +208,13 @@ export interface IPromptManager {
   getPromptsByCategory(categoryId: string): Promise<PromptItem[]>;
 
   /** 创建新Prompt */
-  createPrompt(prompt: Omit<PromptItem, "id" | "createdAt" | "updatedAt">): Promise<PromptItem>;
+  createPrompt(prompt: Omit<PromptItem, "id">): Promise<PromptItem>;
 
   /** 更新Prompt */
   updatePrompt(prompt: PromptItem): Promise<void>;
 
   /** 删除Prompt */
   deletePrompt(id: string): Promise<void>;
-
-  /** 增加使用计数 */
-  incrementUsage(id: string): Promise<void>;
 
   /** 导出所有数据 */
   exportData(): Promise<ExportData>;
@@ -258,7 +246,7 @@ export interface SearchOptions {
   includeTags?: boolean;
 
   /** 排序方式 */
-  sortBy?: "title" | "createdAt" | "updatedAt" | "usageCount";
+  sortBy?: "title";
 
   /** 排序方向 */
   sortDirection?: "asc" | "desc";
@@ -290,12 +278,6 @@ export interface PromptStats {
 
   /** 分类总数 */
   totalCategories: number;
-
-  /** 总使用次数 */
-  totalUsage: number;
-
-  /** 最近使用的Prompt */
-  recentlyUsed: PromptItem[];
 
   /** 热门分类 */
   topCategories: string[];

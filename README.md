@@ -90,7 +90,7 @@
 - **Create Prompts** - Support for title, content, description, tags, and categories
 - **Edit Prompts** - Modify anytime with automatic save of modification time
 - **Delete Prompts** - Support for individual deletion and batch cleanup
-- **Usage Statistics** - Automatic usage count tracking with popularity-based sorting
+- **Simple Management** - Easy organization with category-based structure
 
 ### Category System
 - **Default Categories** - Three basic categories: General, Programming, Writing

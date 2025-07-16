@@ -236,7 +236,6 @@ export class ImportExportService implements IImportExportService {
       const details = [
         `Prompt总数: ${prompts.length}`,
         `分类总数: ${categories.length}`,
-        `使用次数统计: ${prompts.reduce((sum, p) => sum + (p.usageCount || 0), 0)} 次`,
         `有标签的Prompt: ${prompts.filter((p) => p.tags && p.tags.length > 0).length} 个`,
         `估计文件大小: ${sizeInKB} KB`,
       ];
@@ -296,7 +295,7 @@ export class ImportExportService implements IImportExportService {
         tags: Array.isArray(prompt.tags)
           ? prompt.tags.map((tag: any) => String(tag).trim()).filter((tag: string) => tag.length > 0)
           : undefined,
-        createdAt: prompt.createdAt ? new Date(prompt.createdAt) : new Date(),
+        // createdAt: prompt.createdAt ? new Date(prompt.createdAt) : new Date(),
         updatedAt: prompt.updatedAt ? new Date(prompt.updatedAt) : new Date(),
         usageCount: Number(prompt.usageCount) || 0,
       }));
