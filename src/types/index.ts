@@ -143,7 +143,6 @@ export interface IUIService {
   /** 显示Prompt编辑界面 */
   showPromptEditor(
     prompt?: PromptItem,
-    editorType?: "webview" | "popup",
     context?: vscode.ExtensionContext
   ): Promise<PromptItem | undefined>;
 

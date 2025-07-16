@@ -159,36 +159,17 @@ export class UIService implements IUIService {
   }
 
   /**
-   * 显示Prompt编辑界面
+   * 显示Prompt编辑界面（使用WebView编辑器）
    * @param prompt 要编辑的Prompt，如果为空则创建新的
-   * @param editorType 编辑器类型，默认为webview
-   * @param context 扩展上下文（用于WebView编辑器）
+   * @param context 扩展上下文
    * @returns 编辑后的Prompt，如果取消则返回undefined
    */
   async showPromptEditor(
     prompt?: PromptItem,
-    editorType?: "webview" | "popup",
     context?: vscode.ExtensionContext
   ): Promise<PromptItem | undefined> {
     try {
-      // 确定使用哪种编辑器
-      let useWebView = false;
-
-      if (editorType !== undefined) {
-        // 如果明确指定了编辑器类型
-        useWebView = editorType === "webview";
-      } else {
-        // 从配置中读取用户偏好
-        const config = vscode.workspace.getConfiguration("promptManager");
-        const configuredType = config.get<string>("editorType", UI_CONSTANTS.EDITOR.DEFAULT_TYPE);
-        useWebView = configuredType === "webview";
-      }
-
-      if (useWebView) {
-        return await this.showWebViewEditor(prompt, context);
-      } else {
-        return await this.showPopupEditor(prompt);
-      }
+      return await this.showWebViewEditor(prompt, context);
     } catch (error) {
       console.error("显示Prompt编辑器失败:", error);
       await this.showError("显示编辑界面失败");
@@ -208,153 +189,7 @@ export class UIService implements IUIService {
       return await webViewEditorService.showEditor(prompt, context);
     } catch (error) {
       console.error("显示WebView编辑器失败:", error);
-      await this.showError("WebView编辑器启动失败，将使用弹窗编辑器");
-      return await this.showPopupEditor(prompt);
-    }
-  }
-
-  /**
-   * 显示弹窗编辑器（原有实现）
-   * @param prompt 要编辑的Prompt，如果为空则创建新的
-   * @returns 编辑后的Prompt，如果取消则返回undefined
-   */
-  async showPopupEditor(prompt?: PromptItem): Promise<PromptItem | undefined> {
-    try {
-      const isEditing = !!prompt;
-      const title = isEditing ? t("ui.editor.editPrompt", prompt.title) : t("ui.editor.createPrompt");
-
-      // 步骤1: 输入标题
-      const promptTitle = await vscode.window.showInputBox({
-        title: title,
-        prompt: t("ui.editor.promptTitle"),
-        placeHolder: t("ui.input.titlePlaceholder"),
-        value: prompt?.title || "",
-        validateInput: (value) => {
-          if (!value || value.trim() === "") {
-            return t("error.titleRequired");
-          }
-          if (value.length > 100) {
-            return t("error.titleTooLong");
-          }
-          return null;
-        },
-      });
-
-      if (!promptTitle) {
-        return undefined;
-      }
-
-      // 步骤2: 输入内容
-      const promptContent = await vscode.window.showInputBox({
-        title: title,
-        prompt: t("ui.editor.promptContent"),
-        placeHolder: t("ui.input.contentPlaceholder"),
-        value: prompt?.content || "",
-        validateInput: (value) => {
-          if (!value || value.trim() === "") {
-            return t("error.contentRequired");
-          }
-          return null;
-        },
-      });
-
-      if (!promptContent) {
-        return undefined;
-      }
-
-      // 步骤3: 输入标签（可选）
-      const tagsInput = await vscode.window.showInputBox({
-        title: title,
-        prompt: t("ui.editor.promptTags"),
-        placeHolder: t("ui.input.tagsPlaceholder"),
-        value: prompt?.tags?.join(", ") || "",
-      });
-
-      // 解析标签
-      const tags = tagsInput
-        ? tagsInput
-            .split(/[,，]/)
-            .map((tag) => tag.trim())
-            .filter((tag) => tag.length > 0)
-        : prompt?.tags || [];
-
-      // 步骤5: 选择分类（可选）
-      let selectedCategoryId = prompt?.categoryId;
-
-      // 导入PromptManager来获取分类列表（需要后续优化这个依赖关系）
-      const { PromptManager } = await import("../models/PromptManager");
-      const promptManager = PromptManager.getInstance();
-      const categories = await promptManager.getStorageService().getCategories();
-
-      if (categories.length > 0) {
-        const categoryOptions = [
-          { label: "$(folder-opened) 无分类", description: "不分配到任何分类", categoryId: undefined },
-          ...categories.map((cat) => ({
-            label: `$(symbol-folder) ${cat.name}`,
-            description: cat.description || "",
-            categoryId: cat.id,
-          })),
-          { label: "$(plus) 创建新分类", description: "创建一个新的分类", categoryId: "CREATE_NEW" },
-        ];
-
-        const selectedCategory = await vscode.window.showQuickPick(categoryOptions, {
-          title: title,
-          placeHolder: t("ui.editor.selectCategory"),
-        });
-
-        if (selectedCategory) {
-          if (selectedCategory.categoryId === "CREATE_NEW") {
-            // 创建新分类的快捷流程
-            const newCategoryName = await vscode.window.showInputBox({
-              title: t("ui.editor.createCategory"),
-              prompt: t("ui.editor.categoryName"),
-              placeHolder: t("ui.input.categoryPlaceholder"),
-              validateInput: (value) => {
-                if (!value || value.trim() === "") {
-                  return t("error.categoryNameRequired");
-                }
-                return null;
-              },
-            });
-
-            if (newCategoryName) {
-              const newCategoryDesc = await vscode.window.showInputBox({
-                title: t("ui.editor.createCategory"),
-                prompt: t("ui.editor.categoryDescription"),
-                placeHolder: t("ui.input.descriptionPlaceholder"),
-              });
-
-              // 创建新分类
-              await promptManager.addCategory({
-                name: newCategoryName.trim(),
-                description: newCategoryDesc?.trim(),
-                sortOrder: 0,
-              });
-
-              // 获取新创建的分类ID（简化实现：根据名称查找）
-              const updatedCategories = await promptManager.getStorageService().getCategories();
-              const newCategory = updatedCategories.find((cat) => cat.name === newCategoryName.trim());
-              selectedCategoryId = newCategory?.id;
-            }
-          } else {
-            selectedCategoryId = selectedCategory.categoryId;
-          }
-        }
-      }
-
-      // 构建结果
-      const result: PromptItem = {
-        id: prompt?.id || this.generateId(),
-        title: promptTitle.trim(),
-        content: promptContent.trim(),
-        categoryId: selectedCategoryId,
-        tags: tags.length > 0 ? tags : undefined,
-      };
-
-      return result;
-    } catch (error) {
-      console.error("显示Prompt编辑器失败:", error);
-      await this.showError(t("error.editPromptFailed"));
+      await this.showError("WebView编辑器启动失败");
       return undefined;
     }
   }
