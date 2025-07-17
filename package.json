@@ -181,8 +181,8 @@
         "keybindings": [
             {
                 "command": "prompt-manager.showPrompts",
-                "key": "ctrl+shift+q",
-                "mac": "cmd+shift+q"
+                "key": "ctrl+shift+p",
+                "mac": "cmd+shift+p"
             },
             {
                 "command": "prompt-manager.searchPrompts",
