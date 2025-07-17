@@ -93,14 +93,9 @@
 
 ## 🎥 Demo
 
-<div align="center">
-  <video width="800" height="450" controls>
-    <source src="resources/prompt-management-demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  <br>
-  <em>Watch the demo to see Prompt Manager in action!</em>
-</div>
+
+https://github.com/user-attachments/assets/d56490ff-c262-4ed4-b88c-989afb54ea5d
+
 
 ## 🛠 Core Features
 
