@@ -8,6 +8,7 @@ import {
   devOpsExpertPrompt
 } from './expert-roles';
 import { codeDebugPrompt } from './code-debug';
+import { codeDrawInfraPrompt } from "./code-draw-infra";
 
 export {
   codeReviewPrompt,
@@ -17,7 +18,8 @@ export {
   vueExpertPrompt,
   reactExpertPrompt,
   devOpsExpertPrompt,
-  codeDebugPrompt
+  codeDebugPrompt,
+  codeDrawInfraPrompt
 };
 
 export const codingPrompts = [
@@ -28,5 +30,6 @@ export const codingPrompts = [
   vueExpertPrompt,
   reactExpertPrompt,
   devOpsExpertPrompt,
-  codeDebugPrompt
+  codeDebugPrompt,
+  codeDrawInfraPrompt
 ] as const; 

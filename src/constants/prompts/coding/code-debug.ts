@@ -48,7 +48,6 @@ export const codeDebugPrompt = {
 - 推荐最佳实践和预防措施
 
 ## 🎯 请提供以上信息，我将为你提供详细的调试指导和解决方案！`,
-  description: "系统性的代码调试指导，包含完整的问题分析和解决流程",
   categoryId: "coding",
   tags: ["调试", "排错", "问题分析", "故障排除"],
 } as const;

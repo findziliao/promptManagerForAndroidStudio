@@ -1,4 +1,4 @@
-import { codingPrompts, codeReviewPrompt, codeOptimizationPrompt, codeDebugPrompt } from './coding';
+import { codingPrompts, codeReviewPrompt, codeOptimizationPrompt, codeDebugPrompt, codeDrawInfraPrompt } from './coding';
 import { writingPrompts, techDocPrompt } from './writing';
 import { generalPrompts, problemAnalysisPrompt } from './general';
 import { scanPrompts, scanCategories } from './autoLoader';
@@ -8,6 +8,7 @@ export {
   codeReviewPrompt,
   codeOptimizationPrompt,
   codeDebugPrompt,
+  codeDrawInfraPrompt,
   // Writing
   techDocPrompt,
   // General
