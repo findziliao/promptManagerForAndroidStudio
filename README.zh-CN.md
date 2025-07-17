@@ -12,18 +12,24 @@
   [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://mit-license.org/)
 
   ## 作者
-  <div style="display: flex; justify-content: center; gap: 20px;">
-    <a href="https://github.com/yuki-node" style="text-decoration: none;">
-      <img src="resources/Yuki.png" width="100" height="100" style="border-radius: 50%;" alt="Yuki">
-      <br>
-      <strong>Yuki</strong>
-    </a>
-    <a href="https://github.com/blackwingss" style="text-decoration: none;">
-      <img src="resources/Jinhui.JPG" width="100" height="100" style="border-radius: 50%;" alt="Jinhui">
-      <br>
-      <strong>Jinhui</strong>
-    </a>
-  </div>
+  <table align="center" cellpadding="20">
+    <tr>
+      <td align="center">
+        <a href="https://github.com/yuki-node">
+          <img src="resources/Yuki.png" width="100" height="100" alt="Yuki">
+          <br>
+          <strong>Yuki</strong>
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/blackwingss">
+          <img src="resources/Jinhui.JPG" width="100" height="100" alt="Jinhui">
+          <br>
+          <strong>Jinhui</strong>
+        </a>
+      </td>
+    </tr>
+  </table>
 </div>
 
 ## 📋 目录
