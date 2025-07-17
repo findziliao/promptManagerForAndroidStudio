@@ -36,6 +36,7 @@
 
 - [功能特色](#-功能特色)
 - [快速开始](#-快速开始)
+- [演示](#-演示)
 - [核心功能](#-核心功能)
 - [界面介绍](#-界面介绍)
 - [使用指南](#-使用指南)
@@ -89,6 +90,17 @@
 2. **浏览默认模板** - 插件预置了代码审查、技术文档、问题分析等常用模板
 3. **添加自定义Prompt** - 点击➕按钮或使用快捷键 `Ctrl+Shift+P`
 4. **开始使用** - 选择Prompt，自动复制到剪贴板或双击发送到Chat
+
+## 🎥 演示
+
+<div align="center">
+  <video width="800" height="450" controls>
+    <source src="resources/prompt-management-demo.mp4" type="video/mp4">
+    您的浏览器不支持视频标签。
+  </video>
+  <br>
+  <em>观看演示视频，了解 Prompt Manager 的实际使用效果！</em>
+</div>
 
 ## 🛠 核心功能
 

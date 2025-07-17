@@ -36,6 +36,7 @@
 
 - [Features](#-features)
 - [Quick Start](#-quick-start)
+- [Demo](#-demo)
 - [Core Features](#-core-features)
 - [User Interface](#-user-interface)
 - [Usage Guide](#-usage-guide)
@@ -89,6 +90,17 @@
 2. **Browse Default Templates** - Extension comes with pre-built templates for code review, technical documentation, problem analysis, etc.
 3. **Add Custom Prompts** - Click the ➕ button or use shortcut `Ctrl+Shift+P`
 4. **Start Using** - Select a prompt, automatically copied to clipboard or double-click to send to Chat
+
+## 🎥 Demo
+
+<div align="center">
+  <video width="800" height="450" controls>
+    <source src="resources/prompt-management-demo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <br>
+  <em>Watch the demo to see Prompt Manager in action!</em>
+</div>
 
 ## 🛠 Core Features
 
