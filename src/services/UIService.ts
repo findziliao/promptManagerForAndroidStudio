@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { IUIService, PromptItem, PromptCategory, QuickPickPromptItem } from "../types";
-import { UI_CONSTANTS, FILE_CONSTANTS, PERFORMANCE_CONSTANTS, getLocalizedFileFilter } from "../utils/constants";
+import { UI_CONSTANTS, FILE_CONSTANTS, PERFORMANCE_CONSTANTS, getLocalizedFileFilter } from "../constants/constants";
 import { t } from "./LocalizationService";
 import { WebViewEditorService } from "./WebViewEditorService";
 

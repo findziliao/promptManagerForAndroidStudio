@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { IStorageService, PromptItem, PromptCategory, OperationResult } from "../types";
-import { STORAGE_KEYS, DEFAULT_CATEGORIES, DEFAULT_PROMPTS } from "../utils/constants";
+import { STORAGE_KEYS, DEFAULT_CATEGORIES, DEFAULT_PROMPTS } from "../constants/constants";
 
 /**
  * 存储服务实现

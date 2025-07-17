@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { PromptManager } from "./models/PromptManager";
 import { PromptTreeDataProvider } from "./views/PromptTreeDataProvider";
-import { COMMANDS, TREE_VIEW } from "./utils/constants";
+import { COMMANDS, TREE_VIEW } from "./constants/constants";
 import { t } from "./services/LocalizationService";
 
 /**

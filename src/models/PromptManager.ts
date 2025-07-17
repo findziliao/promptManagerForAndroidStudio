@@ -16,7 +16,7 @@ import { ImportExportService } from "../services/ImportExportService";
 import { CursorIntegrationService } from "../services/CursorIntegrationService";
 import { ChatIntegrationFactory } from "../services/ChatIntegrationFactory";
 import { ChatIntegrationOptions, ChatIntegrationStatus, EditorEnvironmentType } from "../types";
-import { DEFAULT_CATEGORIES, DEFAULT_PROMPTS } from "../utils/constants";
+import { DEFAULT_CATEGORIES, DEFAULT_PROMPTS } from "../constants/constants";
 import { t } from "../services/LocalizationService";
 
 /**

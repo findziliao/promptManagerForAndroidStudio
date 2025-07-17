@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { IClipboardService } from "../types";
-import { UI_CONSTANTS } from "../utils/constants";
+import { UI_CONSTANTS } from "../constants/constants";
 
 /**
  * 剪贴板服务实现

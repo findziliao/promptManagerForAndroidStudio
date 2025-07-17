@@ -8,7 +8,7 @@ import {
   TreePromptItemData,
 } from "../types";
 import { StorageService } from "../services/StorageService";
-import { TREE_CONTEXT_VALUES, TREE_ICONS, TREE_SPECIAL_CATEGORIES, COMMANDS } from "../utils/constants";
+import { TREE_CONTEXT_VALUES, TREE_ICONS, TREE_SPECIAL_CATEGORIES, COMMANDS } from "../constants/constants";
 
 /**
  * Prompt TreeView数据提供器

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as fs from "fs/promises";
 import * as path from "path";
 import { IImportExportService, ExportData, PromptItem, PromptCategory } from "../types";
-import { FILE_CONSTANTS, UI_CONSTANTS } from "../utils/constants";
+import { FILE_CONSTANTS, UI_CONSTANTS } from "../constants/constants";
 
 /**
  * 导入导出服务实现
