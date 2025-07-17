@@ -93,14 +93,7 @@
 
 ## 🎥 演示
 
-<div align="center">
-  <video width="800" height="450" controls>
-    <source src="resources/prompt-management-demo.mp4" type="video/mp4">
-    您的浏览器不支持视频标签。
-  </video>
-  <br>
-  <em>观看演示视频，了解 Prompt Manager 的实际使用效果！</em>
-</div>
+https://github.com/user-attachments/assets/d56490ff-c262-4ed4-b88c-989afb54ea5d
 
 ## 🛠 核心功能
 
