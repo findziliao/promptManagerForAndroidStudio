@@ -64,6 +64,20 @@ export const DEFAULT_CATEGORIES = {
     icon: "book",
     sortOrder: 2,
   },
+  UIDESIGN: {
+    id: "uidesign",
+    name: "UI设计",
+    description: "UI设计相关Prompt",
+    icon: "paintcan",
+    sortOrder: 3,
+  },
+  LLM: {
+    id: "llm",
+    name: "LLM",
+    description: "LLM相关Prompt",
+    icon: "chat",
+    sortOrder: 4,
+  },
 } as const;
 
 import { defaultPrompts, defaultCategories } from './prompts';
@@ -223,12 +237,19 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         icon: "book",
         sortOrder: 2,
       },
-      UI_DESIGN: {
-        id: "ui-design",
-        name: t("category.ui-design"),
-        description: t("category.ui-design"),
-        icon: "paint",
+      UIDESIGN: {
+        id: "uidesign",
+        name: t("category.uidesign"),
+        description: t("category.uidesign"),
+        icon: "paintcan",
         sortOrder: 3,
+      },
+      LLM: {
+        id: "llm",
+        name: t("category.llm"),
+        description: t("category.llm"),
+        icon: "chat",
+        sortOrder: 4,
       },
     };
   }

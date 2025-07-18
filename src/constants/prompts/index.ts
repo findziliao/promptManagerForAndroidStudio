@@ -1,6 +1,8 @@
 import { codingPrompts } from './coding';
 import { writingPrompts } from './writing';
 import { generalPrompts } from './general';
+import { uidesignPrompts } from './uidesign';
+import { llmPrompts } from './llm';
 import { scanPrompts, scanCategories } from './autoLoader';
 
 // 自动扫描并加载所有 prompts 和分类
@@ -14,6 +16,8 @@ export const defaultPrompts = [
   ...codingPrompts,
   ...writingPrompts,
   ...generalPrompts,
+  ...uidesignPrompts,
+  ...llmPrompts,
 ] as const;
 
 // 导出自动加载的分类
