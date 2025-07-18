@@ -102,7 +102,7 @@
 
 1. **Activate Extension** - Automatically activated after installation, find Prompt Manager icon in Activity Bar
 2. **Browse Default Templates** - Extension comes with pre-built templates for code review, technical documentation, problem analysis, etc.
-3. **Add Custom Prompts** - Click the ➕ button or use shortcut `Ctrl+Shift+P`
+3. **Add Custom Prompts** - Click the ➕ button or use shortcut `Shift+P`
 4. **Start Using** - Select a prompt, automatically copied to clipboard or double-click to send to Chat
 
 ## 🎥 Demo
@@ -153,13 +153,13 @@ https://github.com/user-attachments/assets/d56490ff-c262-4ed4-b88c-989afb54ea5d
 ```
 Method 1: Activity Bar → Click ➕ button
 Method 2: Command Palette → "Prompt Manager: Add New Prompt"
-Method 3: Shortcut Ctrl+Shift+P → Select "Add New Prompt"
+Method 3: Shortcut Shift+P → Select "Add New Prompt"
 ```
 
 #### 2. Using Prompts
 ```
 Method 1: Activity Bar → Double-click prompt item
-Method 2: Shortcut Ctrl+Shift+P → Select prompt
+Method 2: Shortcut Shift+P → Select prompt
 Method 3: Right-click menu → "Copy to Clipboard" or "Send to Chat"
 ```
 
@@ -192,7 +192,7 @@ Import Data: Command Palette → "Prompt Manager: Import Prompts"
 
 | Shortcut | Function | Description |
 |----------|----------|-------------|
-| `Ctrl+Shift+P` | Show Prompt List | Quick picker |
+| `Shift+P` | Show Prompt List | Quick picker |
 | `Ctrl+K Ctrl+S` | Search Prompts | Search in TreeView |
 | `F2` | Edit Selected Item | Rename in TreeView |
 | `Delete` | Delete Selected Item | Delete in TreeView |

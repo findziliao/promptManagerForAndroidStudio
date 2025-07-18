@@ -102,7 +102,7 @@
 
 1. **激活插件** - 安装后会自动激活，在Activity Bar中看到Prompt Manager图标
 2. **浏览默认模板** - 插件预置了代码审查、技术文档、问题分析等常用模板
-3. **添加自定义Prompt** - 点击➕按钮或使用快捷键 `Ctrl+Shift+P`
+3. **添加自定义Prompt** - 点击➕按钮或使用快捷键 `Shift+P`
 4. **开始使用** - 选择Prompt，自动复制到剪贴板或双击发送到Chat
 
 ## 🎥 演示
@@ -151,13 +151,13 @@ https://github.com/user-attachments/assets/d56490ff-c262-4ed4-b88c-989afb54ea5d
 ```
 方式1: Activity Bar → 点击 ➕ 按钮
 方式2: 命令面板 → "Prompt Manager: 添加新Prompt"
-方式3: 快捷键 Ctrl+Shift+P → 选择"添加新Prompt"
+方式3: 快捷键 Shift+P → 选择"添加新Prompt"
 ```
 
 #### 2. 使用Prompt
 ```
 方式1: Activity Bar → 双击Prompt项目
-方式2: 快捷键 Ctrl+Shift+P → 选择Prompt
+方式2: 快捷键 Shift+P → 选择Prompt
 方式3: 右键菜单 → "复制到剪贴板" 或 "发送到Chat"
 ```
 
@@ -190,7 +190,7 @@ react hooks   # 搜索React Hooks相关
 
 | 快捷键 | 功能 | 说明 |
 |--------|------|------|
-| `Ctrl+Shift+P` | 显示Prompt列表 | 快速选择器 |
+| `Shift+P` | 显示Prompt列表 | 快速选择器 |
 | `Ctrl+K Ctrl+S` | 搜索Prompts | 在TreeView中搜索 |
 | `F2` | 编辑选中项 | 在TreeView中重命名 |
 | `Delete` | 删除选中项 | 在TreeView中删除 |

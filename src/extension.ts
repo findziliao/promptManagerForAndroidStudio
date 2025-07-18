@@ -828,7 +828,7 @@ async function showWelcomeMessage(context: vscode.ExtensionContext) {
 
     // 只在真正的首次安装时显示欢迎信息
     if (!lastVersion && !hasShownInitialWelcome) {
-              const message = `🎉 欢迎使用 Prompt Manager！\n\n扩展已激活，您可以直接使用侧边栏或 Ctrl+Shift+P 快捷键。`;
+              const message = `🎉 欢迎使用 Prompt Manager！\n\n扩展已激活，您可以直接使用侧边栏或 Shift+P 快捷键。`;
 
       const action = await vscode.window.showInformationMessage(message, "了解更多", "开始使用");
 
