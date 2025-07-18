@@ -223,6 +223,13 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         icon: "book",
         sortOrder: 2,
       },
+      UI_DESIGN: {
+        id: "ui-design",
+        name: t("category.ui-design"),
+        description: t("category.ui-design"),
+        icon: "paint",
+        sortOrder: 3,
+      },
     };
   }
 

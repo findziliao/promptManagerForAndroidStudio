@@ -3,6 +3,10 @@ import { PromptManager } from "./models/PromptManager";
 import { PromptTreeDataProvider } from "./views/PromptTreeDataProvider";
 import { COMMANDS, TREE_VIEW } from "./constants/constants";
 import { t } from "./services/LocalizationService";
+import { EventEmitter } from 'events';
+
+// 增加最大监听器限制
+EventEmitter.defaultMaxListeners = 20;
 
 /**
  * 全局PromptManager实例

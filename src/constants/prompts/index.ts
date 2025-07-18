@@ -1,19 +1,7 @@
-import { codingPrompts, codeReviewPrompt, codeOptimizationPrompt, codeDebugPrompt, codeDrawInfraPrompt } from './coding';
-import { writingPrompts, techDocPrompt } from './writing';
-import { generalPrompts, problemAnalysisPrompt } from './general';
+import { codingPrompts } from './coding';
+import { writingPrompts } from './writing';
+import { generalPrompts } from './general';
 import { scanPrompts, scanCategories } from './autoLoader';
-
-export {
-  // Coding
-  codeReviewPrompt,
-  codeOptimizationPrompt,
-  codeDebugPrompt,
-  codeDrawInfraPrompt,
-  // Writing
-  techDocPrompt,
-  // General
-  problemAnalysisPrompt,
-};
 
 // 自动扫描并加载所有 prompts 和分类
 const autoLoadedPrompts = scanPrompts(__dirname);
