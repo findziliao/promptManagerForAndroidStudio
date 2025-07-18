@@ -28,6 +28,20 @@
           <strong>Jinhui</strong>
         </a>
       </td>
+      <td align="center">
+        <a href="https://cursor.com/">
+          <img src="resources/cursor.png" width="100" height="100" alt="Cursor">
+          <br>
+          <strong>Cursor</strong>
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://www.anthropic.com/">
+          <img src="resources/claude-color.png" width="100" height="100" alt="Claude">
+          <br>
+          <strong>Claude</strong>
+        </a>
+      </td>
     </tr>
   </table>
 </div>
