@@ -44,6 +44,8 @@
       </td>
     </tr>
   </table>
+  
+  > **声明：本仓库代码全部由 Cursor + Claude 生成**
 </div>
 
 ## 📋 目录
