@@ -394,6 +394,57 @@ export class WebViewEditorService {
             line-height: 1.5;
         }
 
+        /* 添加模态对话框样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-container {
+            background-color: var(--vscode-editor-background);
+            border-radius: 4px;
+            padding: 20px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
         @media (max-width: 768px) {
             .two-column {
                 grid-template-columns: 1fr;
@@ -424,6 +475,30 @@ export class WebViewEditorService {
 
         <div id="error-message" class="error-message" style="display: none;"></div>
         <div id="success-message" class="success-message" style="display: none;"></div>
+
+        <!-- 添加模态对话框 -->
+        <div id="category-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-title">创建新分类</div>
+                    <div class="modal-close" onclick="closeModal()">×</div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="category-name">分类名称 *</label>
+                        <input type="text" id="category-name" class="form-input" placeholder="输入分类名称" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="category-description">分类描述</label>
+                        <input type="text" id="category-description" class="form-input" placeholder="输入分类描述（可选）">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button class="btn btn-primary" onclick="submitCategory()">创建</button>
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="form-label" for="title">标题 *</label>
@@ -467,6 +542,21 @@ export class WebViewEditorService {
 
         window.addEventListener('DOMContentLoaded', () => {
             vscode.postMessage({ type: 'ready' });
+            
+            // 添加键盘事件处理
+            document.getElementById('category-name').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('category-description').focus();
+                }
+            });
+
+            document.getElementById('category-description').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitCategory();
+                }
+            });
         });
 
         window.addEventListener('message', event => {
@@ -596,19 +686,36 @@ export class WebViewEditorService {
         }
 
         function createCategory() {
-            const name = prompt('输入分类名称：');
-            if (name && name.trim()) {
-                const description = prompt('输入分类描述（可选）：');
-                
-                vscode.postMessage({
-                    type: 'createCategory',
-                    data: {
-                        name: name.trim(),
-                        description: description ? description.trim() : undefined,
-                        icon: 'folder'
-                    }
-                });
+            // 显示自定义模态对话框
+            document.getElementById('category-modal').style.display = 'flex';
+            document.getElementById('category-name').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('category-modal').style.display = 'none';
+            document.getElementById('category-name').value = '';
+            document.getElementById('category-description').value = '';
+        }
+
+        function submitCategory() {
+            const name = document.getElementById('category-name').value.trim();
+            if (!name) {
+                showError('分类名称不能为空');
+                return;
             }
+            
+            const description = document.getElementById('category-description').value.trim();
+            
+            vscode.postMessage({
+                type: 'createCategory',
+                data: {
+                    name: name,
+                    description: description || undefined,
+                    icon: 'folder'
+                }
+            });
+            
+            closeModal();
         }
 
         function refreshCategories() {
