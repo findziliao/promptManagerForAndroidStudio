@@ -90,7 +90,7 @@
 1. **Install from VSCode Marketplace**
    ```
    Press Ctrl+Shift+X in VSCode to open Extensions panel
-   Search for "Prompt Manager"
+   Search for "Prompt Manager for IDE"
    Click Install
    ```
 
@@ -100,7 +100,7 @@
 3. **Local Installation**
    ```bash
    # After downloading the .vsix file
-   code --install-extension prompt-manager-0.0.1.vsix
+   code --install-extension prompt-manager-for-ide-xxx.vsix
    ```
 
 ### First Use

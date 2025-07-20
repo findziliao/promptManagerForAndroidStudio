@@ -90,7 +90,7 @@
 1. **从VSCode扩展商店安装**
    ```
    在VSCode中按 Ctrl+Shift+X 打开扩展面板
-   搜索 "Prompt Manager"
+   搜索 "Prompt Manager for IDE"
    点击安装
    ```
 
@@ -100,7 +100,7 @@
 3. **本地安装**
    ```bash
    # 下载.vsix文件后
-   code --install-extension prompt-manager-0.0.1.vsix
+   code --install-extension prompt-manager-for-ide-xxx.vsix
    ```
 
 ### 首次使用
