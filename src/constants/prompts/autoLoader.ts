@@ -118,6 +118,7 @@ function getCategoryIcon(categoryName: string): string {
     'analysis': 'search',
     'business': 'briefcase',
     'uidesign': 'paintbrush',
+    'other': 'chat',
   };
   
   return iconMap[categoryName.toLowerCase()] || 'folder';
@@ -138,6 +139,7 @@ function getSortOrder(categoryName: string): number {
     'analysis': 5,
     'business': 6,
     'uidesign': 7,
+    'other': 8,
   };
   
   return orderMap[categoryName.toLowerCase()] || 999;

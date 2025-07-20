@@ -78,6 +78,13 @@ export const DEFAULT_CATEGORIES = {
     icon: "flame",
     sortOrder: 4,
   },
+  OTHER: {
+    id: "other",
+    name: "其他",
+    description: "其他Prompt",
+    icon: "chat",
+    sortOrder: 5,
+  },
 } as const;
 
 import { defaultPrompts, defaultCategories } from './prompts';
@@ -250,6 +257,13 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         description: t("category.llm"),
         icon: "flame",
         sortOrder: 4,
+      },
+      OTHER: {
+        id: "other",
+        name: t("category.other"),
+        description: t("category.other"),
+        icon: "chat",
+        sortOrder: 5,
       },
     };
   }
