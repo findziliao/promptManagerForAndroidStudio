@@ -75,7 +75,7 @@ export const DEFAULT_CATEGORIES = {
     id: "llm",
     name: "LLM",
     description: "LLM相关Prompt",
-    icon: "chat",
+    icon: "flame",
     sortOrder: 4,
   },
 } as const;
@@ -248,7 +248,7 @@ export function getLocalizedDefaultCategories(t: (key: string) => string) {
         id: "llm",
         name: t("category.llm"),
         description: t("category.llm"),
-        icon: "chat",
+        icon: "flame",
         sortOrder: 4,
       },
     };

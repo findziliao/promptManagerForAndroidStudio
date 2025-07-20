@@ -1,8 +1,8 @@
 {
-    "name": "prompt-manager",
-    "displayName": "Prompt Manager",
+    "name": "prompt-manager-for-ide",
+    "displayName": "Prompt Manager for IDE",
     "description": "Extension for managing and quickly selecting Prompt templates, compatible with Cursor and VSCode Copilot",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "prompt-manager-dev",
     "icon": "resources/prompt-manager-logo-2.png",
     "repository": {
@@ -18,13 +18,21 @@
     },
     "l10n": "./l10n",
     "categories": [
+        "Snippets",
+        "Programming Languages",
         "Other"
     ],
     "keywords": [
         "prompt",
         "template",
         "manager",
-        "productivity"
+        "productivity",
+        "ai",
+        "copilot",
+        "cursor",
+        "llm",
+        "chatgpt",
+        "claude"
     ],
     "activationEvents": [
         "onView:prompt-manager.promptTree",
