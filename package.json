@@ -2,7 +2,7 @@
     "name": "prompt-manager-for-ide",
     "displayName": "Prompt Manager for IDE",
     "description": "Extension for managing and quickly selecting Prompt templates, compatible with Cursor and VSCode Copilot",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "prompt-manager-dev",
     "icon": "resources/prompt-manager-logo-2.png",
     "repository": {

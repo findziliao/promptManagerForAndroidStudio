@@ -94,7 +94,10 @@
    点击安装
    ```
 
-2. **本地安装**
+2. **Cursor插件安装**
+   > 因为Cursor插件抓取延迟，可以通过这里下载：https://marketplace.visualstudio.com/items?itemName=prompt-manager-dev.prompt-manager-for-ide
+
+3. **本地安装**
    ```bash
    # 下载.vsix文件后
    code --install-extension prompt-manager-0.0.1.vsix

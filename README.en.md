@@ -94,7 +94,10 @@
    Click Install
    ```
 
-2. **Local Installation**
+2. **Cursor Plugin Installation**
+   > Due to Cursor plugin fetch delay, you can download it here: https://marketplace.visualstudio.com/items?itemName=prompt-manager-dev.prompt-manager-for-ide
+
+3. **Local Installation**
    ```bash
    # After downloading the .vsix file
    code --install-extension prompt-manager-0.0.1.vsix
