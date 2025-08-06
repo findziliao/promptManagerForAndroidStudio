@@ -1,7 +1,7 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.0"
-    id("org.jetbrains.intellij") version "1.16.0"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
+    id("org.jetbrains.intellij") version "1.13.0"
 }
 
 group = "com.promptmanager"
@@ -16,8 +16,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     
     // JSON 序列化
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     
     // 日志
     implementation("org.slf4j:slf4j-api:2.0.7")
