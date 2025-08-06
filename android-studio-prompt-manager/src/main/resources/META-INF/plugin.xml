@@ -1,0 +1,136 @@
+<idea-plugin>
+    <id>com.promptmanager.android-studio</id>
+    <name>Prompt Manager for Android Studio</name>
+    <version>1.0.0</version>
+    <vendor email="support@promptmanager.com" url="https://promptmanager.com">Prompt Manager Team</vendor>
+    
+    <description><![CDATA[
+        Android Studio 插件，用于高效管理和快速使用 AI Prompt 模板。
+        
+        主要功能：
+        • 📝 完整的 Prompt 生命周期管理
+        • 🔍 智能搜索功能  
+        • 📁 分层分类系统
+        • 💾 数据导入导出
+        • ⚡ 与 Android Studio 深度集成
+    ]]></description>
+    
+    <change-notes><![CDATA[
+        初始版本发布：
+        • 支持 Prompt 的创建、编辑、删除
+        • 分类管理系统
+        • 搜索和过滤功能
+        • 导入导出功能
+        • ToolWindow 界面
+    ]]></change-notes>
+    
+    <!-- 请联系我们以获取 IDEA 许可证 -->
+    <idea-version since-build="231" until-build="241.*"/>
+    
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.androidstudio</depends>
+    
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Tool Window -->
+        <toolWindow
+            id="Prompt Manager"
+            secondary="false"
+            icon="AllIcons.Actions.Edit"
+            anchor="right"
+            factoryClass="com.promptmanager.ui.PromptManagerToolWindowFactory"/>
+        
+        <!-- 应用程序级别服务 -->
+        <applicationService
+            serviceInterface="com.promptmanager.services.PromptStorageService"
+            serviceImplementation="com.promptmanager.services.PromptStorageServiceImpl"/>
+        
+        <applicationService
+            serviceInterface="com.promptmanager.services.PromptManagerService"
+            serviceImplementation="com.promptmanager.services.PromptManagerServiceImpl"/>
+        
+        <!-- 持久化组件 -->
+        <applicationService
+            serviceInterface="com.promptmanager.services.PersistentDataService"
+            serviceImplementation="com.promptmanager.services.PersistentDataServiceImpl"/>
+        
+        <!-- 动作注册 -->
+        <action
+            id="promptmanager.ShowPromptPicker"
+            class="com.promptmanager.actions.ShowPromptPickerAction"
+            text="Show Prompt Picker"
+            description="Show prompt selection dialog">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+            <keyboard-shortcut
+                keymap="$default"
+                first-keystroke="shift P"
+                second-keystroke="P"/>
+        </action>
+        
+        <action
+            id="promptmanager.AddPrompt"
+            class="com.promptmanager.actions.AddPromptAction"
+            text="Add New Prompt"
+            description="Add a new prompt">
+            <add-to-group group-id="PromptManager.Popup"/>
+        </action>
+        
+        <action
+            id="promptmanager.EditPrompt"
+            class="com.promptmanager.actions.EditPromptAction"
+            text="Edit Prompt"
+            description="Edit selected prompt">
+            <add-to-group group-id="PromptManager.Popup"/>
+        </action>
+        
+        <action
+            id="promptmanager.DeletePrompt"
+            class="com.promptmanager.actions.DeletePromptAction"
+            text="Delete Prompt"
+            description="Delete selected prompt">
+            <add-to-group group-id="PromptManager.Popup"/>
+        </action>
+        
+        <action
+            id="promptmanager.CopyPrompt"
+            class="com.promptmanager.actions.CopyPromptAction"
+            text="Copy to Clipboard"
+            description="Copy prompt to clipboard">
+            <add-to-group group-id="PromptManager.Popup"/>
+        </action>
+        
+        <action
+            id="promptmanager.ExportPrompts"
+            class="com.promptmanager.actions.ExportPromptsAction"
+            text="Export Prompts"
+            description="Export prompts to file">
+            <add-to-group group-id="PromptManager.Popup"/>
+        </action>
+        
+        <action
+            id="promptmanager.ImportPrompts"
+            class="com.promptmanager.actions.ImportPromptsAction"
+            text="Import Prompts"
+            description="Import prompts from file">
+            <add-to-group group-id="PromptManager.Popup"/>
+        </action>
+    </extensions>
+    
+    <actions>
+        <!-- 主菜单动作 -->
+        <group id="PromptManager.Menu" text="Prompt Manager" popup="true">
+            <reference id="promptmanager.ShowPromptPicker"/>
+            <separator/>
+            <reference id="promptmanager.AddPrompt"/>
+            <reference id="promptmanager.ExportPrompts"/>
+            <reference id="promptmanager.ImportPrompts"/>
+            <separator/>
+            <action
+                id="promptmanager.Settings"
+                class="com.promptmanager.actions.SettingsAction"
+                text="Settings"
+                description="Open prompt manager settings"/>
+            <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="promptmanager.ShowPromptPicker"/>
+        </group>
+    </actions>
+</idea-plugin>

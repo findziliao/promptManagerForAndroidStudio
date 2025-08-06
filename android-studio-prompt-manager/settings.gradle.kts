@@ -1,0 +1,1 @@
+rootProject.name = "android-studio-prompt-manager"
