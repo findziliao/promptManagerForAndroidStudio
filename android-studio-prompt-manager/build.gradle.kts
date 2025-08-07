@@ -1,7 +1,7 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.8.20"
-    id("org.jetbrains.intellij") version "1.13.0"
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.intellij") version "1.10.0"
 }
 
 group = "com.promptmanager"
@@ -16,8 +16,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     
     // JSON 序列化
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
     
     // 日志
     implementation("org.slf4j:slf4j-api:2.0.7")
@@ -28,8 +28,9 @@ dependencies {
 }
 
 intellij {
-    version.set("231.8109.175") // Android Studio Hedgehog | 2023.1.1
-    type.set("AI") // Android Studio 类型
+    version.set("2022.3.2")
+    type.set("IC") // IntelliJ IDEA Community Edition
+    plugins.set(listOf("java"))
 }
 
 tasks {
@@ -42,8 +43,8 @@ tasks {
     }
     
     patchPluginXml {
-        sinceBuild.set("231")
-        untilBuild.set("241.*")
+        sinceBuild.set("223")
+        untilBuild.set("251.*")
     }
     
     signPlugin {

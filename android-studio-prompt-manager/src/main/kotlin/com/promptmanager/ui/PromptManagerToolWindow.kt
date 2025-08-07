@@ -41,7 +41,7 @@ class PromptManagerPanel(private val project: com.intellij.openapi.project.Proje
         .getService(PromptStorageService::class.java)
     
     private val searchField = JBTextField().apply {
-        placeholderText = "搜索 Prompt..."
+        text = ""
         toolTipText = "输入关键词搜索 Prompt 标题、内容、标签等"
     }
     

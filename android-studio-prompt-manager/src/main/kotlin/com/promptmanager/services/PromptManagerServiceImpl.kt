@@ -1,8 +1,6 @@
 package com.promptmanager.services
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.clipboard.Clipboard
-import com.intellij.openapi.clipboard.StringSelection
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.fileChooser.FileChooser
@@ -11,7 +9,11 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.promptmanager.models.*
+import com.promptmanager.ui.PromptEditDialog
 import java.awt.Component
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.StringSelection
 import java.io.File
 
 /**
@@ -38,20 +40,20 @@ interface PromptStorageService {
  * Prompt Manager 服务接口
  */
 interface PromptManagerService {
-    fun showPromptPicker(parentComponent: Component? = null)
-    fun addPrompt(parentComponent: Component? = null)
-    fun editPrompt(promptId: String, parentComponent: Component? = null)
-    fun deletePrompt(promptId: String, parentComponent: Component? = null)
+    fun showPromptPicker(parentComponent: java.awt.Component? = null)
+    fun addPrompt(parentComponent: java.awt.Component? = null)
+    fun editPrompt(promptId: String, parentComponent: java.awt.Component? = null)
+    fun deletePrompt(promptId: String, parentComponent: java.awt.Component? = null)
     fun copyPromptToClipboard(promptId: String): Boolean
     fun sendPromptToChat(promptId: String): Boolean
     
-    fun addCategory(parentComponent: Component? = null)
-    fun editCategory(categoryId: String, parentComponent: Component? = null)
-    fun deleteCategory(categoryId: String, parentComponent: Component? = null)
+    fun addCategory(parentComponent: java.awt.Component? = null)
+    fun editCategory(categoryId: String, parentComponent: java.awt.Component? = null)
+    fun deleteCategory(categoryId: String, parentComponent: java.awt.Component? = null)
     
-    fun exportPromptsToFile(parentComponent: Component? = null)
-    fun importPromptsFromFile(parentComponent: Component? = null)
-    fun reinitializeDefaultData(parentComponent: Component? = null)
+    fun exportPromptsToFile(parentComponent: java.awt.Component? = null)
+    fun importPromptsFromFile(parentComponent: java.awt.Component? = null)
+    fun reinitializeDefaultData(parentComponent: java.awt.Component? = null)
     
     fun getAvailableActions(promptId: String): List<PromptActionType>
     fun executePromptAction(promptId: String, actionType: PromptActionType): PromptActionResult
@@ -128,7 +130,7 @@ class PromptManagerServiceImpl : PromptManagerService {
         persistentDataService.initializeDefaultDataIfNeeded()
     }
     
-    override fun showPromptPicker(parentComponent: Component?) {
+    override fun showPromptPicker(parentComponent: java.awt.Component?) {
         val prompts = storageService.getAllPrompts()
         if (prompts.isEmpty()) {
             Messages.showInfoMessage(
@@ -140,14 +142,16 @@ class PromptManagerServiceImpl : PromptManagerService {
         }
         
         // 创建 Prompt 选择对话框
-        val promptNames = prompts.map { "${it.title} (${storageService.getCategory(it.categoryId)?.name ?: "未分类"})" }.toTypedArray()
+        val promptNames = prompts.map { 
+            val categoryName = if (it.categoryId != null) storageService.getCategory(it.categoryId)?.name ?: "未分类" else "未分类"
+            "${it.title ?: ""} ($categoryName)" 
+        }.toTypedArray()
         val selected = Messages.showChooseDialog(
-            parentComponent,
             "选择要使用的 Prompt：",
             "Prompt 选择器",
-            Messages.getQuestionIcon(),
             promptNames,
-            promptNames.firstOrNull()
+            promptNames.firstOrNull(),
+            Messages.getQuestionIcon()
         )
         
         if (selected >= 0) {
@@ -156,76 +160,44 @@ class PromptManagerServiceImpl : PromptManagerService {
         }
     }
     
-    override fun addPrompt(parentComponent: Component?) {
-        // 这里应该显示一个对话框来输入 Prompt 信息
-        // 为了简化，我们创建一个示例 Prompt
-        val title = Messages.showInputDialog(
-            parentComponent,
-            "输入 Prompt 标题：",
-            "添加新 Prompt",
-            Messages.getQuestionIcon()
-        ) ?: return
+    override fun addPrompt(parentComponent: java.awt.Component?) {
+        val dialog = PromptEditDialog(parentComponent, "添加新 Prompt")
+        val newPrompt = dialog.show()
         
-        val content = Messages.showInputDialog(
-            parentComponent,
-            "输入 Prompt 内容：",
-            "添加新 Prompt",
-            Messages.getQuestionIcon()
-        ) ?: return
-        
-        val newPrompt = PromptItem(
-            title = title,
-            content = content
-        )
-        
-        if (storageService.savePrompt(newPrompt)) {
-            Messages.showInfoMessage(parentComponent, "Prompt 添加成功！", "成功")
-        } else {
-            Messages.showErrorDialog(parentComponent, "添加 Prompt 失败", "错误")
+        if (newPrompt != null) {
+            if (storageService.savePrompt(newPrompt)) {
+                Messages.showInfoMessage(parentComponent, "Prompt 添加成功！", "成功")
+            } else {
+                Messages.showErrorDialog(parentComponent, "添加 Prompt 失败", "错误")
+            }
         }
     }
     
-    override fun editPrompt(promptId: String, parentComponent: Component?) {
+    override fun editPrompt(promptId: String, parentComponent: java.awt.Component?) {
         val prompt = storageService.getPrompt(promptId) ?: run {
             Messages.showErrorDialog(parentComponent, "Prompt 不存在", "错误")
             return
         }
         
-        val newTitle = Messages.showInputDialog(
-            parentComponent,
-            "编辑 Prompt 标题：",
-            "编辑 Prompt",
-            Messages.getQuestionIcon(),
-            prompt.title,
-            null
-        ) ?: return
+        val dialog = PromptEditDialog(parentComponent, "编辑 Prompt", prompt)
+        val updatedPrompt = dialog.show()
         
-        val newContent = Messages.showInputDialog(
-            parentComponent,
-            "编辑 Prompt 内容：",
-            "编辑 Prompt",
-            Messages.getQuestionIcon(),
-            prompt.content,
-            null
-        ) ?: return
-        
-        val updatedPrompt = prompt.copyWithUpdates(title = newTitle, content = newContent)
-        
-        if (storageService.savePrompt(updatedPrompt)) {
-            Messages.showInfoMessage(parentComponent, "Prompt 更新成功！", "成功")
-        } else {
-            Messages.showErrorDialog(parentComponent, "更新 Prompt 失败", "错误")
+        if (updatedPrompt != null) {
+            if (storageService.savePrompt(updatedPrompt)) {
+                Messages.showInfoMessage(parentComponent, "Prompt 更新成功！", "成功")
+            } else {
+                Messages.showErrorDialog(parentComponent, "更新 Prompt 失败", "错误")
+            }
         }
     }
     
-    override fun deletePrompt(promptId: String, parentComponent: Component?) {
+    override fun deletePrompt(promptId: String, parentComponent: java.awt.Component?) {
         val prompt = storageService.getPrompt(promptId) ?: run {
-            Messages.showErrorDialog(parentComponent, "Prompt 不存在", "错误")
+            Messages.showErrorDialog( "Prompt 不存在", "错误")
             return
         }
         
         val result = Messages.showYesNoDialog(
-            parentComponent,
             "确定要删除 Prompt \"${prompt.title}\" 吗？此操作不可恢复。",
             "确认删除",
             Messages.getQuestionIcon()
@@ -235,7 +207,7 @@ class PromptManagerServiceImpl : PromptManagerService {
             if (storageService.deletePrompt(promptId)) {
                 Messages.showInfoMessage(parentComponent, "Prompt 删除成功！", "成功")
             } else {
-                Messages.showErrorDialog(parentComponent, "删除 Prompt 失败", "错误")
+                Messages.showErrorDialog( "删除 Prompt 失败", "错误")
             }
         }
     }
@@ -244,7 +216,7 @@ class PromptManagerServiceImpl : PromptManagerService {
         return try {
             val prompt = storageService.getPrompt(promptId) ?: return false
             
-            val clipboard = ApplicationManager.getApplication().clipboard
+            val clipboard = Toolkit.getDefaultToolkit().getSystemClipboard()
             val selection = StringSelection(prompt.content)
             clipboard.setContents(selection, null)
             
@@ -265,16 +237,14 @@ class PromptManagerServiceImpl : PromptManagerService {
         return copyPromptToClipboard(promptId)
     }
     
-    override fun addCategory(parentComponent: Component?) {
+    override fun addCategory(parentComponent: java.awt.Component?) {
         val name = Messages.showInputDialog(
-            parentComponent,
             "输入分类名称：",
             "添加新分类",
             Messages.getQuestionIcon()
         ) ?: return
         
         val description = Messages.showInputDialog(
-            parentComponent,
             "输入分类描述（可选）：",
             "添加新分类",
             Messages.getQuestionIcon()
@@ -288,18 +258,17 @@ class PromptManagerServiceImpl : PromptManagerService {
         if (storageService.saveCategory(newCategory)) {
             Messages.showInfoMessage(parentComponent, "分类添加成功！", "成功")
         } else {
-            Messages.showErrorDialog(parentComponent, "添加分类失败", "错误")
+            Messages.showErrorDialog( "添加分类失败", "错误")
         }
     }
     
-    override fun editCategory(categoryId: String, parentComponent: Component?) {
+    override fun editCategory(categoryId: String, parentComponent: java.awt.Component?) {
         val category = storageService.getCategory(categoryId) ?: run {
-            Messages.showErrorDialog(parentComponent, "分类不存在", "错误")
+            Messages.showErrorDialog( "分类不存在", "错误")
             return
         }
         
         val newName = Messages.showInputDialog(
-            parentComponent,
             "编辑分类名称：",
             "编辑分类",
             Messages.getQuestionIcon(),
@@ -308,7 +277,6 @@ class PromptManagerServiceImpl : PromptManagerService {
         ) ?: return
         
         val newDescription = Messages.showInputDialog(
-            parentComponent,
             "编辑分类描述：",
             "编辑分类",
             Messages.getQuestionIcon(),
@@ -321,13 +289,13 @@ class PromptManagerServiceImpl : PromptManagerService {
         if (storageService.saveCategory(updatedCategory)) {
             Messages.showInfoMessage(parentComponent, "分类更新成功！", "成功")
         } else {
-            Messages.showErrorDialog(parentComponent, "更新分类失败", "错误")
+            Messages.showErrorDialog( "更新分类失败", "错误")
         }
     }
     
-    override fun deleteCategory(categoryId: String, parentComponent: Component?) {
+    override fun deleteCategory(categoryId: String, parentComponent: java.awt.Component?) {
         val category = storageService.getCategory(categoryId) ?: run {
-            Messages.showErrorDialog(parentComponent, "分类不存在", "错误")
+            Messages.showErrorDialog( "分类不存在", "错误")
             return
         }
         
@@ -339,7 +307,6 @@ class PromptManagerServiceImpl : PromptManagerService {
         }
         
         val result = Messages.showYesNoDialog(
-            parentComponent,
             message,
             "确认删除",
             Messages.getQuestionIcon()
@@ -347,20 +314,20 @@ class PromptManagerServiceImpl : PromptManagerService {
         
         if (result == Messages.YES) {
             if (storageService.deleteCategory(categoryId)) {
-                Messages.showInfoMessage(parentComponent, "分类删除成功！", "成功")
+                Messages.showInfoMessage("分类删除成功！", "成功")
             } else {
-                Messages.showErrorDialog(parentComponent, "删除分类失败", "错误")
+                Messages.showErrorDialog( "删除分类失败", "错误")
             }
         }
     }
     
-    override fun exportPromptsToFile(parentComponent: Component?) {
+    override fun exportPromptsToFile(parentComponent: java.awt.Component?) {
         try {
             val descriptor = FileChooserDescriptor(
                 true, false, false, false, false, false
             ).withTitle("选择导出位置").withDescription("选择 JSON 文件保存位置")
             
-            val file = FileChooser.chooseFile(descriptor, parentComponent, null, null) ?: return
+            val file = FileChooser.chooseFile(descriptor, null, null, null) ?: return
             
             val exportData = persistentDataService.exportData()
             val json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(exportData)
@@ -376,20 +343,20 @@ class PromptManagerServiceImpl : PromptManagerService {
             )
         } catch (e: Exception) {
             logger.error("Failed to export prompts", e)
-            Messages.showErrorDialog(parentComponent, "导出失败: ${e.message}", "错误")
+            Messages.showErrorDialog( "导出失败: ${e.message}", "错误")
         }
     }
     
-    override fun importPromptsFromFile(parentComponent: Component?) {
+    override fun importPromptsFromFile(parentComponent: java.awt.Component?) {
         try {
             val descriptor = FileChooserDescriptor(
                 false, true, false, false, false, false
             ).withTitle("选择导入文件").withDescription("选择 JSON 格式的 Prompt 数据文件")
             
-            val file = FileChooser.chooseFile(descriptor, parentComponent, null, null) ?: return
+            val file = FileChooser.chooseFile(descriptor, null, null, null) ?: return
             
             val json = file.inputStream.bufferedReader().use { it.readText() }
-            val importData = mapper.readValue<ExportData>(json)
+            val importData = mapper.readValue(json, ExportData::class.java)
             
             val result = persistentDataService.importData(importData)
             if (result.success) {
@@ -399,17 +366,16 @@ class PromptManagerServiceImpl : PromptManagerService {
                     "成功"
                 )
             } else {
-                Messages.showErrorDialog(parentComponent, result.error, "导入失败")
+                Messages.showErrorDialog( result.error, "导入失败")
             }
         } catch (e: Exception) {
             logger.error("Failed to import prompts", e)
-            Messages.showErrorDialog(parentComponent, "导入失败: ${e.message}", "错误")
+            Messages.showErrorDialog( "导入失败: ${e.message}", "错误")
         }
     }
     
-    override fun reinitializeDefaultData(parentComponent: Component?) {
+    override fun reinitializeDefaultData(parentComponent: java.awt.Component?) {
         val result = Messages.showYesNoDialog(
-            parentComponent,
             "确定要重新初始化默认数据吗？这将删除所有现有的 Prompt 和分类，并重新创建默认模板。此操作不可恢复！",
             "确认重新初始化",
             Messages.getWarningIcon()
@@ -420,7 +386,7 @@ class PromptManagerServiceImpl : PromptManagerService {
                 persistentDataService.initializeDefaultDataIfNeeded()
                 Messages.showInfoMessage(parentComponent, "默认数据重新初始化成功！", "成功")
             } else {
-                Messages.showErrorDialog(parentComponent, "重新初始化失败", "错误")
+                Messages.showErrorDialog( "重新初始化失败", "错误")
             }
         }
     }

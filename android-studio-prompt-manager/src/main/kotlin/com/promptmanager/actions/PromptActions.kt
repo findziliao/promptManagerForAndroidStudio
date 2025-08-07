@@ -14,7 +14,7 @@ class ShowPromptPickerAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         SwingUtilities.invokeLater {
             promptManagerService.showPromptPicker(null)
@@ -29,7 +29,7 @@ class AddPromptAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         SwingUtilities.invokeLater {
             promptManagerService.addPrompt(null)
@@ -44,7 +44,7 @@ class EditPromptAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         // 这里需要从上下文中获取选中的 Prompt ID
         // 为了简化，我们先显示一个消息
@@ -64,7 +64,7 @@ class DeletePromptAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         SwingUtilities.invokeLater {
             Messages.showInfoMessage(
@@ -82,7 +82,7 @@ class CopyPromptAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         SwingUtilities.invokeLater {
             Messages.showInfoMessage(
@@ -100,7 +100,7 @@ class ExportPromptsAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         SwingUtilities.invokeLater {
             promptManagerService.exportPromptsToFile(null)
@@ -115,7 +115,7 @@ class ImportPromptsAction : AnAction() {
     
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val promptManagerService = project.application.getService(PromptManagerService::class.java)
+        val promptManagerService = com.intellij.openapi.application.ApplicationManager.getApplication().getService(PromptManagerService::class.java)
         
         SwingUtilities.invokeLater {
             promptManagerService.importPromptsFromFile(null)
